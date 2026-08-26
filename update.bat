@@ -1,11 +1,11 @@
 @echo off
 setlocal enabledelayedexpansion
-title Daily Quest - GitHub Pages Update
+title Echo English - GitHub Pages Update
 cd /d "%~dp0"
 
 echo.
 echo ==================================================
-echo   Daily Quest  -  push the latest version
+echo   Echo English  -  push the latest version
 echo   GitHub Pages has no monthly deploy limit.
 echo ==================================================
 echo.

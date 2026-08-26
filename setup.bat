@@ -1,12 +1,11 @@
 @echo off
 setlocal enabledelayedexpansion
-title Daily Quest - GitHub Pages First Time Setup
+title Echo English - GitHub Pages First Time Setup
 cd /d "%~dp0"
 
 echo.
 echo ==================================================
-echo   Daily Quest  -  put this app on GitHub Pages
-echo   (Chinese guide: the GitHub migration .md file)
+echo   Echo English  -  put this app on GitHub Pages
 echo ==================================================
 echo.
 
@@ -80,11 +79,11 @@ echo         Signed in as: %GHUSER%
 echo.
 
 rem ---------- 4. repo name ----------
-set "REPO=daily-quest"
+set "REPO=echo-english"
 echo   [4/6] Repository name
 echo         Press Enter to use the default:  %REPO%
 set /p "REPO=  Repository name [%REPO%]: "
-if "%REPO%"=="" set "REPO=daily-quest"
+if "%REPO%"=="" set "REPO=echo-english"
 echo         Using: %REPO%
 echo         Your address will be: https://%GHUSER%.github.io/%REPO%/
 echo.
@@ -99,7 +98,7 @@ if not exist ".git" (
 git config user.name >nul 2>nul || git config user.name "%GHUSER%"
 git config user.email >nul 2>nul || git config user.email "%GHUSER%@users.noreply.github.com"
 git add -A >nul
-git commit -m "Publish Daily Quest to GitHub Pages" >nul 2>nul
+git commit -m "Publish Echo English to GitHub Pages" >nul 2>nul
 gh repo create %REPO% --public --source=. --remote=origin --push
 if errorlevel 1 (
   echo.

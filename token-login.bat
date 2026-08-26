@@ -1,6 +1,6 @@
 @echo off
 setlocal
-title Daily Quest - GitHub login with a token
+title Echo English - GitHub login with a token
 cd /d "%~dp0"
 
 echo.
@@ -17,7 +17,7 @@ if errorlevel 1 (
 )
 
 echo   1. A browser opens at the token page.
-echo   2. Note  = anything, e.g.  daily-quest
+echo   2. Note  = anything, e.g.  echo-english
 echo      Expiration = 90 days
 echo      Scopes, tick these three:
 echo            repo
