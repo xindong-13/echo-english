@@ -1,0 +1,222 @@
+/* Echo 英語 — 擴充句庫 2（新增情境，往 1000 句邁進）
+   欄位說明同 bank.js／bank2.js
+*/
+window.BANK = (window.BANK||[]).concat([
+
+/* ============ 日常會話 · 天氣 ============ */
+{id:"d161",en:"It's freezing outside today.",zh:"外面今天冷死了。",cat:"daily",sc:"天氣",lv:1},
+{id:"d162",en:"Looks like it's going to rain later.",zh:"看起來等一下要下雨了。",cat:"daily",sc:"天氣",lv:1,note:"looks like = 看起來"},
+{id:"d163",en:"Don't forget to bring an umbrella.",zh:"別忘了帶把傘。",cat:"daily",sc:"天氣",lv:1},
+{id:"d164",en:"The weather's been so unpredictable lately.",zh:"最近天氣變化很難預測。",cat:"daily",sc:"天氣",lv:2,note:"unpredictable = 難以預測的"},
+{id:"d165",en:"It's really humid today, isn't it?",zh:"今天真的很悶熱，對吧？",cat:"daily",sc:"天氣",lv:1},
+{id:"d166",en:"I love this cool breeze.",zh:"我很喜歡這陣涼風。",cat:"daily",sc:"天氣",lv:1},
+{id:"d167",en:"It's supposed to clear up by the afternoon.",zh:"聽說下午天氣會放晴。",cat:"daily",sc:"天氣",lv:2,note:"be supposed to = 應該會、據說會"},
+{id:"d168",en:"We got caught in a sudden downpour.",zh:"我們遇到一場突如其來的大雨。",cat:"daily",sc:"天氣",lv:3,note:"downpour = 傾盆大雨"},
+{id:"d169",en:"It's way too hot to go outside.",zh:"天氣熱到根本不想出門。",cat:"daily",sc:"天氣",lv:1},
+{id:"d170",en:"Make sure you dress warmly, it's chilly out.",zh:"記得穿暖一點，外面有點冷。",cat:"daily",sc:"天氣",lv:2},
+
+/* ============ 日常會話 · 家庭 ============ */
+{id:"d171",en:"I'm heading to my parents' place this weekend.",zh:"我這週末要回爸媽家。",cat:"daily",sc:"家庭",lv:1},
+{id:"d172",en:"My little brother just started college.",zh:"我弟弟剛開始念大學。",cat:"daily",sc:"家庭",lv:1},
+{id:"d173",en:"We're throwing a birthday party for my mom.",zh:"我們要幫我媽辦一場生日派對。",cat:"daily",sc:"家庭",lv:2},
+{id:"d174",en:"I take after my dad in a lot of ways.",zh:"我很多地方都像我爸。",cat:"daily",sc:"家庭",lv:2,note:"take after = 長相或個性像（家人）"},
+{id:"d175",en:"My sister and I don't see eye to eye on this.",zh:"我跟我姐在這件事上意見不合。",cat:"daily",sc:"家庭",lv:3,note:"see eye to eye = 看法一致"},
+{id:"d176",en:"We're a pretty close-knit family.",zh:"我們家人感情很緊密。",cat:"daily",sc:"家庭",lv:2,note:"close-knit = 關係緊密的"},
+{id:"d177",en:"My grandparents live just down the street.",zh:"我爺爺奶奶就住在附近。",cat:"daily",sc:"家庭",lv:1},
+{id:"d178",en:"I need to call home more often.",zh:"我該多打電話回家。",cat:"daily",sc:"家庭",lv:1},
+{id:"d179",en:"She's the one who keeps the family together.",zh:"她是那個把家人凝聚在一起的人。",cat:"daily",sc:"家庭",lv:2},
+{id:"d180",en:"We had a huge family reunion last Chinese New Year.",zh:"去年過年我們辦了一場很盛大的家族團聚。",cat:"daily",sc:"家庭",lv:2,note:"reunion = 團聚"},
+
+/* ============ 日常會話 · 興趣嗜好 ============ */
+{id:"d181",en:"I've gotten really into hiking lately.",zh:"我最近迷上健行。",cat:"daily",sc:"興趣嗜好",lv:2,note:"get into = 迷上、開始熱衷於"},
+{id:"d182",en:"What do you usually do in your free time?",zh:"你平常有空都在做什麼？",cat:"daily",sc:"興趣嗜好",lv:1},
+{id:"d183",en:"I've been meaning to pick up painting again.",zh:"我一直想重新開始畫畫。",cat:"daily",sc:"興趣嗜好",lv:2,note:"pick up = 重新開始某項技能"},
+{id:"d184",en:"Photography is more than just a hobby for me.",zh:"攝影對我來說不只是興趣而已。",cat:"daily",sc:"興趣嗜好",lv:2},
+{id:"d185",en:"I collect vintage vinyl records.",zh:"我收集復古黑膠唱片。",cat:"daily",sc:"興趣嗜好",lv:2},
+{id:"d186",en:"I could watch documentaries all day.",zh:"我可以整天看紀錄片都不膩。",cat:"daily",sc:"興趣嗜好",lv:1},
+{id:"d187",en:"He's really passionate about woodworking.",zh:"他對木工非常有熱忱。",cat:"daily",sc:"興趣嗜好",lv:2},
+{id:"d188",en:"I just started learning the guitar.",zh:"我最近才開始學吉他。",cat:"daily",sc:"興趣嗜好",lv:1},
+{id:"d189",en:"Gardening really helps me unwind.",zh:"種花蒔草真的能幫我放鬆。",cat:"daily",sc:"興趣嗜好",lv:2,note:"unwind = 放鬆、解壓"},
+{id:"d190",en:"I try to read at least one book a month.",zh:"我盡量每個月至少讀一本書。",cat:"daily",sc:"興趣嗜好",lv:1},
+
+/* ============ 日常會話 · 稱讚鼓勵 ============ */
+{id:"d191",en:"You did an amazing job on that presentation.",zh:"你那場簡報做得超棒。",cat:"daily",sc:"稱讚鼓勵",lv:1},
+{id:"d192",en:"I'm really proud of how far you've come.",zh:"我真的很為你走到今天感到驕傲。",cat:"daily",sc:"稱讚鼓勵",lv:2},
+{id:"d193",en:"That color looks great on you.",zh:"這個顏色你穿起來很好看。",cat:"daily",sc:"稱讚鼓勵",lv:1},
+{id:"d194",en:"You've really improved a lot.",zh:"你真的進步很多。",cat:"daily",sc:"稱讚鼓勵",lv:1},
+{id:"d195",en:"Keep up the good work.",zh:"繼續保持這樣的表現。",cat:"daily",sc:"稱讚鼓勵",lv:1},
+{id:"d196",en:"I couldn't have done it without your help.",zh:"沒有你的幫忙我不可能做到。",cat:"daily",sc:"稱讚鼓勵",lv:2},
+{id:"d197",en:"You handled that situation really well.",zh:"你那個狀況處理得很好。",cat:"daily",sc:"稱讚鼓勵",lv:2},
+{id:"d198",en:"Don't be so hard on yourself.",zh:"別對自己這麼苛刻。",cat:"daily",sc:"稱讚鼓勵",lv:2,note:"be hard on oneself = 對自己太嚴苛"},
+{id:"d199",en:"You've got this.",zh:"你一定辦得到的。",cat:"daily",sc:"稱讚鼓勵",lv:1},
+{id:"d200",en:"I really admire your patience.",zh:"我很佩服你的耐心。",cat:"daily",sc:"稱讚鼓勵",lv:2},
+
+/* ============ 日常會話 · 借東西 ============ */
+{id:"d201",en:"Could I borrow your charger for a sec?",zh:"可以跟你借一下充電器嗎？",cat:"daily",sc:"借東西",lv:1},
+{id:"d202",en:"Sure, just bring it back whenever.",zh:"當然，隨時還我都可以。",cat:"daily",sc:"借東西",lv:1},
+{id:"d203",en:"Do you mind if I use your laptop for a bit?",zh:"你介意我用一下你的筆電嗎？",cat:"daily",sc:"借東西",lv:2},
+{id:"d204",en:"I'll pay you back by Friday.",zh:"我週五前會還你錢。",cat:"daily",sc:"借東西",lv:1},
+{id:"d205",en:"Can I take a look at your notes from class?",zh:"我可以看一下你上課的筆記嗎？",cat:"daily",sc:"借東西",lv:1},
+{id:"d206",en:"I still owe you one from last time.",zh:"我還欠你上次一個人情。",cat:"daily",sc:"借東西",lv:2,note:"owe someone one = 欠人一個人情"},
+{id:"d207",en:"Feel free to borrow it as long as you need.",zh:"你要用多久都可以借去用。",cat:"daily",sc:"借東西",lv:2},
+{id:"d208",en:"Sorry, I actually need it back today.",zh:"抱歉，我今天其實需要拿回來。",cat:"daily",sc:"借東西",lv:2},
+{id:"d209",en:"Could you lend me a hand with these boxes?",zh:"可以幫我搬一下這些箱子嗎？",cat:"daily",sc:"借東西",lv:1,note:"lend a hand = 幫忙"},
+{id:"d210",en:"Thanks for letting me borrow this, I really appreciate it.",zh:"謝謝你借我這個，我很感激。",cat:"daily",sc:"借東西",lv:1},
+
+/* ============ 日常會話 · 派對聚會 ============ */
+{id:"d211",en:"We're throwing a small get-together this Saturday.",zh:"我們這週六要辦一個小聚會。",cat:"daily",sc:"派對聚會",lv:2,note:"get-together = 聚會"},
+{id:"d212",en:"Feel free to bring a plus one.",zh:"歡迎帶一位朋友一起來。",cat:"daily",sc:"派對聚會",lv:2,note:"plus one = 邀請函上額外可帶的一位同伴"},
+{id:"d213",en:"What should I bring to the party?",zh:"我應該帶什麼東西去派對？",cat:"daily",sc:"派對聚會",lv:1},
+{id:"d214",en:"The party doesn't really get started until later.",zh:"派對通常晚一點才會熱鬧起來。",cat:"daily",sc:"派對聚會",lv:2},
+{id:"d215",en:"Let's raise a toast to the new year.",zh:"我們來為新的一年舉杯吧。",cat:"daily",sc:"派對聚會",lv:2,note:"raise a toast = 舉杯敬酒"},
+{id:"d216",en:"I had such a great time last night.",zh:"我昨晚玩得很開心。",cat:"daily",sc:"派對聚會",lv:1},
+{id:"d217",en:"Sorry I couldn't make it to your party.",zh:"抱歉我沒辦法參加你的派對。",cat:"daily",sc:"派對聚會",lv:1},
+{id:"d218",en:"The music was way too loud to talk.",zh:"音樂太大聲了，根本沒辦法講話。",cat:"daily",sc:"派對聚會",lv:1},
+{id:"d219",en:"Let's keep the party going a bit longer.",zh:"我們再讓派對繼續熱鬧一下吧。",cat:"daily",sc:"派對聚會",lv:1},
+{id:"d220",en:"It was nice catching up with everyone.",zh:"很高興能跟大家聊聊近況。",cat:"daily",sc:"派對聚會",lv:2,note:"catch up = 敘舊、聊近況"},
+
+/* ============ 日常會話 · 網路社群 ============ */
+{id:"d221",en:"I saw your post pop up on my feed.",zh:"我在動態上看到你發的文。",cat:"daily",sc:"網路社群",lv:2,note:"feed = 社群平台的動態消息"},
+{id:"d222",en:"Did that video go viral?",zh:"那支影片有爆紅嗎？",cat:"daily",sc:"網路社群",lv:2,note:"go viral = （在網路上）爆紅、瘋傳"},
+{id:"d223",en:"I need to log off social media for a while.",zh:"我需要暫時遠離社群媒體一陣子。",cat:"daily",sc:"網路社群",lv:2},
+{id:"d224",en:"He's always doom-scrolling on his phone.",zh:"他總是在滑手機看一堆負面新聞。",cat:"daily",sc:"網路社群",lv:3,note:"doom-scrolling = 不停滑手機看令人沮喪的消息"},
+{id:"d225",en:"Can you send me the link to that article?",zh:"可以傳那篇文章的連結給我嗎？",cat:"daily",sc:"網路社群",lv:1},
+{id:"d226",en:"My Wi-Fi keeps dropping out.",zh:"我的 Wi-Fi 一直斷線。",cat:"daily",sc:"網路社群",lv:1},
+{id:"d227",en:"I accidentally liked an old photo of his.",zh:"我不小心按讚了他很久以前的照片。",cat:"daily",sc:"網路社群",lv:2},
+{id:"d228",en:"Let's just video call instead of texting back and forth.",zh:"我們乾脆視訊通話，別再互傳訊息了。",cat:"daily",sc:"網路社群",lv:2},
+{id:"d229",en:"That comment section got really heated.",zh:"那則貼文的留言區吵得很兇。",cat:"daily",sc:"網路社群",lv:3,note:"heated = 激烈、火爆的"},
+{id:"d230",en:"I'll DM you the details later.",zh:"我等一下私訊你詳細資訊。",cat:"daily",sc:"網路社群",lv:2,note:"DM = 私訊（direct message）"},
+
+/* ============ 日常會話 · 拒絕婉拒 ============ */
+{id:"d231",en:"I'd love to, but I already have plans.",zh:"我很想去，但我已經有安排了。",cat:"daily",sc:"拒絕婉拒",lv:1},
+{id:"d232",en:"I'm going to have to pass this time.",zh:"這次我可能要跳過了。",cat:"daily",sc:"拒絕婉拒",lv:2,note:"pass = 婉拒、不參加"},
+{id:"d233",en:"Thanks for the offer, but I'm okay.",zh:"謝謝你的好意，但我這邊還好。",cat:"daily",sc:"拒絕婉拒",lv:1},
+{id:"d234",en:"I don't think that'll work for me.",zh:"我覺得那樣對我來說行不通。",cat:"daily",sc:"拒絕婉拒",lv:1},
+{id:"d235",en:"Maybe some other time.",zh:"或許改天吧。",cat:"daily",sc:"拒絕婉拒",lv:1},
+{id:"d236",en:"I appreciate it, but I'll have to say no.",zh:"我很感激，但我還是得拒絕。",cat:"daily",sc:"拒絕婉拒",lv:2},
+{id:"d237",en:"That's not really my thing.",zh:"那不太是我的菜。",cat:"daily",sc:"拒絕婉拒",lv:1,note:"not my thing = 不是我喜歡／擅長的"},
+{id:"d238",en:"I'm going to sit this one out.",zh:"這次我就不參加了。",cat:"daily",sc:"拒絕婉拒",lv:2,note:"sit out = 不參與、旁觀"},
+{id:"d239",en:"I'm afraid I can't commit to that right now.",zh:"恐怕我現在沒辦法答應那件事。",cat:"daily",sc:"拒絕婉拒",lv:3},
+{id:"d240",en:"Let me think about it and get back to you.",zh:"讓我想一下再回覆你。",cat:"daily",sc:"拒絕婉拒",lv:1},
+
+/* ============ 日常會話 · 提醒叮嚀 ============ */
+{id:"d241",en:"Don't forget to lock the door on your way out.",zh:"出門時別忘了鎖門。",cat:"daily",sc:"提醒叮嚀",lv:1},
+{id:"d242",en:"Just a heads-up, the meeting got moved to 3pm.",zh:"提醒一下，會議改到下午三點了。",cat:"daily",sc:"提醒叮嚀",lv:2,note:"heads-up = 事先提醒"},
+{id:"d243",en:"Make sure you double-check the address.",zh:"記得再三確認地址。",cat:"daily",sc:"提醒叮嚀",lv:1},
+{id:"d244",en:"Remember to charge your phone tonight.",zh:"記得今晚把手機充好電。",cat:"daily",sc:"提醒叮嚀",lv:1},
+{id:"d245",en:"Don't forget we're leaving early tomorrow.",zh:"別忘了我們明天要早點出發。",cat:"daily",sc:"提醒叮嚀",lv:1},
+{id:"d246",en:"Just a reminder that the deadline is Friday.",zh:"提醒一下，截止日期是週五。",cat:"daily",sc:"提醒叮嚀",lv:1},
+{id:"d247",en:"Keep in mind the store closes at nine.",zh:"記得那間店九點就關門了。",cat:"daily",sc:"提醒叮嚀",lv:2},
+{id:"d248",en:"Don't leave your valuables unattended.",zh:"貴重物品不要沒人看著就放著。",cat:"daily",sc:"提醒叮嚀",lv:3,note:"unattended = 無人看管的"},
+{id:"d249",en:"Set a reminder so you don't miss it.",zh:"設個提醒，才不會錯過。",cat:"daily",sc:"提醒叮嚀",lv:1},
+{id:"d250",en:"I'll shoot you a text to remind you later.",zh:"我等一下傳訊息提醒你。",cat:"daily",sc:"提醒叮嚀",lv:2,note:"shoot someone a text = 傳個訊息給某人"},
+
+/* ============ 旅遊英文 · 租車自駕 ============ */
+{id:"t111",en:"I'd like to rent a car for five days.",zh:"我想租一台車，租五天。",cat:"travel",sc:"租車自駕",lv:1},
+{id:"t112",en:"Does this come with insurance included?",zh:"這個有含保險嗎？",cat:"travel",sc:"租車自駕",lv:2},
+{id:"t113",en:"Is there an extra fee for a second driver?",zh:"多一位駕駛要額外收費嗎？",cat:"travel",sc:"租車自駕",lv:2},
+{id:"t114",en:"Where do I return the car when I'm done?",zh:"用完之後要在哪裡還車？",cat:"travel",sc:"租車自駕",lv:1},
+{id:"t115",en:"The GPS isn't working properly.",zh:"導航系統好像有問題。",cat:"travel",sc:"租車自駕",lv:1},
+{id:"t116",en:"Do you have an automatic instead of manual?",zh:"有自排車而不是手排車嗎？",cat:"travel",sc:"租車自駕",lv:2},
+{id:"t117",en:"Is parking included in the hotel rate?",zh:"停車費有包含在住宿費裡嗎？",cat:"travel",sc:"租車自駕",lv:2},
+{id:"t118",en:"We need to fill up the tank before returning it.",zh:"還車前我們要先把油加滿。",cat:"travel",sc:"租車自駕",lv:2,note:"fill up the tank = 加滿油"},
+{id:"t119",en:"Which lane should I be in for the highway?",zh:"上高速公路我該走哪一線道？",cat:"travel",sc:"租車自駕",lv:2},
+{id:"t120",en:"I got a flat tire on the way here.",zh:"我來的路上爆胎了。",cat:"travel",sc:"租車自駕",lv:2,note:"flat tire = 爆胎、沒氣的輪胎"},
+
+/* ============ 旅遊英文 · 導覽解說 ============ */
+{id:"t121",en:"What time does the tour meet up?",zh:"導覽幾點集合？",cat:"travel",sc:"導覽解說",lv:1},
+{id:"t122",en:"Is there an English-speaking guide available?",zh:"有會說英文的導遊嗎？",cat:"travel",sc:"導覽解說",lv:1},
+{id:"t123",en:"How long does the whole tour take?",zh:"整趟導覽大概要多久？",cat:"travel",sc:"導覽解說",lv:1},
+{id:"t124",en:"Can we take a break halfway through?",zh:"中途可以休息一下嗎？",cat:"travel",sc:"導覽解說",lv:1},
+{id:"t125",en:"Is this tour wheelchair accessible?",zh:"這個導覽輪椅可以參加嗎？",cat:"travel",sc:"導覽解說",lv:2,note:"wheelchair accessible = 無障礙、輪椅可通行"},
+{id:"t126",en:"Are entrance fees included in the tour price?",zh:"門票費用有包含在導覽費用裡嗎？",cat:"travel",sc:"導覽解說",lv:2},
+{id:"t127",en:"Could you tell us a bit more about this building?",zh:"可以多跟我們介紹一下這棟建築嗎？",cat:"travel",sc:"導覽解說",lv:1},
+{id:"t128",en:"Is photography allowed inside?",zh:"裡面可以拍照嗎？",cat:"travel",sc:"導覽解說",lv:1},
+{id:"t129",en:"We got separated from the group.",zh:"我們跟團體走散了。",cat:"travel",sc:"導覽解說",lv:2,note:"get separated = 走散"},
+{id:"t130",en:"Where should we meet if we get lost?",zh:"如果走丟了要在哪裡集合？",cat:"travel",sc:"導覽解說",lv:2},
+
+/* ============ 旅遊英文 · 網路訂房 ============ */
+{id:"t131",en:"I booked this place through an app.",zh:"我是透過一個 App 訂這個地方的。",cat:"travel",sc:"網路訂房",lv:1},
+{id:"t132",en:"The listing said breakfast was included.",zh:"訂房頁面上寫早餐有包含。",cat:"travel",sc:"網路訂房",lv:2,note:"listing = 刊登的物件資訊"},
+{id:"t133",en:"Can I cancel this reservation for free?",zh:"這筆訂單可以免費取消嗎？",cat:"travel",sc:"網路訂房",lv:1},
+{id:"t134",en:"My booking confirmation never arrived.",zh:"我的訂房確認信一直沒收到。",cat:"travel",sc:"網路訂房",lv:2},
+{id:"t135",en:"Is early check-in possible?",zh:"可以提早入住嗎？",cat:"travel",sc:"網路訂房",lv:1},
+{id:"t136",en:"The photos didn't quite match the actual room.",zh:"照片跟實際的房間不太一樣。",cat:"travel",sc:"網路訂房",lv:2},
+{id:"t137",en:"I need to change the dates on my reservation.",zh:"我需要更改我訂房的日期。",cat:"travel",sc:"網路訂房",lv:1},
+{id:"t138",en:"Is there a cancellation fee after this date?",zh:"這個日期之後取消要收取消費嗎？",cat:"travel",sc:"網路訂房",lv:2},
+{id:"t139",en:"Could you refund the deposit I paid?",zh:"可以退還我付的訂金嗎？",cat:"travel",sc:"網路訂房",lv:2,note:"deposit = 訂金、押金"},
+{id:"t140",en:"I left a review after checking out.",zh:"退房之後我留了一則評價。",cat:"travel",sc:"網路訂房",lv:1},
+
+/* ============ 旅遊英文 · 拍照攝影 ============ */
+{id:"t141",en:"Would you mind taking a photo of us?",zh:"你介意幫我們拍張照嗎？",cat:"travel",sc:"拍照攝影",lv:1},
+{id:"t142",en:"Could you take a few more, just in case?",zh:"可以多拍幾張以防萬一嗎？",cat:"travel",sc:"拍照攝影",lv:1},
+{id:"t143",en:"Is this the best spot for a photo?",zh:"這裡是拍照最好的角度嗎？",cat:"travel",sc:"拍照攝影",lv:1},
+{id:"t144",en:"Can you get the whole building in the shot?",zh:"可以把整棟建築都拍進去嗎？",cat:"travel",sc:"拍照攝影",lv:2},
+{id:"t145",en:"Sorry, flash photography isn't allowed here.",zh:"不好意思，這裡不能開閃光燈拍照。",cat:"travel",sc:"拍照攝影",lv:2},
+{id:"t146",en:"Let's take a selfie in front of this view.",zh:"我們在這個景色前面自拍一張吧。",cat:"travel",sc:"拍照攝影",lv:1},
+{id:"t147",en:"Do you want me to take a video instead?",zh:"要不要我改拍影片就好？",cat:"travel",sc:"拍照攝影",lv:1},
+{id:"t148",en:"There's a great sunset spot just up ahead.",zh:"再往前一點有個看夕陽的絕佳地點。",cat:"travel",sc:"拍照攝影",lv:2},
+{id:"t149",en:"Watch out, you're blocking the shot.",zh:"小心，你擋到鏡頭了。",cat:"travel",sc:"拍照攝影",lv:2},
+{id:"t150",en:"Can I get a copy of that photo you took?",zh:"可以給我一份你拍的那張照片嗎？",cat:"travel",sc:"拍照攝影",lv:1},
+
+/* ============ 旅遊英文 · 排隊等候 ============ */
+{id:"t151",en:"Is this the end of the line?",zh:"這裡是隊伍的最後面嗎？",cat:"travel",sc:"排隊等候",lv:1},
+{id:"t152",en:"How long is the wait right now?",zh:"現在要等多久？",cat:"travel",sc:"排隊等候",lv:1},
+{id:"t153",en:"Sorry, were you already in line?",zh:"不好意思，你已經在排隊了嗎？",cat:"travel",sc:"排隊等候",lv:1},
+{id:"t154",en:"We've been waiting here for almost an hour.",zh:"我們在這裡已經等了快一個小時。",cat:"travel",sc:"排隊等候",lv:1},
+{id:"t155",en:"Is there a fast pass we can buy?",zh:"有沒有可以購買的快速通關？",cat:"travel",sc:"排隊等候",lv:2},
+{id:"t156",en:"Can I save your spot while you use the restroom?",zh:"你上廁所的時候我幫你顧位子？",cat:"travel",sc:"排隊等候",lv:2},
+{id:"t157",en:"Excuse me, I think you cut in line.",zh:"不好意思，我覺得你插隊了。",cat:"travel",sc:"排隊等候",lv:2,note:"cut in line = 插隊"},
+{id:"t158",en:"The line barely moved in the last ten minutes.",zh:"最近十分鐘隊伍幾乎沒動。",cat:"travel",sc:"排隊等候",lv:2},
+{id:"t159",en:"Which line is for foreign passport holders?",zh:"哪一條隊伍是給外國護照持有人的？",cat:"travel",sc:"排隊等候",lv:2},
+{id:"t160",en:"Thanks for letting me go ahead of you.",zh:"謝謝你讓我先過去。",cat:"travel",sc:"排隊等候",lv:1},
+
+/* ============ 旅遊英文 · 遺失物品 ============ */
+{id:"t161",en:"I think I left my wallet on the train.",zh:"我想我把錢包忘在火車上了。",cat:"travel",sc:"遺失物品",lv:1},
+{id:"t162",en:"Is there a lost and found around here?",zh:"這附近有失物招領處嗎？",cat:"travel",sc:"遺失物品",lv:1,note:"lost and found = 失物招領"},
+{id:"t163",en:"I can't find my passport anywhere.",zh:"我到處都找不到我的護照。",cat:"travel",sc:"遺失物品",lv:1},
+{id:"t164",en:"Someone must have picked it up by mistake.",zh:"一定是有人不小心拿錯了。",cat:"travel",sc:"遺失物品",lv:2},
+{id:"t165",en:"I need to report a lost item.",zh:"我需要通報一件遺失物品。",cat:"travel",sc:"遺失物品",lv:2},
+{id:"t166",en:"Could you check if anyone turned in a phone?",zh:"可以幫我查一下有沒有人送交一支手機嗎？",cat:"travel",sc:"遺失物品",lv:2,note:"turn in = 交出、繳交"},
+{id:"t167",en:"I retraced my steps but still couldn't find it.",zh:"我原路走回去找了還是沒找到。",cat:"travel",sc:"遺失物品",lv:3,note:"retrace one's steps = 循原路返回"},
+{id:"t168",en:"Can you describe what the bag looked like?",zh:"你能形容一下那個包包長什麼樣子嗎？",cat:"travel",sc:"遺失物品",lv:2},
+{id:"t169",en:"I'll leave my contact info in case it turns up.",zh:"我留一下聯絡方式，以防它出現。",cat:"travel",sc:"遺失物品",lv:2,note:"turn up = （遺失物）出現、找到"},
+{id:"t170",en:"Thankfully, someone handed it in to the front desk.",zh:"還好有人把它交給了櫃檯。",cat:"travel",sc:"遺失物品",lv:2},
+
+/* ============ 單字強化 · 學習 ============ */
+{id:"v081",en:"I need to brush up on my grammar.",zh:"我需要複習一下我的文法。",cat:"vocab",sc:"學習",lv:2,note:"brush up on = 複習、加強"},
+{id:"v082",en:"It took me a while to grasp the concept.",zh:"我花了一段時間才理解這個概念。",cat:"vocab",sc:"學習",lv:2,note:"grasp = 理解、掌握"},
+{id:"v083",en:"I tend to procrastinate when studying.",zh:"我念書的時候容易拖延。",cat:"vocab",sc:"學習",lv:3,note:"procrastinate = 拖延"},
+{id:"v084",en:"She's incredibly diligent about reviewing notes.",zh:"她複習筆記非常勤奮認真。",cat:"vocab",sc:"學習",lv:3,note:"diligent = 勤奮的"},
+{id:"v085",en:"I'm trying to memorize these vocabulary words.",zh:"我在努力背這些單字。",cat:"vocab",sc:"學習",lv:1},
+{id:"v086",en:"He's a quick learner.",zh:"他學東西很快。",cat:"vocab",sc:"學習",lv:1},
+{id:"v087",en:"I got completely overwhelmed by the material.",zh:"我完全被這些教材淹沒了。",cat:"vocab",sc:"學習",lv:3,note:"overwhelmed = 應接不暇、被淹沒的感覺"},
+{id:"v088",en:"Practice makes perfect.",zh:"熟能生巧。",cat:"vocab",sc:"學習",lv:1},
+{id:"v089",en:"I lost my concentration halfway through the lecture.",zh:"我在課上到一半的時候分心了。",cat:"vocab",sc:"學習",lv:2,note:"lose concentration = 分心"},
+{id:"v090",en:"Repetition really helps things stick.",zh:"重複練習真的能幫助記憶。",cat:"vocab",sc:"學習",lv:3,note:"stick = （知識）留在腦中、記住"},
+
+/* ============ 單字強化 · 健康 ============ */
+{id:"v091",en:"I've been feeling a bit under the weather.",zh:"我最近覺得有點不太舒服。",cat:"vocab",sc:"健康",lv:2,note:"under the weather = 身體不太舒服"},
+{id:"v092",en:"I need to cut back on caffeine.",zh:"我需要減少咖啡因的攝取。",cat:"vocab",sc:"健康",lv:2,note:"cut back on = 減少"},
+{id:"v093",en:"He's really disciplined about his diet.",zh:"他對自己的飲食非常自律。",cat:"vocab",sc:"健康",lv:3,note:"disciplined = 自律的"},
+{id:"v094",en:"I've been sleeping pretty poorly lately.",zh:"我最近睡得不太好。",cat:"vocab",sc:"健康",lv:1},
+{id:"v095",en:"She's finally recovering from her cold.",zh:"她感冒終於快好了。",cat:"vocab",sc:"健康",lv:1},
+{id:"v096",en:"I should really start exercising regularly.",zh:"我真的該開始規律運動了。",cat:"vocab",sc:"健康",lv:1},
+{id:"v097",en:"My back's been acting up again.",zh:"我的背又開始不舒服了。",cat:"vocab",sc:"健康",lv:2,note:"act up = （身體部位）又出毛病"},
+{id:"v098",en:"He pushed through the pain and finished the race.",zh:"他忍痛撐過去完成了比賽。",cat:"vocab",sc:"健康",lv:3,note:"push through = 忍耐、堅持撐過"},
+{id:"v099",en:"I'm trying to eat more balanced meals.",zh:"我在努力吃得更均衡一點。",cat:"vocab",sc:"健康",lv:2},
+{id:"v100",en:"Getting enough sleep makes a huge difference.",zh:"睡眠充足會帶來很大的差別。",cat:"vocab",sc:"健康",lv:1},
+
+/* ============ 單字強化 · 科技 ============ */
+{id:"v101",en:"My phone's been lagging a lot recently.",zh:"我的手機最近很常卡頓。",cat:"vocab",sc:"科技",lv:2,note:"lag = 延遲、卡頓"},
+{id:"v102",en:"I need to back up my files before it's too late.",zh:"我得趁還來得及先備份檔案。",cat:"vocab",sc:"科技",lv:2},
+{id:"v103",en:"This app keeps crashing on me.",zh:"這個 App 一直閃退。",cat:"vocab",sc:"科技",lv:2,note:"crash = （軟體）當機、閃退"},
+{id:"v104",en:"I finally figured out how to reset the router.",zh:"我終於搞懂怎麼重設路由器了。",cat:"vocab",sc:"科技",lv:2},
+{id:"v105",en:"He's pretty tech-savvy for his age.",zh:"以他的年紀來說算蠻懂科技的。",cat:"vocab",sc:"科技",lv:3,note:"tech-savvy = 精通科技產品"},
+{id:"v106",en:"I accidentally deleted an important file.",zh:"我不小心刪掉了一個重要檔案。",cat:"vocab",sc:"科技",lv:1},
+{id:"v107",en:"The update fixed most of the bugs.",zh:"這次更新修掉了大部分的問題。",cat:"vocab",sc:"科技",lv:2},
+{id:"v108",en:"My laptop battery drains really fast.",zh:"我的筆電電池消耗得很快。",cat:"vocab",sc:"科技",lv:2,note:"drain = （電池）消耗殆盡"},
+{id:"v109",en:"I can't get this printer to connect.",zh:"我這台印表機一直連不上。",cat:"vocab",sc:"科技",lv:1},
+{id:"v110",en:"Streaming is buffering nonstop tonight.",zh:"今晚串流影片一直在緩衝。",cat:"vocab",sc:"科技",lv:2,note:"buffer = （影片）緩衝、卡住"}
+
+]);
