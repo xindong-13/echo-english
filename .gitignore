@@ -1,0 +1,18 @@
+# ===== 絕對不能上傳的個人資料（GitHub repo 是公開的）=====
+# 備份碼裡面有 API 金鑰、Supabase 金鑰、同步代碼
+備份.txt
+備份*.txt
+backup*.txt
+*backup*.json
+echo-backup-*.json
+backups/
+*.key
+*.token
+secrets.*
+
+# ===== 工具產生的資料夾 =====
+.deploy/
+.netlify/
+node_modules/
+.DS_Store
+Thumbs.db

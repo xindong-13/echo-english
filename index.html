@@ -1,0 +1,2408 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<title>Echo 英語｜句型・口說練習</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#0e1116">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Echo 英語">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{
+  --bg:#0e1116; --bg2:#151a22; --card:#1a212b; --line:#28313d;
+  --tx:#e8edf4; --tx2:#93a1b3; --tx3:#61708a;
+  --ac:#4ade80; --ac2:#22c55e; --warn:#fbbf24; --bad:#f87171; --blue:#60a5fa; --purple:#a78bfa;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --safe-t: env(safe-area-inset-top, 0px);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;height:100%}
+body{
+  background:var(--bg); color:var(--tx);
+  font:16px/1.55 -apple-system,BlinkMacSystemFont,"PingFang TC","Noto Sans TC","Segoe UI",sans-serif;
+  overscroll-behavior-y:none;
+}
+button{font-family:inherit;font-size:inherit;color:inherit;border:0;background:none;cursor:pointer}
+input,select,textarea{font-family:inherit;font-size:16px;color:var(--tx);background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%}
+input:focus,select,textarea:focus{outline:none;border-color:var(--ac)}
+select{-webkit-appearance:none;appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--tx2) 50%),linear-gradient(135deg,var(--tx2) 50%,transparent 50%);background-position:calc(100% - 16px) 50%,calc(100% - 11px) 50%;background-size:5px 5px,5px 5px;background-repeat:no-repeat}
+
+#app{max-width:640px;margin:0 auto;padding:calc(var(--safe-t) + 8px) 14px calc(var(--safe-b) + 84px)}
+.hd{display:flex;align-items:center;justify-content:space-between;padding:8px 2px 14px}
+.hd h1{font-size:19px;margin:0;letter-spacing:.5px}
+.hd h1 span{color:var(--ac)}
+.pill{font-size:12px;color:var(--tx2);background:var(--bg2);border:1px solid var(--line);border-radius:99px;padding:4px 10px}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:12px}
+.card h2{font-size:15px;margin:0 0 12px;color:var(--tx2);font-weight:600;letter-spacing:.4px}
+.row{display:flex;gap:8px;align-items:center}
+.row.wrap{flex-wrap:wrap}
+.grow{flex:1}
+.muted{color:var(--tx2);font-size:13px}
+.tiny{color:var(--tx3);font-size:12px;line-height:1.5}
+
+.btn{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:12px 16px;font-weight:600;text-align:center;display:inline-flex;align-items:center;justify-content:center;gap:7px;transition:transform .06s}
+.btn:active{transform:scale(.97)}
+.btn.pri{background:linear-gradient(160deg,var(--ac),var(--ac2));color:#08210f;border-color:transparent}
+.btn.blue{background:var(--blue);color:#08182b;border-color:transparent}
+.btn.purple{background:var(--purple);color:#1b1030;border-color:transparent}
+.btn.gho{background:transparent}
+.btn.sm{padding:8px 12px;font-size:13px;border-radius:10px}
+.btn.full{width:100%}
+.btn[disabled]{opacity:.4}
+
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center}
+.stats div b{display:block;font-size:21px;color:var(--ac);line-height:1.3}
+.stats div span{font-size:11px;color:var(--tx3)}
+
+.chips{display:flex;gap:7px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--bg2);border-radius:99px;padding:7px 13px;font-size:13px;color:var(--tx2)}
+.chip.on{background:var(--ac);color:#08210f;border-color:transparent;font-weight:600}
+
+/* 練習卡 */
+.stage{min-height:210px;display:flex;flex-direction:column;justify-content:center;text-align:center;padding:6px 2px}
+.zh{font-size:19px;line-height:1.6;color:var(--tx)}
+.en{font-size:22px;line-height:1.5;font-weight:600;letter-spacing:.2px;word-spacing:1px}
+.en.hidden{filter:blur(9px);opacity:.5}
+.scene-tag{font-size:11px;color:var(--tx3);letter-spacing:1px;margin-bottom:10px}
+.note{margin-top:12px;font-size:13px;color:var(--warn);background:rgba(251,191,36,.09);border-radius:9px;padding:8px 11px;text-align:left}
+
+.diff{font-size:20px;line-height:1.85;word-spacing:2px;text-align:center}
+
+/* 填空 */
+.clz{font-size:20px;line-height:2.3;text-align:left;font-weight:500}
+input.blk{display:inline-block;width:auto;border:0;border-bottom:2px solid var(--ac);border-radius:0;background:rgba(74,222,128,.07);
+  padding:1px 6px;text-align:center;font-size:19px;font-weight:600;color:var(--ac);vertical-align:baseline;text-transform:none}
+input.blk:focus{outline:none;background:rgba(74,222,128,.16)}
+input.blk.ok{color:var(--ac);border-color:var(--ac)}
+input.blk.no{color:var(--bad);border-color:var(--bad);background:rgba(248,113,113,.1);text-decoration:line-through}
+.fix{color:var(--ac);font-weight:700}
+.w-ok{color:var(--ac)}
+.w-near{color:var(--warn);border-bottom:2px dotted var(--warn)}
+.w-miss{color:var(--bad);text-decoration:line-through;opacity:.8}
+.w-extra{color:var(--tx3);font-size:.85em;font-style:italic}
+
+.score{display:flex;align-items:baseline;gap:8px;justify-content:center;margin:4px 0 12px}
+.score b{font-size:40px;line-height:1}
+.score span{font-size:13px;color:var(--tx2)}
+
+.mic{width:78px;height:78px;border-radius:50%;background:linear-gradient(160deg,var(--ac),var(--ac2));display:flex;align-items:center;justify-content:center;margin:0 auto;box-shadow:0 6px 22px rgba(74,222,128,.28)}
+.mic svg{width:32px;height:32px;fill:#08210f}
+.mic.rec{background:linear-gradient(160deg,#fb7185,#e11d48);box-shadow:0 0 0 0 rgba(244,63,94,.6);animation:pulse 1.3s infinite}
+.mic.rec svg{fill:#fff}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(244,63,94,.55)}70%{box-shadow:0 0 0 20px rgba(244,63,94,0)}100%{box-shadow:0 0 0 0 rgba(244,63,94,0)}}
+
+.prog{height:4px;background:var(--bg2);border-radius:99px;overflow:hidden;margin-bottom:14px}
+.prog i{display:block;height:100%;background:var(--ac);transition:width .3s}
+
+/* 每日目標列 */
+.goalrow{display:flex;align-items:center;gap:10px;width:100%;padding:7px 8px;border-radius:9px;text-align:left}
+.goalrow.now{background:var(--bg2)}
+.goalrow .gn{width:62px;flex-shrink:0;font-size:14px;color:var(--tx)}
+.goalrow .gbar{flex:1;height:6px;background:var(--bg2);border-radius:99px;overflow:hidden}
+.goalrow.now .gbar{background:#0e1116}
+.goalrow .gbar i{display:block;height:100%;border-radius:99px;transition:width .3s}
+.goalrow .gv{width:52px;flex-shrink:0;text-align:right;font-size:13px;font-variant-numeric:tabular-nums}
+
+/* 列表 */
+.item{border-bottom:1px solid var(--line);padding:11px 0;display:flex;gap:10px;align-items:flex-start}
+.item:last-child{border-bottom:0}
+.item .txt{flex:1;min-width:0}
+.item .txt b{display:block;font-weight:600;font-size:15px}
+.item .txt small{color:var(--tx2);font-size:13px}
+.mast{width:34px;height:6px;border-radius:99px;background:var(--bg2);overflow:hidden;flex-shrink:0;margin-top:8px}
+.mast i{display:block;height:100%;background:var(--ac)}
+
+/* 對話 */
+.msgs{display:flex;flex-direction:column;gap:10px;max-height:52vh;overflow-y:auto;padding-right:2px}
+.msg{max-width:86%;padding:10px 13px;border-radius:15px;font-size:15px;line-height:1.55;white-space:pre-wrap;word-break:break-word}
+.msg.ai{background:var(--bg2);border:1px solid var(--line);align-self:flex-start;border-bottom-left-radius:5px}
+.msg.me{background:var(--ac);color:#08210f;align-self:flex-end;border-bottom-right-radius:5px;font-weight:500}
+.msg .fb{display:block;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);font-size:13px;color:var(--warn)}
+
+/* 底部導覽 */
+nav{position:fixed;left:0;right:0;bottom:0;background:rgba(14,17,22,.93);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-top:1px solid var(--line);padding-bottom:var(--safe-b);z-index:50}
+nav .in{max-width:640px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
+nav button{padding:9px 0 8px;font-size:11px;color:var(--tx3);display:flex;flex-direction:column;align-items:center;gap:3px}
+nav button svg{width:22px;height:22px;fill:currentColor}
+nav button.on{color:var(--ac)}
+
+.view{display:none}
+.view.on{display:block}
+
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--safe-b) + 82px);background:#000d;border:1px solid var(--line);color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;z-index:100;opacity:0;transition:opacity .25s;pointer-events:none;max-width:86%;text-align:center}
+.toast.on{opacity:1}
+
+.sheet{position:fixed;inset:0;background:#000b;z-index:90;display:none;align-items:flex-end}
+.sheet.on{display:flex}
+.sheet .box{background:var(--card);border-radius:20px 20px 0 0;width:100%;max-width:640px;margin:0 auto;padding:18px 16px calc(var(--safe-b) + 18px);max-height:88vh;overflow-y:auto;border-top:1px solid var(--line)}
+label.f{display:block;font-size:13px;color:var(--tx2);margin:14px 0 6px}
+label.f:first-child{margin-top:0}
+hr{border:0;border-top:1px solid var(--line);margin:18px 0}
+/* 更新提示條 */
+#updBar{position:fixed;left:0;right:0;bottom:calc(var(--safe-b) + 62px);z-index:80;
+  max-width:640px;margin:0 auto;display:flex;align-items:center;gap:10px;
+  background:var(--blue);color:#08182b;padding:11px 14px;border-radius:12px;font-size:14px;font-weight:600;
+  box-shadow:0 6px 20px rgba(0,0,0,.4);animation:up .3s}
+#updBar span{flex:1}
+#updBar button{background:#08182b;color:#fff;border-radius:9px;padding:7px 13px;font-size:13px;font-weight:600}
+@keyframes up{from{transform:translateY(20px);opacity:0}to{transform:none;opacity:1}}
+
+/* 同步狀態 */
+.syncdot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:1px}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid #0003;border-top-color:currentColor;border-radius:50%;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<div id="app">
+  <div class="hd">
+    <h1>Echo <span>英語</span></h1>
+    <div class="pill" id="streakPill">🔥 0 天</div>
+  </div>
+
+  <!-- ============ 練習 ============ -->
+  <section class="view on" id="v-practice">
+    <div id="pHome">
+      <div class="card">
+        <h2>今日目標 <span id="goalTag" style="float:right;font-weight:400"></span></h2>
+        <div id="goalBox" style="margin-bottom:16px"></div>
+        <div class="stats">
+          <div><b id="sDue">0</b><span>待複習</span></div>
+          <div><b id="sToday">0</b><span>今日練習</span></div>
+          <div><b id="sMastered">0</b><span>已掌握</span></div>
+          <div><b id="sAvg">–</b><span>平均分</span></div>
+        </div>
+      </div>
+
+      <div class="card" id="wrongCard" style="display:none">
+        <h2>錯題本 <span id="wrongN" style="color:var(--bad)"></span></h2>
+        <p class="tiny" style="margin:0 0 12px">說錯或填錯的句子會自動收進來。連續兩次拿到 85 分以上就會自動移除。</p>
+        <div class="row">
+          <button class="btn pri grow" id="btnWrongRun">複習錯題</button>
+          <button class="btn grow" id="btnWrongList">看清單</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>練習模式</h2>
+        <div class="chips" id="modeChips"></div>
+        <p class="tiny" id="modeDesc" style="margin:11px 0 0"></p>
+      </div>
+
+      <div class="card">
+        <h2>範圍</h2>
+        <div class="chips" id="catChips" style="margin-bottom:9px"></div>
+        <div class="chips" id="sceneChips" style="margin-bottom:9px"></div>
+        <div class="chips" id="lvChips"></div>
+      </div>
+
+      <button class="btn pri full" id="btnStart" style="padding:15px;font-size:17px">開始練習</button>
+      <p class="tiny" style="text-align:center;margin-top:10px" id="poolInfo"></p>
+    </div>
+
+    <div id="pRun" style="display:none">
+      <div class="row" style="margin-bottom:10px">
+        <button class="btn sm gho" id="btnPrev" style="color:var(--tx2)">← 上一題</button>
+        <div class="grow"></div>
+        <button class="btn sm gho" id="btnQuit" style="color:var(--tx3)">結束</button>
+      </div>
+      <div class="prog"><i id="progBar" style="width:0%"></i></div>
+      <div class="card">
+        <div class="scene-tag" id="cScene"></div>
+        <div class="stage" id="cStage"></div>
+      </div>
+      <div id="cControls"></div>
+    </div>
+  </section>
+
+  <!-- ============ 題庫 ============ -->
+  <section class="view" id="v-library">
+    <div class="card">
+      <input id="libSearch" placeholder="搜尋中英文…" autocomplete="off">
+      <div class="chips" id="libChips" style="margin-top:11px"></div>
+    </div>
+    <div class="card">
+      <h2><span id="libCount">0</span> 句</h2>
+      <div id="libList"></div>
+      <button class="btn gho full sm" id="libMore" style="margin-top:12px;display:none">載入更多</button>
+    </div>
+    <button class="btn full" id="btnAddOwn">＋ 自己新增句子</button>
+    <button class="btn purple full" id="btnGen" style="margin-top:10px">✨ 用 AI 產生新題庫</button>
+  </section>
+
+  <!-- ============ AI 導師 ============ -->
+  <section class="view" id="v-tutor">
+    <div class="card" id="tutorPick">
+      <div class="chips" id="tutorChips"></div>
+    </div>
+
+    <div class="card" id="freeSetup" style="display:none">
+      <h2>自由聊天</h2>
+      <p class="tiny" style="margin:0 0 12px">想聊什麼都可以，AI 會像朋友一樣跟你聊。聊天中不打斷你，<b style="color:var(--ac)">結束時再一次給你完整檢討</b>：文法錯誤清單、你反覆犯的壞習慣，還能把錯句存進錯題本。</p>
+      <label class="f">想聊的話題（留空的話 AI 會自己開話題）</label>
+      <input id="fcTopic" placeholder="例如：我上週去日本玩、我的工作、最近看的電影" autocomplete="off">
+      <label class="f">難度</label>
+      <select id="fcLevel">
+        <option value="beginner">初級 — AI 用簡單的字慢慢聊</option>
+        <option value="intermediate" selected>中級 — 一般日常聊天</option>
+        <option value="advanced">進階 — 較快、較道地，會用片語</option>
+      </select>
+      <button class="btn pri full" id="btnFcStart" style="margin-top:16px">開始聊天</button>
+      <p class="tiny" style="margin-top:12px">需要在「我的 → AI 設定」設定 AI 金鑰，Gemini 免費。</p>
+    </div>
+
+    <div class="card" id="tutorSetup">
+      <h2>情境對話</h2>
+      <p class="tiny" style="margin:0 0 12px">選一個情境，AI 會扮演對方跟你一來一往聊。你可以直接用麥克風說，AI 除了回話，還會<b style="color:var(--ac)">當場</b>告訴你剛剛那句怎麼講更自然。</p>
+      <label class="f">情境</label>
+      <select id="rpScene">
+        <option value="a café where I'm ordering a drink and a pastry">咖啡廳點餐</option>
+        <option value="a hotel front desk where I'm checking in">飯店入住櫃檯</option>
+        <option value="an airport immigration counter">機場入境審查</option>
+        <option value="a clothing store where I'm looking for the right size">服飾店挑衣服</option>
+        <option value="asking a local for directions to a train station">在街上問路</option>
+        <option value="a taxi ride to a hotel">搭計程車</option>
+        <option value="a restaurant where I'm making a reservation by phone">電話訂位</option>
+        <option value="a casual chat with a new coworker at lunch">跟新同事吃飯閒聊</option>
+        <option value="reporting a lost passport at a police station">報案護照遺失</option>
+        <option value="a doctor's office describing my symptoms">看醫生描述症狀</option>
+      </select>
+      <label class="f">難度</label>
+      <select id="rpLevel">
+        <option value="beginner">初級 — 短句、常用字</option>
+        <option value="intermediate" selected>中級 — 自然語速的日常英文</option>
+        <option value="advanced">進階 — 較長、較道地的表達</option>
+      </select>
+      <button class="btn pri full" id="btnRpStart" style="margin-top:16px">開始對話</button>
+      <p class="tiny" style="margin-top:12px">需要在「我的 → AI 設定」設定 AI 金鑰，Gemini 免費。</p>
+    </div>
+
+    <div id="tutorChat" style="display:none">
+      <div class="card">
+        <div class="msgs" id="rpMsgs"></div>
+      </div>
+      <div class="card">
+        <div class="mic" id="rpMic"><svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z"/><path d="M19 11a1 1 0 1 0-2 0 5 5 0 0 1-10 0 1 1 0 1 0-2 0 7 7 0 0 0 6 6.92V21H8a1 1 0 1 0 0 2h8a1 1 0 1 0 0-2h-3v-3.08A7 7 0 0 0 19 11z"/></svg></div>
+        <p class="muted" id="rpHint" style="text-align:center;margin:11px 0 0">點麥克風開始說</p>
+        <div class="row" style="margin-top:12px">
+          <input id="rpText" placeholder="或直接打字…" autocomplete="off">
+          <button class="btn sm" id="rpSend">送出</button>
+        </div>
+      </div>
+      <button class="btn purple full" id="btnRpEnd">結束並產生檢討報告</button>
+      <button class="btn gho full sm" id="btnRpAbort" style="margin-top:10px;color:var(--tx3)">直接離開，不要報告</button>
+    </div>
+  </section>
+
+  <!-- ============ 我的 ============ -->
+  <section class="view" id="v-me">
+    <div class="card">
+      <h2>學習統計</h2>
+      <div class="stats">
+        <div><b id="mTotal">0</b><span>總練習次數</span></div>
+        <div><b id="mSeen">0</b><span>接觸過的句子</span></div>
+        <div><b id="mMast">0</b><span>已掌握</span></div>
+        <div><b id="mWrong" style="color:var(--bad)">0</b><span>錯題本</span></div>
+      </div>
+      <div id="heat" style="margin-top:16px"></div>
+    </div>
+
+    <div class="card" id="repCard" style="display:none">
+      <h2>過去的聊天檢討</h2>
+      <div id="repList"></div>
+    </div>
+
+    <div class="card">
+      <h2>AI 設定</h2>
+      <label class="f">用哪一家的 AI</label>
+      <div class="chips" id="provChips" style="margin-bottom:4px"></div>
+
+      <div id="provHelp" class="tiny" style="margin-top:12px"></div>
+
+      <label class="f" id="keyLabel">API 金鑰（只存在這支手機裡）</label>
+      <input id="setKey" type="password" placeholder="" autocomplete="off">
+      <label class="f">模型</label>
+      <select id="setModel"></select>
+      <button class="btn sm full" id="btnTestKey" style="margin-top:12px">測試連線</button>
+      <button class="btn sm full" id="btnProbe" style="margin-top:8px">🔍 偵測哪些模型我能用</button>
+
+      <label class="f">中翻英自動 AI 判斷</label>
+      <select id="setAuto">
+        <option value="1">開啟 — 分數不高時自動判斷我是不是換了說法</option>
+        <option value="0">關閉 — 我自己按「🤔 我這樣說也對嗎？」</option>
+      </select>
+      <p class="tiny" style="margin-top:8px">開啟後，中翻英答案跟參考答案不同但意思正確時，AI 會改判為正確並把你的說法存起來，之後離線也算對。</p>
+      <p class="tiny" style="margin-top:10px">沒有金鑰也能用：發音比對評分、SRS 複習、錯題本、350 句題庫、五種練習模式都不需要 AI。兩家的金鑰可以各自存著，隨時切換。</p>
+    </div>
+
+    <div class="card">
+      <h2>朗讀與辨識</h2>
+      <label class="f">口音</label>
+      <select id="setAccent">
+        <option value="en-US">美式 en-US</option>
+        <option value="en-GB">英式 en-GB</option>
+        <option value="en-AU">澳洲 en-AU</option>
+      </select>
+      <label class="f">朗讀語速 <span id="rateVal" class="muted"></span></label>
+      <input type="range" id="setRate" min="0.5" max="1.2" step="0.05" style="padding:0;background:none;border:0">
+      <label class="f">每回合題數</label>
+      <select id="setLen"><option>5</option><option selected>10</option><option>15</option><option>20</option></select>
+      <label class="f">每日目標（每個模式分開算）</label>
+      <div id="goalSet"></div>
+      <p class="tiny" id="goalSum" style="margin-top:8px"></p>
+      <button class="btn sm full" id="btnRemind" style="margin-top:12px">⏰ 怎麼設每天提醒</button>
+    </div>
+
+    <div class="card">
+      <h2>雲端同步 <span id="syncState" style="float:right;font-weight:400"></span></h2>
+      <p class="tiny" style="margin:0 0 12px">手機和電腦共用同一份進度。兩邊各自練的都會保留、不會互相覆蓋，AI 金鑰不會上傳。</p>
+      <div class="row" style="margin-bottom:10px">
+        <button class="btn pri grow" id="btnSyncNow">🔄 立即同步</button>
+        <button class="btn grow" id="btnSyncSet">設定</button>
+      </div>
+      <label class="f">自動同步</label>
+      <select id="setAuto2">
+        <option value="1">開啟 — 開 App 時拉取、練完自動上傳</option>
+        <option value="0">關閉 — 我自己按「立即同步」</option>
+      </select>
+    </div>
+
+    <div class="card">
+      <h2>備份與資料</h2>
+      <div id="backupWarn"></div>
+      <p class="tiny" id="backupWhen" style="margin:0 0 12px"></p>
+
+      <button class="btn pri full" id="btnCopyCode">📋 複製備份碼</button>
+      <button class="btn full" id="btnPasteCode" style="margin-top:10px">📥 貼上備份碼還原</button>
+      <div class="row wrap" style="margin-top:10px">
+        <button class="btn sm grow" id="btnExport">存成檔案</button>
+        <button class="btn sm grow" id="btnImport">讀取檔案</button>
+      </div>
+      <button class="btn gho full sm" id="btnReset" style="margin-top:12px;color:var(--bad)">清除全部資料</button>
+      <input type="file" id="fileIn" accept=".json" style="display:none">
+      <p class="tiny" id="verLine" style="margin-top:14px;text-align:center;color:var(--tx3)"></p>
+      <p class="tiny" style="margin-top:12px">資料只存在這支手機，不會上傳。App 同時寫進兩個地方（localStorage 與 IndexedDB），其中一個被清掉還能自動救回，但<b>兩個一起被清就救不回來了</b>，所以每週複製一次備份碼貼到備忘錄最保險。換手機時貼上那串碼就能完整還原。</p>
+    </div>
+  </section>
+</div>
+
+<nav><div class="in">
+  <button data-v="practice" class="on"><svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z"/><path d="M19 11a1 1 0 1 0-2 0 5 5 0 0 1-10 0 1 1 0 1 0-2 0 7 7 0 0 0 6 6.92V21H8a1 1 0 1 0 0 2h8a1 1 0 1 0 0-2h-3v-3.08A7 7 0 0 0 19 11z"/></svg>練習</button>
+  <button data-v="library"><svg viewBox="0 0 24 24"><path d="M4 4h7v16H4zM13 4h7v16h-7z" opacity=".45"/><path d="M4 3h7a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm9 0h7a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1h-7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/></svg>題庫</button>
+  <button data-v="tutor"><svg viewBox="0 0 24 24"><path d="M12 3c5 0 9 3.4 9 7.5S17 18 12 18a10 10 0 0 1-2.4-.3L5 20l1.2-3.3A8 8 0 0 1 3 10.5C3 6.4 7 3 12 3z"/></svg>導師</button>
+  <button data-v="me"><svg viewBox="0 0 24 24"><path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9zm0 2c-4.4 0-8 2.4-8 5.3V21h16v-1.7c0-2.9-3.6-5.3-8-5.3z"/></svg>我的</button>
+</div></nav>
+
+<div class="toast" id="toast"></div>
+<div class="sheet" id="sheet"><div class="box" id="sheetBox"></div></div>
+
+<script src="bank.js"></script>
+<script src="bank2.js"></script>
+<script>
+'use strict';
+/* ======================================================================
+   Echo 英語 — 主程式
+   ====================================================================== */
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const KEY='echo.v1';
+const APPVER='echo-v11';   // 更新腳本會自動同步這個數字，用來確認手機跑的是哪一版
+
+/* ---------- 儲存 ---------- */
+const DEFAULT={
+  prog:{},          // id -> {ease,int,due,reps,lapses,best,seen}
+  custom:[],        // 自訂 / AI 生成 / 聊天錯句
+  wrong:{},         // 錯題本 id -> {t,streak,why}
+  wrongGone:{},     // 已移除的錯題 id -> 移除時間（同步時用來判斷刪除）
+  ts:0, lastBackup:0,
+  sync:{url:'',key:'',code:'',last:0,auto:true},   // 雲端同步設定（不上傳）
+  alts:{},          // 同義說法 id -> [句子]  （AI 認可過就記起來，之後離線也算對）
+  log:{},           // 'YYYY-MM-DD' -> 練習次數
+  mlog:{},          // 'YYYY-MM-DD' -> {模式: 次數}
+  scores:[],        // 最近 100 次分數
+  reports:[],       // 聊天總結報告
+  streak:0, lastDay:'',
+  set:{
+    provider:'gemini',
+    keys:{gemini:'',anthropic:''},
+    models:{gemini:'gemini-3.6-flash',anthropic:'claude-sonnet-5'},
+    accent:'en-US',rate:0.9,len:10,autoJudge:true,
+    goals:{translate:5,listen:5,cloze:10,build:5}      // 每個模式各自的每日目標
+  }
+};
+let S=load();
+function load(){
+  try{
+    const raw=localStorage.getItem(KEY);
+    if(!raw) return JSON.parse(JSON.stringify(DEFAULT));
+    return migrate(JSON.parse(raw));
+  }catch(e){ return JSON.parse(JSON.stringify(DEFAULT)); }
+}
+/* 舊版單一供應商的設定自動搬到新格式 */
+function migrate(o){
+  const base=JSON.parse(JSON.stringify(DEFAULT));
+  const S2=Object.assign(base,o);
+  const s=Object.assign({},base.set,o.set||{});
+  s.keys=Object.assign({gemini:'',anthropic:''},s.keys||{});
+  s.models=Object.assign({gemini:'gemini-3.6-flash',anthropic:'claude-sonnet-5'},s.models||{});
+  // 舊版存的 Gemini 模型已被 Google 停用給新帳號，自動換掉
+  if(/^gemini-2\.5-(flash|pro)$/.test(s.models.gemini||'')) s.models.gemini='gemini-3.6-flash';
+  S2.sync=Object.assign({url:'',key:'',code:'',last:0,auto:true},o.sync||{});
+  s.goals=Object.assign({translate:5,listen:5,cloze:10,build:5},s.goals||{});
+  delete s.goals.shadow;                                  // 跟讀模式已移除
+  delete s.goal;
+  if(o.set&&o.set.key){ s.keys.anthropic=s.keys.anthropic||o.set.key; s.provider=s.provider||'anthropic'; }
+  if(o.set&&o.set.model&&/^claude/.test(o.set.model)) s.models.anthropic=o.set.model;
+  if(s.provider!=='gemini'&&s.provider!=='anthropic') s.provider = (s.keys.anthropic&&!s.keys.gemini) ? 'anthropic' : 'gemini';
+  delete s.key; delete s.model;
+  S2.set=s;
+  return S2;
+}
+/* ---------- 儲存：localStorage ＋ IndexedDB 雙寫 ----------
+   Safari 有機會清掉網站的本機資料，兩邊同時寫可以互相救援。 */
+const IDB_DB='echoDB', IDB_ST='kv';
+function idb(){
+  return new Promise((res,rej)=>{
+    if(!window.indexedDB) return rej(new Error('no-idb'));
+    const q=indexedDB.open(IDB_DB,1);
+    q.onupgradeneeded=()=>{ try{ q.result.createObjectStore(IDB_ST); }catch(e){} };
+    q.onsuccess=()=>res(q.result);
+    q.onerror=()=>rej(q.error);
+  });
+}
+async function idbSet(k,v){
+  const db=await idb();
+  return new Promise((res,rej)=>{
+    const tx=db.transaction(IDB_ST,'readwrite');
+    tx.objectStore(IDB_ST).put(v,k);
+    tx.oncomplete=()=>res(); tx.onerror=()=>rej(tx.error);
+  });
+}
+async function idbGet(k){
+  const db=await idb();
+  return new Promise((res,rej)=>{
+    const tx=db.transaction(IDB_ST,'readonly');
+    const r=tx.objectStore(IDB_ST).get(k);
+    r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error);
+  });
+}
+
+let saveT=null;
+function save(){
+  S.ts=Date.now();
+  clearTimeout(saveT);
+  saveT=setTimeout(()=>{
+    const raw=JSON.stringify(S);
+    try{ localStorage.setItem(KEY,raw); }catch(e){ toast('本機儲存空間已滿，請先匯出備份'); }
+    idbSet(KEY,raw).catch(()=>{});
+  },120);
+}
+
+/* 開機時若 localStorage 被清掉，從 IndexedDB 救回來 */
+async function bootRestore(){
+  try{
+    const localRaw=localStorage.getItem(KEY);
+    const backup=await idbGet(KEY);
+    if(!backup){ if(localRaw) idbSet(KEY,localRaw).catch(()=>{}); return; }
+    const b=JSON.parse(backup);
+    const bRicher=Object.keys(b.prog||{}).length > Object.keys(S.prog||{}).length;
+    if(!localRaw || bRicher){
+      S=migrate(b);
+      try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){}
+      renderHome(); if($('#v-me').classList.contains('on')) renderMe();
+      toast('已從備援儲存救回你的進度 ✅',3500);
+    }
+  }catch(e){}
+}
+
+/* ======================================================================
+   雲端同步（Supabase）
+   ---------------------------------------------------------------------
+   雙向合併，不是覆蓋：兩台裝置各自練過的都會保留。
+   API 金鑰永遠不上傳，只留在各自的裝置上。
+   ====================================================================== */
+const syncOn = ()=> !!(S.sync&&S.sync.url&&S.sync.key&&S.sync.code);
+let syncing=false, lastSyncMsg='';
+
+function syncPayload(){
+  const c=JSON.parse(JSON.stringify(S));
+  delete c.sync;                       // 同步設定本身不上傳
+  if(c.set) c.set.keys={gemini:'',anthropic:''};   // 金鑰不上雲
+  return c;
+}
+const maxObj=(a,b,pick)=>{
+  const out=Object.assign({},a||{});
+  Object.entries(b||{}).forEach(([k,v])=>{ out[k]= (k in out) ? pick(out[k],v) : v; });
+  return out;
+};
+/* 兩份資料合併成一份，取「練得比較多」的那邊 */
+function mergeState(local,remote){
+  if(!remote||typeof remote!=='object') return local;
+  const L=local, R=remote, m=JSON.parse(JSON.stringify(L));
+
+  m.prog = maxObj(L.prog,R.prog,(a,b)=>{
+    if((b.seen||0)!==(a.seen||0)) return (b.seen||0)>(a.seen||0)?b:a;
+    if((b.due||0)!==(a.due||0))   return (b.due||0)>(a.due||0)?b:a;
+    return (b.best||0)>(a.best||0)?b:a;
+  });
+  m.log  = maxObj(L.log ,R.log ,(a,b)=>Math.max(a,b));
+  m.mlog = maxObj(L.mlog,R.mlog,(a,b)=>maxObj(a,b,(x,y)=>Math.max(x,y)));
+
+  // 錯題本：兩邊聯集，再用「移除紀錄（墓碑）」決定哪些該拿掉。
+  // 不能只看「對面沒有就是刪掉了」——對面可能只是還沒收到這筆新錯題。
+  m.wrongGone = maxObj(L.wrongGone,R.wrongGone,(a,b)=>Math.max(a,b));
+  m.wrong = maxObj(L.wrong,R.wrong,(a,b)=>((b.t||0)>(a.t||0)?b:a));
+  Object.keys(m.wrong).forEach(k=>{
+    if((m.wrongGone[k]||0) >= (m.wrong[k].t||0)) delete m.wrong[k];   // 移除發生在這筆之後
+  });
+
+  // 同義說法：兩邊聯集
+  m.alts={};
+  new Set([...Object.keys(L.alts||{}),...Object.keys(R.alts||{})]).forEach(id=>{
+    const seen=new Set(), arr=[];
+    [...((L.alts||{})[id]||[]),...((R.alts||{})[id]||[])].forEach(s=>{
+      const k=norm(s); if(k&&!seen.has(k)){ seen.add(k); arr.push(s); }
+    });
+    if(arr.length) m.alts[id]=arr;
+  });
+
+  // 自訂／AI 生成的句子：依 id 聯集並去掉英文重複的。
+  // 先照 id 排序再挑，兩台裝置才會留下同一筆、不會來回換。
+  const byId={}, seenEn=new Set();
+  [...(L.custom||[]),...(R.custom||[])]
+    .filter(it=>it&&it.id)
+    .sort((a,b)=>String(a.id).localeCompare(String(b.id)))
+    .forEach(it=>{
+      if(byId[it.id]) return;
+      const k=norm(it.en); if(!k||seenEn.has(k)) return;
+      seenEn.add(k); byId[it.id]=it;
+    });
+  m.custom=Object.values(byId);
+
+  // 聊天報告：依時間去重
+  const rep={}; [...(L.reports||[]),...(R.reports||[])].forEach(r=>{ if(r&&r.at) rep[r.at]=r; });
+  m.reports=Object.values(rep).sort((a,b)=>b.at-a.at).slice(0,20);
+
+  m.scores=[...(R.scores||[]),...(L.scores||[])].slice(-100);
+  m.lastBackup=Math.max(L.lastBackup||0,R.lastBackup||0);
+
+  // 連續天數以紀錄較新的那台為準
+  if((R.lastDay||'')>(L.lastDay||'')){ m.streak=R.streak; m.lastDay=R.lastDay; }
+
+  // 設定：本機優先（口音、語速是裝置習慣），但目標值取較新的
+  if((R.ts||0)>(L.ts||0) && R.set&&R.set.goals) m.set.goals=Object.assign({},m.set.goals,R.set.goals);
+  m.set.keys=L.set.keys;               // 金鑰永遠用本機的
+  m.ts=Math.max(L.ts||0,R.ts||0);
+  return m;
+}
+
+async function sbFetch(path,opt={}){
+  const url=String(S.sync.url).replace(/\/+$/,'')+'/rest/v1/'+path;
+  const r=await fetch(url,Object.assign({},opt,{headers:Object.assign({
+    'apikey':S.sync.key,
+    'authorization':'Bearer '+S.sync.key,
+    'content-type':'application/json'
+  },opt.headers||{})}));
+  // 寫入成功時 Supabase 回的是空白 body，不能無條件呼叫 r.json()
+  const body=await r.text();
+  let data=null;
+  if(body){ try{ data=JSON.parse(body); }catch(e){ data=null; } }
+
+  if(!r.ok){
+    const d=(data&&(data.message||data.error_description||data.error||data.hint))||body||'';
+    throw new Error(
+      r.status===401||r.status===403 ? '金鑰不對或權限不足。請確認用的是 Publishable／anon public 金鑰，而且那段 SQL 有跑過' :
+      r.status===404 ? '找不到資料表。請到 Supabase 的 SQL Editor 把那段建表 SQL 跑一次' :
+      r.status===400&&/column|schema|relation/i.test(d) ? '資料表結構不對，請重新跑一次建表 SQL' :
+      (/^\s*</.test(String(d)) ? ('伺服器暫時沒回應 HTTP '+r.status+'，稍後再試')
+        : (String(d).slice(0,120)||('HTTP '+r.status))));
+  }
+  return data;
+}
+
+async function syncNow(quiet){
+  if(!syncOn()){ if(!quiet) toast('還沒設定雲端同步'); return false; }
+  if(syncing) return false;
+  syncing=true; renderSync('同步中…');
+  try{
+    const code=encodeURIComponent(S.sync.code);
+    const rows=await sbFetch(`echo_sync?code=eq.${code}&select=data`);
+    const remote=(rows&&rows[0]&&rows[0].data)||null;
+    if(remote){
+      const merged=mergeState(JSON.parse(JSON.stringify(S)),remote);
+      merged.sync=S.sync;
+      S=merged;
+    }
+    S.ts=Date.now();
+    await sbFetch('echo_sync',{
+      method:'POST',
+      headers:{'prefer':'resolution=merge-duplicates,return=minimal'},
+      body:JSON.stringify([{code:S.sync.code,data:syncPayload(),updated_at:new Date().toISOString()}])
+    });
+    S.sync.last=Date.now(); save();
+    renderHome(); if($('#v-me').classList.contains('on')) renderMe();
+    renderSync('');
+    if(!quiet) toast('同步完成 ✅');
+    return true;
+  }catch(e){
+    renderSync('失敗：'+e.message);
+    if(!quiet) toast('同步失敗：'+e.message,4500);
+    return false;
+  }finally{ syncing=false; }
+}
+function renderSync(msg){
+  lastSyncMsg=msg||'';
+  const el=$('#syncState'); if(!el) return;
+  if(!syncOn()){ el.innerHTML='<span class="tiny">尚未啟用，這台裝置的資料只存在本機。</span>'; return; }
+  const t=S.sync.last?new Date(S.sync.last).toLocaleString('zh-TW',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'}):'還沒同步過';
+  const bad=/失敗/.test(lastSyncMsg);
+  el.innerHTML=`<span class="tiny">
+    <span class="syncdot" style="background:${bad?'var(--bad)':syncing?'var(--warn)':'var(--ac)'}"></span>
+    ${lastSyncMsg?esc(lastSyncMsg):'上次同步：'+t}</span>`;
+}
+
+/* ---------- 備份碼（純文字，可貼到備忘錄／LINE） ---------- */
+function b64enc(str){
+  const u=new TextEncoder().encode(str);
+  let s=''; u.forEach(b=>s+=String.fromCharCode(b));
+  return btoa(s);
+}
+function b64dec(b){
+  const s=atob(String(b).replace(/\s+/g,''));
+  return new TextDecoder().decode(Uint8Array.from(s,c=>c.charCodeAt(0)));
+}
+const daysSince=t=>t?Math.floor((Date.now()-t)/864e5):999;
+function backupDue(){
+  const practiced=Object.values(S.log||{}).reduce((a,b)=>a+b,0);
+  return practiced>=20 && daysSince(S.lastBackup)>=7;
+}
+
+/* ---------- 小工具 ---------- */
+const today=()=>new Date().toLocaleDateString('sv');   // YYYY-MM-DD 本地時間
+let toastT=null;
+function toast(m,ms=2000){ const t=$('#toast'); t.textContent=m; t.classList.add('on'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('on'),ms); }
+function esc(s){ return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function shuffle(a){ for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+
+/* ---------- 全部句子 ---------- */
+function allItems(){ return (window.BANK||[]).concat(S.custom||[]); }
+
+/* ======================================================================
+   文字比對評分
+   ====================================================================== */
+const NUMW={zero:'0',one:'1',two:'2',three:'3',four:'4',five:'5',six:'6',seven:'7',eight:'8',nine:'9',ten:'10'};
+function norm(s){
+  return String(s||'').toLowerCase()
+    .replace(/[’‘]/g,"'")
+    .replace(/[-–—]/g,' ')                 // ten-minute → ten minute
+    .replace(/[^a-z0-9'\s]/g,' ')
+    .replace(/\s+/g,' ').trim();
+}
+/* 每個字保留兩份：n 用來比對（正規化），r 用來顯示（原本的大小寫與撇號） */
+function tokens(s){
+  const out=[];
+  String(s||'').replace(/[’‘]/g,"'").split(/[\s\-–—]+/).forEach(w=>{
+    const r=w.replace(/[^A-Za-z0-9']/g,'').replace(/^'+|'+$/g,'');
+    if(!r) return;
+    let n=r.toLowerCase().replace(/'/g,'');   // 撇號不列入比對，辨識常漏掉
+    n=NUMW[n]||n;
+    if(n) out.push({n,r});
+  });
+  return out;
+}
+function lev(a,b){
+  if(a===b) return 0;
+  const m=a.length,n=b.length; if(!m) return n; if(!n) return m;
+  let prev=Array.from({length:n+1},(_,i)=>i), cur=new Array(n+1);
+  for(let i=1;i<=m;i++){
+    cur[0]=i;
+    for(let j=1;j<=n;j++) cur[j]=Math.min(prev[j]+1,cur[j-1]+1,prev[j-1]+(a[i-1]===b[j-1]?0:1));
+    [prev,cur]=[cur,prev];
+  }
+  return prev[n];
+}
+const near=(a,b)=>{ if(a===b) return true; const L=Math.max(a.length,b.length); return L>=4 && lev(a,b)<=(L>=8?2:1); };
+
+/* 以 LCS 對齊，產生逐字比對結果 */
+function compare(target,said){
+  const A=tokens(target), B=tokens(said);
+  const m=A.length,n=B.length;
+  const dp=Array.from({length:m+1},()=>new Int32Array(n+1));
+  for(let i=m-1;i>=0;i--) for(let j=n-1;j>=0;j--)
+    dp[i][j]= (A[i].n===B[j].n) ? dp[i+1][j+1]+1 : Math.max(dp[i+1][j],dp[i][j+1]);
+  const out=[]; let i=0,j=0, exact=0, close=0;
+  while(i<m&&j<n){
+    if(A[i].n===B[j].n){ out.push({w:A[i].r,s:'ok'}); exact++; i++;j++; }
+    else if(dp[i+1][j]>=dp[i][j+1]){
+      // A[i] 沒被說到 — 檢查是不是說了近似字
+      if(j<n && near(A[i].n,B[j].n) && dp[i+1][j+1]>=dp[i+1][j]-1){ out.push({w:A[i].r,s:'near',heard:B[j].r}); close++; i++;j++; }
+      else { out.push({w:A[i].r,s:'miss'}); i++; }
+    } else { out.push({w:B[j].r,s:'extra'}); j++; }
+  }
+  while(i<m){ out.push({w:A[i++].r,s:'miss'}); }
+  while(j<n){ out.push({w:B[j++].r,s:'extra'}); }
+  const extras=out.filter(o=>o.s==='extra').length;
+  let acc = m? (exact + close*0.6) / m * 100 : 0;
+  acc -= Math.min(15, extras*3);                       // 多講的字小幅扣分
+  return {parts:out, acc:Math.max(0,Math.round(acc)), exact, close, total:m};
+}
+/* 一句可以有多種說法：標準答案 + 你存過的同義說法，取分數最高的那個當基準 */
+function altsOf(item){ return [item.en, ...(item.alt||[]), ...((S.alts&&S.alts[item.id])||[])]; }
+function bestCompare(item,said){
+  let best=null, target=item.en;
+  altsOf(item).forEach(t=>{
+    const r=compare(t,said);
+    if(!best||r.acc>best.acc){ best=r; target=t; }
+  });
+  return {r:best,target,isAlt:target!==item.en};
+}
+function addAlt(id,sentence){
+  const s=String(sentence||'').trim();
+  if(!s) return false;
+  S.alts[id]=S.alts[id]||[];
+  if(S.alts[id].some(x=>norm(x)===norm(s))) return false;
+  S.alts[id].push(s); save(); return true;
+}
+
+function renderDiff(parts){
+  return parts.map(p=>{
+    if(p.s==='ok')   return `<span class="w-ok">${esc(p.w)}</span>`;
+    if(p.s==='near') return `<span class="w-near" title="你說的是 ${esc(p.heard||'')}">${esc(p.w)}</span>`;
+    if(p.s==='miss') return `<span class="w-miss">${esc(p.w)}</span>`;
+    return `<span class="w-extra">${esc(p.w)}</span>`;
+  }).join(' ');
+}
+
+/* ======================================================================
+   間隔複習 SRS（SM-2 簡化版）
+   ====================================================================== */
+function pget(id){ return S.prog[id] || (S.prog[id]={ease:2.5,int:0,due:0,reps:0,lapses:0,best:0,seen:0}); }
+function grade(id,acc){
+  const p=pget(id);
+  p.seen++; p.best=Math.max(p.best,acc);
+  const q = acc>=95?5 : acc>=85?4 : acc>=70?3 : acc>=50?2 : 1;
+  if(q<3){ p.reps=0; p.int=0; p.lapses++; p.ease=Math.max(1.3,p.ease-0.2); }
+  else{
+    p.ease=Math.max(1.3, p.ease + (0.1-(5-q)*(0.08+(5-q)*0.02)));
+    p.reps++;
+    p.int = p.reps===1?1 : p.reps===2?3 : Math.round(p.int*p.ease);
+    if(p.int>180) p.int=180;
+  }
+  p.due = Date.now() + p.int*864e5;
+  return p;
+}
+const mastery=id=>{ const p=S.prog[id]; if(!p||!p.reps) return 0; return Math.min(100,Math.round(Math.min(p.int,30)/30*70 + p.best*0.3)); };
+
+/* ---------- 錯題本 ---------- */
+function wrongAdd(id,why){
+  const w=S.wrong[id]||{t:0,streak:0,why:''};
+  w.t=Date.now(); w.streak=0; if(why) w.why=why;
+  S.wrong[id]=w; delete S.wrongGone[id]; save();
+}
+function wrongDel(id){ delete S.wrong[id]; S.wrongGone[id]=Date.now(); save(); }
+function wrongHit(id,acc){
+  if(!S.wrong[id]) return;
+  if(acc>=85){
+    S.wrong[id].streak=(S.wrong[id].streak||0)+1;
+    if(S.wrong[id].streak>=2){ wrongDel(id); toast('這句從錯題本移除了 ✅'); }
+  } else S.wrong[id].streak=0;
+  save();
+}
+const wrongIds=()=>Object.keys(S.wrong).filter(id=>allItems().some(i=>i.id===id));
+
+/* ---------- 填空：決定要挖掉哪些字 ---------- */
+const STOP=new Set(('a an the i you he she it we they me him her us them my your his its our their this that these those is am are was were be been being do does did done have has had having will would can could shall should may might must to of in on at for with from by as and or but if so not no yes there here what when where who how why which than then too very just about into over under up down out off again more most some any all each other one two get got go going went come came take took make made say said see saw know knew think thought want wanted need needed like liked let put keep kept give gave tell told ask asked work worked look looked feel felt seem back way thing things time day today tomorrow yesterday now well also still only even much many lot bit little sure okay ok please thanks thank sorry yeah').split(' '));
+function blanksFor(item){
+  if(item.bl&&item.bl.length) return item.bl.slice(0,2);
+  const words=item.en.split(/\s+/).map(w=>w.replace(/[^A-Za-z'-]/g,'')).filter(Boolean);
+  const cand=words.filter(w=>w.length>=4&&!STOP.has(w.toLowerCase()));
+  if(!cand.length) return [words.reduce((a,b)=>b.length>a.length?b:a,words[0]||'')];
+  // 長度優先；一樣長時取靠句尾的（通常是真正的關鍵字）
+  cand.sort((a,b)=> (b.length-a.length) || (words.lastIndexOf(b)-words.lastIndexOf(a)) );
+  const n = words.length>=9 ? 2 : 1;
+  return [...new Set(cand.slice(0,n))];
+}
+/* 把句子切成 [{t:'text'}|{b:'word'}] */
+function clozeParts(item){
+  const bl=blanksFor(item).map(w=>w.toLowerCase());
+  const used=new Set();
+  const out=[];
+  item.en.split(/(\s+)/).forEach(tok=>{
+    const core=tok.replace(/[^A-Za-z'-]/g,'');
+    const key=core.toLowerCase();
+    if(core && bl.includes(key) && !used.has(key)){
+      used.add(key);
+      const i=tok.indexOf(core);
+      if(i>0) out.push({t:tok.slice(0,i)});
+      out.push({b:core});
+      if(i+core.length<tok.length) out.push({t:tok.slice(i+core.length)});
+    } else out.push({t:tok});
+  });
+  return out;
+}
+const isDue=id=>{ const p=S.prog[id]; return !p || !p.due || p.due<=Date.now(); };
+const isMastered=id=>{ const p=S.prog[id]; return !!p && p.int>=21 && p.best>=85; };
+
+/* ======================================================================
+   語音：朗讀 + 辨識
+   ====================================================================== */
+let voices=[];
+function loadVoices(){ voices=speechSynthesis.getVoices()||[]; }
+loadVoices(); if('speechSynthesis' in window) speechSynthesis.onvoiceschanged=loadVoices;
+
+function speak(text,{rate,onEnd}={}){
+  if(!('speechSynthesis' in window)) { toast('這台裝置不支援朗讀'); onEnd&&onEnd(); return; }
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang=S.set.accent; u.rate=rate??S.set.rate; u.pitch=1;
+  if(!voices.length) loadVoices();
+  const v=voices.find(v=>v.lang===S.set.accent&&!/eloquence|compact/i.test(v.name))||voices.find(v=>v.lang&&v.lang.startsWith('en'));
+  if(v) u.voice=v;
+  if(onEnd) u.onend=onEnd;
+  setTimeout(()=>speechSynthesis.speak(u),40);
+}
+
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+const srSupported = !!SR;
+let rec=null, recActive=false;
+function listen({onPartial,onDone,onError}){
+  if(!srSupported){ onError&&onError('nosupport'); return null; }
+  try{ if(rec) rec.abort(); }catch(e){}
+  rec=new SR();
+  rec.lang=S.set.accent; rec.continuous=false; rec.interimResults=true; rec.maxAlternatives=3;
+  let finalTx='', best='';
+  rec.onresult=e=>{
+    let interim='';
+    for(let i=e.resultIndex;i<e.results.length;i++){
+      const r=e.results[i];
+      if(r.isFinal){ finalTx+=r[0].transcript+' '; best=finalTx; }
+      else interim+=r[0].transcript;
+    }
+    onPartial&&onPartial((finalTx+interim).trim());
+  };
+  rec.onerror=e=>{ recActive=false; onError&&onError(e.error||'error'); };
+  rec.onend=()=>{ recActive=false; onDone&&onDone(best.trim()); };
+  try{ rec.start(); recActive=true; }catch(e){ onError&&onError('start'); }
+  return rec;
+}
+function stopListen(){ try{ rec&&rec.stop(); }catch(e){} }
+
+/* ======================================================================
+   AI：同時支援 Anthropic 與 Google Gemini
+   ====================================================================== */
+const PROVIDERS={
+  gemini:{
+    name:'Google Gemini（免費）',
+    models:[
+      ['gemini-3.6-flash','Gemini 3.6 Flash — 推薦，速度與品質均衡'],
+      ['gemini-3.7-flash','Gemini 3.7 Flash — 最新'],
+      ['gemini-3.5-flash-lite','Gemini 3.5 Flash-Lite — 最快，免費額度最多'],
+      ['gemini-3.1-flash-lite','Gemini 3.1 Flash-Lite — 備用'],
+      ['gemini-2.5-flash-lite','Gemini 2.5 Flash-Lite — 舊版備用']
+    ],
+    def:'gemini-3.6-flash'
+  },
+  anthropic:{
+    name:'Anthropic Claude（付費）',
+    models:[
+      ['claude-sonnet-5','Claude Sonnet 5 — 推薦，便宜快速'],
+      ['claude-opus-5','Claude Opus 5 — 最強，較貴'],
+      ['claude-haiku-4-5-20251001','Claude Haiku 4.5 — 最便宜']
+    ],
+    def:'claude-sonnet-5'
+  }
+};
+const curProv = ()=> PROVIDERS[S.set.provider] ? S.set.provider : 'gemini';
+const curKey  = ()=> ((S.set.keys&&S.set.keys[curProv()])||'').trim();
+const curModel= ()=> (S.set.models&&S.set.models[curProv()]) || PROVIDERS[curProv()].def;
+const hasKey  = ()=> !!curKey();
+
+async function ai(messages,opt={}){
+  return curProv()==='anthropic' ? callAnthropic(messages,opt) : callGemini(messages,opt);
+}
+/* 舊名稱保留，程式其他地方都還是叫 claude() */
+const claude = ai;
+
+async function callAnthropic(messages,{system,max=900,temperature=0.6}={}){
+  const k=curKey();
+  if(!k) throw new Error('NOKEY');
+  const r=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{
+      'content-type':'application/json',
+      'x-api-key':k,
+      'anthropic-version':'2023-06-01',
+      'anthropic-dangerous-direct-browser-access':'true'
+    },
+    body:JSON.stringify({model:curModel(),max_tokens:max,temperature,system,messages})
+  });
+  if(!r.ok){
+    let d=''; try{ d=(await r.json()).error?.message||''; }catch(e){}
+    throw new Error(r.status===401?'金鑰無效':r.status===429?'請求太頻繁，稍後再試':
+      /credit balance/i.test(d)?'帳戶餘額不足，請到 Console → Billing 儲值':(d||('HTTP '+r.status)));
+  }
+  const j=await r.json();
+  return (j.content||[]).filter(c=>c.type==='text').map(c=>c.text).join('').trim();
+}
+
+/* Google 在 2026 年把 generateContent 換成 Interactions API，舊模型對新帳號不再開放。
+   這裡走新的 /v1beta/interactions，並在模型不可用時自動往下一個備援模型退。 */
+const GEMINI_FALLBACK=['gemini-3.6-flash','gemini-3.7-flash','gemini-3.5-flash-lite','gemini-3.1-flash-lite','gemini-2.5-flash-lite'];
+const isModelGone=m=>/no longer available|not found|not_found|does not exist|unsupported model|不可用/i.test(m||'');
+
+async function geminiOnce(model,messages,{system,temperature=0.6}={}){
+  const k=curKey();
+  if(!k) throw new Error('NOKEY');
+
+  // 多輪對話攤平成一段文字，避免 Interactions API 的 step 簽章限制
+  let input;
+  if(messages.length===1) input=String(messages[0].content);
+  else{
+    input='以下是目前為止的對話紀錄，請接著扮演你的角色回覆最後一則訊息。\n\n'+
+      messages.map(m=>(m.role==='assistant'?'You: ':'User: ')+String(m.content)).join('\n')+
+      '\n\nYou:';
+  }
+  const body={
+    model,
+    input:[{type:'user_input',content:String(input)}],
+    store:false,                                   // 不讓 Google 存下對話
+    generation_config:{ temperature, thinking_level:'low' }
+  };
+  if(system) body.system_instruction=String(system);
+
+  const r=await fetch('https://generativelanguage.googleapis.com/v1beta/interactions',{
+    method:'POST',
+    headers:{'content-type':'application/json','x-goog-api-key':k},
+    body:JSON.stringify(body)
+  });
+  if(!r.ok){
+    let d=''; try{ d=(await r.json()).error?.message||''; }catch(e){}
+    const e=new Error(
+      (r.status===400&&/API key not valid|API_KEY_INVALID/i.test(d)) ? '金鑰無效，請確認是在 Google AI Studio 建立的' :
+      r.status===401 ? '金鑰無效' :
+      r.status===403 ? '金鑰沒有權限，請到 aistudio.google.com/apikey 重新建立一把' :
+      r.status===429 ? '今天的免費額度用完了（或太頻繁），明天會重置，也可以到設定換 Flash-Lite 模型' :
+      (d||('HTTP '+r.status)));
+    e.raw=d; e.status=r.status;
+    throw e;
+  }
+  const j=await r.json();
+  const steps=j.steps||[];
+  let txt='';
+  for(let i=steps.length-1;i>=0;i--){
+    const s=steps[i];
+    if(s.type==='model_output'||s.type==='message'||!s.type){
+      const c=s.content;
+      txt = typeof c==='string' ? c
+          : Array.isArray(c) ? c.filter(b=>!b.type||b.type==='text').map(b=>b.text||'').join('')
+          : (c&&c.text)||'';
+      if(txt.trim()) break;
+    }
+  }
+  if(!txt.trim()){
+    const blocked=j.status==='blocked'||(j.error&&j.error.message);
+    throw new Error(blocked?'內容被 Google 安全機制擋下，換個講法再試':'沒有回覆內容，請再試一次');
+  }
+  return txt.trim();
+}
+
+async function callGemini(messages,opt={}){
+  const first=curModel();
+  const chain=[first,...GEMINI_FALLBACK.filter(m=>m!==first)];
+  let lastErr=null;
+  for(let i=0;i<chain.length;i++){
+    try{
+      const out=await geminiOnce(chain[i],messages,opt);
+      if(i>0){                       // 換成能用的模型並記住
+        S.set.models.gemini=chain[i]; save();
+        toast('已自動切換到可用的模型：'+chain[i],3000);
+        if($('#setModel')&&$('#v-me').classList.contains('on')) renderProvider();
+      }
+      return out;
+    }catch(e){
+      lastErr=e;
+      if(e.message==='NOKEY') throw e;
+      if(!(isModelGone(e.raw)||isModelGone(e.message)||e.status===404)) throw e;  // 只有「模型不可用」才往下試
+    }
+  }
+  throw lastErr||new Error('沒有可用的 Gemini 模型');
+}
+/* 從 AI 回覆裡挖出 JSON。
+   要用括號配對掃描：舊版用「先找 [ 再找 {」，遇到 {"ok":true,"others":["a"]}
+   這種物件包陣列的回覆時，會誤抓成裡面的 ["a"]，導致欄位全部讀不到。 */
+function jsonFrom(t){
+  let s=String(t||'').trim()
+    .replace(/^```(?:json)?\s*/i,'')
+    .replace(/```\s*$/,'')
+    .trim();
+  const first=s.search(/[[{]/);
+  if(first<0) throw new Error('AI 沒有回傳 JSON');
+  const open=s[first], close=open==='['?']':'}';
+  let depth=0, inStr=false, esc=false, end=-1;
+  for(let i=first;i<s.length;i++){
+    const ch=s[i];
+    if(inStr){
+      if(esc) esc=false;
+      else if(ch==='\\') esc=true;
+      else if(ch==='"') inStr=false;
+      continue;
+    }
+    if(ch==='"') inStr=true;
+    else if(ch===open) depth++;
+    else if(ch===close){ depth--; if(depth===0){ end=i; break; } }
+  }
+  if(end<0) throw new Error('AI 回傳的 JSON 不完整');
+  return JSON.parse(s.slice(first,end+1));
+}
+
+/* ======================================================================
+   分頁切換
+   ====================================================================== */
+$$('nav button').forEach(b=>b.onclick=()=>{
+  $$('nav button').forEach(x=>x.classList.toggle('on',x===b));
+  $$('.view').forEach(v=>v.classList.toggle('on',v.id==='v-'+b.dataset.v));
+  window.scrollTo(0,0);
+  if(b.dataset.v==='library') renderLib();
+  if(b.dataset.v==='me') renderMe();
+  if(b.dataset.v==='practice') renderHome();
+});
+
+/* ======================================================================
+   練習
+   ====================================================================== */
+const MODES=[
+  {k:'translate',n:'中翻英',  d:'只看中文，直接用英文說出來。最接近真實開口的情境。'},
+  {k:'listen',   n:'聽力',    d:'只聽不看，把聽到的句子說出來。練耳朵。'},
+  {k:'cloze',    n:'填空',    d:'看中文，把英文句子挖掉的關鍵字打出來。專攻單字拼寫與用法。'},
+  {k:'build',    n:'重組句型',d:'把打散的單字排回正確語序，專攻句型結構，不用開口。'}
+];
+let F={mode:'translate',cat:'all',scene:'all',lv:'all'};
+let ROUND={wrongOnly:false};
+
+function scenesFor(cat){
+  const set=new Set(allItems().filter(i=>cat==='all'||i.cat===cat).map(i=>i.sc));
+  return [...set];
+}
+function pool(){
+  return allItems().filter(i=>
+    (F.cat==='all'||i.cat===F.cat) &&
+    (F.scene==='all'||i.sc===F.scene) &&
+    (F.lv==='all'||String(i.lv)===F.lv)
+  );
+}
+function renderHome(){
+  // 模式
+  $('#modeChips').innerHTML=MODES.map(m=>`<button class="chip ${F.mode===m.k?'on':''}" data-m="${m.k}">${m.n}</button>`).join('');
+  $$('#modeChips .chip').forEach(c=>c.onclick=()=>{F.mode=c.dataset.m;renderHome();});
+  $('#modeDesc').textContent=MODES.find(m=>m.k===F.mode).d;
+
+  // 分類
+  const cats=[['all','全部'],['daily','日常會話'],['travel','旅遊英文'],['vocab','單字強化']];
+  $('#catChips').innerHTML=cats.map(([k,n])=>`<button class="chip ${F.cat===k?'on':''}" data-c="${k}">${n}</button>`).join('');
+  $$('#catChips .chip').forEach(c=>c.onclick=()=>{F.cat=c.dataset.c;F.scene='all';renderHome();});
+
+  const scs=scenesFor(F.cat);
+  if(!scs.includes(F.scene)) F.scene='all';
+  $('#sceneChips').innerHTML=`<button class="chip ${F.scene==='all'?'on':''}" data-s="all">所有情境</button>`+
+    scs.map(s=>`<button class="chip ${F.scene===s?'on':''}" data-s="${esc(s)}">${esc(s)}</button>`).join('');
+  $$('#sceneChips .chip').forEach(c=>c.onclick=()=>{F.scene=c.dataset.s;renderHome();});
+
+  const lvs=[['all','不限'],['1','入門'],['2','中等'],['3','進階']];
+  $('#lvChips').innerHTML=lvs.map(([k,n])=>`<button class="chip ${F.lv===k?'on':''}" data-l="${k}">${n}</button>`).join('');
+  $$('#lvChips .chip').forEach(c=>c.onclick=()=>{F.lv=c.dataset.l;renderHome();});
+
+  // 統計
+  const p=pool();
+  const due=p.filter(i=>isDue(i.id)).length;
+  $('#sDue').textContent=due;
+  $('#sToday').textContent=S.log[today()]||0;
+  $('#sMastered').textContent=allItems().filter(i=>isMastered(i.id)).length;
+  const sc=S.scores.slice(-20);
+  $('#sAvg').textContent=sc.length?Math.round(sc.reduce((a,b)=>a+b,0)/sc.length):'–';
+  $('#poolInfo').textContent=`目前範圍 ${p.length} 句，其中 ${due} 句待複習`;
+  $('#btnStart').disabled=p.length===0;
+  $('#streakPill').textContent='🔥 '+(S.streak||0)+' 天';
+
+  renderGoals();
+
+  const wn=wrongIds().length;
+  $('#wrongCard').style.display = wn?'':'none';
+  $('#wrongN').textContent = wn?`（${wn}）`:'';
+}
+
+/* ---------- 每個模式各自的每日目標 ---------- */
+const goalOf =k=>+(S.set.goals&&S.set.goals[k])||0;
+const doneOf =k=>((S.mlog&&S.mlog[today()])||{})[k]||0;
+const goalTotal=()=>MODES.reduce((a,m)=>a+goalOf(m.k),0);
+const doneTotal=()=>MODES.reduce((a,m)=>a+Math.min(doneOf(m.k),goalOf(m.k)),0);
+
+function renderGoals(){
+  const rows=MODES.map(m=>{
+    const g=goalOf(m.k), d=doneOf(m.k), ok=d>=g;
+    const pct=g?Math.min(100,Math.round(d/g*100)):0;
+    return `<button class="goalrow ${F.mode===m.k?'now':''}" data-g="${m.k}">
+      <span class="gn">${m.n}</span>
+      <span class="gbar"><i style="width:${pct}%;background:${ok?'var(--ac)':'var(--blue)'}"></i></span>
+      <span class="gv" style="color:${ok?'var(--ac)':'var(--tx2)'}">${ok?'✅':d+' / '+g}</span>
+    </button>`;
+  }).join('');
+  const dt=doneTotal(), gt=goalTotal();
+  $('#goalBox').innerHTML=rows;
+  $('#goalTag').innerHTML = dt>=gt
+    ? `<span style="color:var(--ac);font-size:13px">🎉 今日全部達成</span>`
+    : `<span style="color:var(--tx3);font-size:13px">${dt} / ${gt} 題</span>`;
+  $$('#goalBox .goalrow').forEach(b=>b.onclick=()=>{ F.mode=b.dataset.g; renderHome(); window.scrollTo(0,0); });
+}
+
+/* 達標時給一次回饋，同一天同一項只跳一次 */
+const goalShown={};
+function checkGoal(){
+  const d=today(), k=F.mode;
+  if(doneOf(k)>=goalOf(k) && goalShown[d+k]!==1){
+    goalShown[d+k]=1;
+    const rest=MODES.filter(m=>doneOf(m.k)<goalOf(m.k));
+    toast(rest.length
+      ? `✅ ${MODES.find(m=>m.k===k).n}達成！還剩 ${rest.map(m=>m.n).join('、')}`
+      : `🎉 今天四項目標全部達成！連續 ${S.streak} 天`, 3800);
+  }
+}
+
+$('#btnWrongRun').onclick=()=>{
+  const ids=wrongIds();
+  if(!ids.length) return toast('錯題本是空的');
+  Q=shuffle(allItems().filter(i=>ids.includes(i.id))).slice(0,+S.set.len);
+  qi=0; ROUND.wrongOnly=true;
+  $('#pHome').style.display='none'; $('#pRun').style.display='';
+  step();
+};
+$('#btnWrongList').onclick=()=>{
+  const ids=wrongIds();
+  const items=allItems().filter(i=>ids.includes(i.id))
+    .sort((a,b)=>(S.wrong[b.id].t||0)-(S.wrong[a.id].t||0));
+  openSheet(`<h2 style="margin-top:0">錯題本 ${items.length} 句</h2>
+    <div id="wlist">${items.map(i=>`
+      <div class="item">
+        <button class="btn sm gho" style="padding:6px 8px" data-wp="${i.id}">🔊</button>
+        <div class="txt"><b>${esc(i.en)}</b><small>${esc(i.zh)}</small>
+        ${S.wrong[i.id].why?`<small style="color:var(--warn)">${esc(S.wrong[i.id].why)}</small>`:''}</div>
+        <button class="btn sm gho" style="padding:6px 8px;color:var(--tx3)" data-wd="${i.id}">✕</button>
+      </div>`).join('')||'<p class="muted">目前沒有錯題</p>'}</div>
+    <button class="btn full" id="wClose" style="margin-top:14px">關閉</button>`);
+  $('#wClose').onclick=closeSheet;
+  $$('#wlist [data-wp]').forEach(b=>b.onclick=()=>{ const it=allItems().find(x=>x.id===b.dataset.wp); if(it) speak(it.en); });
+  $$('#wlist [data-wd]').forEach(b=>b.onclick=()=>{ wrongDel(b.dataset.wd); closeSheet(); renderHome(); toast('已移除'); });
+};
+
+let Q=[],qi=0,cur=null;
+$('#btnStart').onclick=()=>{
+  const p=pool();
+  if(!p.length) return toast('這個範圍沒有句子');
+  const dueList=shuffle(p.filter(i=>isDue(i.id)));
+  const rest=shuffle(p.filter(i=>!isDue(i.id)));
+  Q=dueList.concat(rest).slice(0,+S.set.len);
+  qi=0; ROUND.wrongOnly=false;
+  $('#pHome').style.display='none'; $('#pRun').style.display='';
+  step();
+};
+$('#btnQuit').onclick=endRound;
+function endRound(){
+  stopListen(); if('speechSynthesis' in window) speechSynthesis.cancel();
+  $('#pRun').style.display='none'; $('#pHome').style.display='';
+  renderHome(); window.scrollTo(0,0);
+  if(syncOn()&&S.sync.auto) syncNow(true);      // 練完一回合就悄悄上傳
+}
+
+function bumpLog(){
+  const d=today();
+  S.log[d]=(S.log[d]||0)+1;
+  S.mlog[d]=S.mlog[d]||{};
+  S.mlog[d][F.mode]=(S.mlog[d][F.mode]||0)+1;
+  if(S.lastDay!==d){
+    const y=new Date(Date.now()-864e5).toLocaleDateString('sv');
+    S.streak = (S.lastDay===y)? (S.streak||0)+1 : 1;
+    S.lastDay=d;
+  }
+  save();
+  checkGoal();
+}
+
+function step(){
+  if(qi>=Q.length) return finishRound();
+  cur=Q[qi];
+  $('#progBar').style.width=(qi/Q.length*100)+'%';
+  $('#cScene').textContent=`${ROUND.wrongOnly?'錯題本　·　':''}${qi+1} / ${Q.length}　·　${cur.sc}　·　${'★'.repeat(cur.lv||1)}`;
+  $('#btnPrev').disabled = qi===0;
+  if(F.mode==='build') stepBuild();
+  else if(F.mode==='cloze') stepCloze();
+  else stepSpeak();
+}
+$('#btnPrev').onclick=()=>{
+  if(qi<=0) return;
+  stopListen(); if('speechSynthesis' in window) speechSynthesis.cancel();
+  qi--; step(); window.scrollTo(0,0);
+};
+function finishRound(){
+  $('#progBar').style.width='100%';
+  const n=Q.length;
+  $('#btnPrev').disabled=false;
+  $('#cScene').textContent='完成';
+  $('#cStage').innerHTML=`<div style="font-size:44px">🎉</div><div class="zh" style="margin-top:8px">這回合 ${n} 題完成</div><p class="muted">連續學習 ${S.streak} 天</p>`;
+  $('#cControls').innerHTML=`<button class="btn pri full" id="againBtn">再來一回合</button>`;
+  $('#againBtn').onclick=()=>{ endRound(); $('#btnStart').click(); };
+}
+
+/* ---- 口說類三種模式 ---- */
+function stepSpeak(){
+  const showEn = false;              // 中翻英與聽力都要先自己說，答案按「看答案」才出現
+  const showZh = F.mode!=='listen';
+  $('#cStage').innerHTML=
+    (showZh?`<div class="zh">${esc(cur.zh)}</div>`:'<div class="muted">聽聽看這句是什麼</div>')+
+    `<div class="en ${showEn?'':'hidden'}" id="enLine" style="margin-top:12px">${esc(cur.en)}</div>`;
+  $('#cControls').innerHTML=`
+    <div class="card">
+      <div class="mic" id="micBtn"><svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z"/><path d="M19 11a1 1 0 1 0-2 0 5 5 0 0 1-10 0 1 1 0 1 0-2 0 7 7 0 0 0 6 6.92V21H8a1 1 0 1 0 0 2h8a1 1 0 1 0 0-2h-3v-3.08A7 7 0 0 0 19 11z"/></svg></div>
+      <p class="muted" id="micHint" style="text-align:center;margin:11px 0 0">點一下開始說</p>
+      <div class="row wrap" style="margin-top:14px;justify-content:center">
+        <button class="btn sm" id="btnPlay">🔊 播放</button>
+        <button class="btn sm" id="btnSlow">🐢 慢速</button>
+        <button class="btn sm" id="btnPeek">👁 看答案</button>
+        <button class="btn sm" id="btnType">⌨️ 用打的</button>
+      </div>
+    </div>
+    <button class="btn gho full sm" id="btnSkip" style="color:var(--tx3)">跳過這題</button>`;
+
+  $('#btnPlay').onclick=()=>speak(cur.en);
+  $('#btnSlow').onclick=()=>speak(cur.en,{rate:0.62});
+  $('#btnPeek').onclick=()=>{ $('#enLine').classList.remove('hidden'); };
+  $('#btnType').onclick=()=>typeAnswer();
+  $('#btnSkip').onclick=()=>{ qi++; step(); };
+  $('#micBtn').onclick=toggleMic;
+
+  if(F.mode!=='translate') setTimeout(()=>speak(cur.en),260);
+  if(!srSupported) $('#micHint').innerHTML='<span style="color:var(--warn)">這個瀏覽器不支援語音辨識，請用「⌨️ 用打的」，或改用 Safari 開啟</span>';
+}
+
+function toggleMic(){
+  const btn=$('#micBtn'), hint=$('#micHint');
+  if(recActive){ stopListen(); return; }
+  if('speechSynthesis' in window) speechSynthesis.cancel();
+  btn.classList.add('rec'); hint.textContent='聽你說…（說完再點一次）';
+  listen({
+    onPartial:t=>{ hint.textContent=t||'聽你說…'; },
+    onDone:t=>{
+      btn.classList.remove('rec');
+      if(!t){ hint.textContent='沒聽到聲音，再試一次'; return; }
+      showResult(t);
+    },
+    onError:e=>{
+      btn.classList.remove('rec');
+      hint.innerHTML = e==='not-allowed'
+        ? '<span style="color:var(--bad)">麥克風被拒絕。到 設定 → Safari → 麥克風 允許，或直接用打字模式</span>'
+        : e==='no-speech' ? '沒聽到聲音，再點一次試試'
+        : '<span style="color:var(--warn)">辨識失敗（'+esc(e)+'），可改用打字模式</span>';
+    }
+  });
+}
+
+function typeAnswer(){
+  openSheet(`
+    <h2 style="margin-top:0">用打的</h2>
+    <p class="muted" style="margin-top:0">把這句英文打出來，一樣會比對評分。</p>
+    <textarea id="tyIn" rows="3" placeholder="Type the sentence…"></textarea>
+    <button class="btn pri full" id="tyGo" style="margin-top:14px">送出比對</button>`);
+  setTimeout(()=>$('#tyIn').focus(),120);
+  $('#tyGo').onclick=()=>{
+    const v=$('#tyIn').value.trim();
+    if(!v) return;
+    closeSheet(); showResult(v);
+  };
+}
+
+function showResult(said,forced){
+  const B=bestCompare(cur,said);
+  const r=B.r;
+  const acc = forced ? forced.acc : r.acc;
+
+  grade(cur.id,acc);
+  if(forced){
+    // AI 改判：修正剛剛那筆分數，不重複計入練習次數
+    if(S.scores.length) S.scores[S.scores.length-1]=acc; else S.scores.push(acc);
+    wrongDel(cur.id);
+  }else{
+    S.scores.push(acc); if(S.scores.length>100) S.scores.shift();
+    if(acc<70){
+      const miss=r.parts.filter(p=>p.s==='miss'||p.s==='near').map(p=>p.w).slice(0,4);
+      wrongAdd(cur.id, miss.length?('沒說對：'+miss.join(', ')):'口說分數偏低');
+    }
+    wrongHit(cur.id,acc);
+    bumpLog();
+  }
+  save();
+
+  const color = acc>=85?'var(--ac)':acc>=65?'var(--warn)':'var(--bad)';
+  const word  = forced ? 'AI 判定' : acc>=95?'幾乎完美':acc>=85?'很不錯':acc>=65?'還可以':acc>=40?'再練一次':'差蠻多的';
+  const myAlts=(S.alts&&S.alts[cur.id])||[];
+  // 已經拿滿分就沒必要問 AI「我這樣說也對嗎」
+  const canJudge = F.mode==='translate' && !forced && acc<95;
+
+  $('#cStage').innerHTML=`
+    <div class="score"><b style="color:${color}">${acc}</b><span>分　${word}</span></div>
+    <div class="diff">${renderDiff(r.parts)}</div>
+    <p class="tiny" style="margin-top:14px;text-align:center">
+      <span class="w-ok">綠＝正確</span>　<span class="w-near">黃＝發音接近</span>　<span class="w-miss">紅＝漏掉</span>　<span class="w-extra">灰＝多說的</span>
+    </p>
+    ${B.isAlt&&acc>=70?`<p class="tiny" style="text-align:center;color:var(--ac)">✅ 比對的是你存過的說法：${esc(B.target)}</p>`:''}
+    <div style="margin-top:14px;text-align:left">
+      <div class="tiny">標準答案</div><div style="font-weight:600">${esc(cur.en)}</div>
+      <div class="tiny" style="margin-top:8px">你說的</div><div class="muted">${esc(said)}</div>
+      ${myAlts.length?`<div class="tiny" style="margin-top:8px">也算對的說法</div>
+        <div class="muted" style="font-size:14px">${myAlts.map(a=>esc(a)).join('<br>')}</div>`:''}
+      ${forced&&forced.note?`<div class="note" style="color:var(--ac);background:rgba(74,222,128,.09)">🤖 ${esc(forced.note)}</div>`:''}
+      ${cur.note?`<div class="note">💡 ${esc(cur.note)}</div>`:''}
+    </div>
+    <div id="judgeSlot"></div>`;
+  $('#cControls').innerHTML=`
+    <div class="row" style="margin-bottom:10px">
+      <button class="btn grow" id="rPlay">🔊 再聽</button>
+      <button class="btn grow" id="rRetry">🔁 再說一次</button>
+    </div>
+    ${canJudge?`<button class="btn blue full" id="rJudge" style="margin-bottom:10px">🤔 我這樣說也對嗎？</button>`:''}
+    <div class="row" style="margin-bottom:10px">
+      <button class="btn purple grow" id="rAI">✨ AI 點評</button>
+      <button class="btn grow" id="rMore">📚 其他說法</button>
+    </div>
+    <button class="btn pri full" id="rNext">下一題 →</button>`;
+  $('#rPlay').onclick=()=>speak(cur.en);
+  $('#rRetry').onclick=()=>stepSpeak();
+  $('#rNext').onclick=()=>{ qi++; step(); window.scrollTo(0,0); };
+  $('#rAI').onclick=()=>aiFeedback(cur,said,acc);
+  $('#rMore').onclick=()=>otherWays(cur);
+  const jb=$('#rJudge'); if(jb) jb.onclick=()=>judgeAnswer(cur,said);
+
+  // 中翻英：分數不高但可能只是換個講法 → 自動請 AI 判斷
+  if(canJudge && acc<85 && acc>=25 && hasKey() && S.set.autoJudge) judgeAnswer(cur,said,true);
+}
+
+/* ---- AI 判斷「我的說法也對嗎」---- */
+async function judgeAnswer(item,said,auto){
+  if(!hasKey()){
+    if(auto) return;
+    return toast('這個功能需要 API 金鑰，請到「我的 → AI 設定」設定');
+  }
+  const slot=$('#judgeSlot'); if(!slot) return;
+  const jb=$('#rJudge'); if(jb){ jb.disabled=true; jb.innerHTML='<span class="spin"></span> AI 判斷中…'; }
+  slot.innerHTML=`<div class="note" style="color:var(--blue);background:rgba(96,165,250,.09)"><span class="spin"></span> AI 正在看你的說法…</div>`;
+  try{
+    const txt=await claude([{role:'user',content:
+`中文題目：「${item.zh}」
+參考答案：「${item.en}」
+學生（母語繁體中文）用英文說出來的是：「${said}」
+（這段文字來自語音辨識，可能缺標點或大小寫，請完全忽略標點與大小寫，只看字詞與文法。）
+
+請判斷學生這句是否也是這個中文意思的正確英文說法。只輸出 JSON，不要任何其他文字：
+{
+ "ok": true 或 false,
+ "score": 0-100 的整數,
+ "clean": "把學生那句補上正確標點大小寫後的版本；若他說錯就填修正後的正確句",
+ "note": "繁體中文，40字內。若對：說明他這句和參考答案語感差在哪、什麼場合各自比較自然。若錯：直接指出錯在哪並給正確說法。",
+ "others": ["同樣意思的另一種常見說法1","說法2"]
+}
+
+判斷標準：
+- 意思相同、文法正確、母語者聽得懂且不彆扭 → ok:true，score 給 88-100
+- 意思對但有小文法瑕疵或不太自然 → ok:false，score 給 60-80
+- 意思跑掉或文法明顯錯誤 → ok:false，score 給 0-55`}],
+      {system:'你是寬容但精準的英文老師。同一個中文有很多種正確英文說法，不要因為和參考答案字面不同就判錯。只輸出合法 JSON。',max:700,temperature:0.2});
+    const J=jsonFrom(txt);
+    if(typeof J.ok!=='boolean') throw new Error('AI 的回覆看不懂，請再按一次');
+    const clean=(J.clean||said).trim();
+    if(J.ok){
+      const added=addAlt(item.id,clean);
+      (J.others||[]).slice(0,2).forEach(o=>addAlt(item.id,o));
+      showResult(said,{acc:Math.max(88,Math.min(100,J.score||90)),note:J.note||'你這樣說也對，已加進這題的可接受說法。'});
+      toast(added?'✅ 已把你的說法存起來，下次直接算對':'✅ 這樣說也對');
+    }else{
+      slot.innerHTML=`
+        <div class="note" style="color:var(--warn)">
+          🤖 <b>還不算完全對</b>（AI 給 ${J.score||0} 分）<br>${esc(J.note||'')}
+          ${clean&&norm(clean)!==norm(said)?`<div style="margin-top:8px;color:var(--ac)">建議說法：${esc(clean)}</div>`:''}
+        </div>
+        ${(J.others||[]).length?`<div class="tiny" style="text-align:left;margin-top:10px">其他常見說法<br>${(J.others||[]).map(o=>'· '+esc(o)).join('<br>')}</div>`:''}`;
+      (J.others||[]).slice(0,2).forEach(o=>addAlt(item.id,o));
+      if(jb){ jb.disabled=false; jb.textContent='🤔 我這樣說也對嗎？'; }
+    }
+  }catch(e){
+    slot.innerHTML=`<div class="tiny" style="color:var(--bad);margin-top:10px">AI 判斷失敗：${esc(e.message)}</div>`;
+    if(jb){ jb.disabled=false; jb.textContent='🤔 我這樣說也對嗎？'; }
+  }
+}
+
+/* ---- 其他說法：一次學好幾種講法 ---- */
+async function otherWays(item){
+  const known=(S.alts&&S.alts[item.id])||[];
+  openSheet(`<h2 style="margin-top:0">同一句的其他說法</h2>
+    <div class="tiny">中文</div><div class="zh" style="text-align:left;font-size:17px">${esc(item.zh)}</div>
+    <div class="tiny" style="margin-top:12px">標準答案</div>
+    <div style="font-weight:600">${esc(item.en)}</div>
+    ${known.length?`<div class="tiny" style="margin-top:12px">你已存的說法</div>
+      <div class="muted" style="font-size:15px">${known.map(a=>esc(a)).join('<br>')}</div>`:''}
+    <div id="owBody" style="margin-top:14px"></div>`);
+  const body=$('#owBody');
+  if(!hasKey()){
+    body.innerHTML=`<p class="muted">要讓 AI 生成更多說法，需要到「我的 → AI 設定」設定金鑰（Gemini 免費）。</p>
+      <button class="btn full" id="owClose">關閉</button>`;
+    $('#owClose').onclick=closeSheet; return;
+  }
+  body.innerHTML=`<p class="muted"><span class="spin"></span> AI 正在想其他講法…</p>`;
+  try{
+    const txt=await claude([{role:'user',content:
+`中文：「${item.zh}」
+一種英文說法是：「${item.en}」
+
+請再給我 3 種母語者也常用、意思相同的英文說法，難度從簡單到道地。只輸出 JSON：
+[{"en":"英文說法","zh":"這句的語感差異，繁體中文25字內，例如：比較口語／比較正式／語氣更客氣"}]`}],
+      {system:'你是英文老師，學生母語繁體中文。給真的會用的說法，不要生硬的教科書句。只輸出合法 JSON 陣列。',max:800,temperature:0.7});
+    const arr=jsonFrom(txt);
+    let n=0; arr.forEach(o=>{ if(o&&o.en&&addAlt(item.id,o.en)) n++; });
+    body.innerHTML=`
+      <div class="tiny" style="margin-bottom:8px">AI 建議的其他說法</div>
+      ${arr.map(o=>`<div class="item"><div class="txt"><b>${esc(o.en||'')}</b><small>${esc(o.zh||'')}</small></div>
+        <button class="btn sm gho" style="padding:6px 8px" data-ow="${esc(o.en||'')}">🔊</button></div>`).join('')}
+      <p class="tiny" style="margin-top:12px;color:var(--ac)">已新增 ${n} 種說法，之後這題你講其中任何一種都算對。</p>
+      <button class="btn full" id="owClose" style="margin-top:12px">關閉</button>`;
+    $$('#owBody [data-ow]').forEach(b=>b.onclick=()=>speak(b.dataset.ow));
+    $('#owClose').onclick=closeSheet;
+  }catch(e){
+    body.innerHTML=`<p class="muted" style="color:var(--bad)">失敗：${esc(e.message==='NOKEY'?'請先設定 API 金鑰':e.message)}</p>
+      <button class="btn full" id="owClose">關閉</button>`;
+    $('#owClose').onclick=closeSheet;
+  }
+}
+
+/* ---- 填空 ---- */
+let clzHint=0;
+function stepCloze(){
+  clzHint=0;
+  const parts=clozeParts(cur);
+  let bi=0;
+  const html=parts.map(p=>{
+    if(p.t!==undefined) return esc(p.t).replace(/ /g,'&nbsp;');
+    const w=p.b, i=bi++;
+    return `<input class="blk" data-i="${i}" data-w="${esc(w)}" style="width:${Math.max(4,w.length+1.5)}ch"
+      autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" inputmode="text">`;
+  }).join('');
+  $('#cStage').innerHTML=`
+    <div class="zh" style="text-align:left">${esc(cur.zh)}</div>
+    <div class="clz" style="margin-top:16px">${html}</div>
+    <p class="tiny" style="margin-top:14px;text-align:left">把空格的英文字填進去，大小寫不拘。</p>`;
+  $('#cControls').innerHTML=`
+    <div class="row" style="margin-bottom:10px">
+      <button class="btn grow" id="zHint">💡 提示</button>
+      <button class="btn grow" id="zSkip">看答案</button>
+    </div>
+    <button class="btn pri full" id="zCheck">檢查</button>`;
+  const inputs=$$('#cStage .blk');
+  inputs.forEach((el,k)=>{
+    el.addEventListener('keydown',e=>{
+      if(e.key==='Enter'){ e.preventDefault(); if(inputs[k+1]) inputs[k+1].focus(); else { el.blur(); $('#zCheck').click(); } }
+    });
+  });
+  setTimeout(()=>{ if(inputs[0]) inputs[0].focus(); },200);
+
+  $('#zHint').onclick=()=>{
+    clzHint++;
+    inputs.forEach(el=>{ const w=el.dataset.w; if(!el.value||w.toLowerCase().startsWith(el.value.toLowerCase())) el.value=w.slice(0,clzHint); });
+    if(clzHint>=2) $('#zHint').textContent='💡 提示（已用 '+clzHint+' 次）';
+  };
+  $('#zSkip').onclick=()=>clozeResult(true);
+  $('#zCheck').onclick=()=>clozeResult(false);
+}
+function clozeResult(gaveUp){
+  const inputs=$$('#cStage .blk');
+  let right=0;
+  inputs.forEach(el=>{
+    const ok = norm(el.value)===norm(el.dataset.w);
+    if(ok) right++;
+    el.classList.add(ok?'ok':'no'); el.disabled=true;
+    if(!ok && !el.value) el.value='—';
+  });
+  const total=inputs.length||1;
+  let acc = gaveUp?0 : Math.round(right/total*100);
+  if(!gaveUp && clzHint) acc=Math.max(0,acc-clzHint*15);
+  const allRight = right===total && !gaveUp;
+
+  grade(cur.id,acc);
+  S.scores.push(acc); if(S.scores.length>100) S.scores.shift();
+  if(acc<70) wrongAdd(cur.id, gaveUp?'填空直接看答案':'填空答錯：'+inputs.filter(e=>e.classList.contains('no')).map(e=>e.dataset.w).join(', '));
+  wrongHit(cur.id,acc);
+  bumpLog(); save();
+
+  const wrongList=inputs.filter(e=>e.classList.contains('no'));
+  $('#cStage').insertAdjacentHTML('beforeend',`
+    <div style="margin-top:16px;text-align:left">
+      <div class="score" style="justify-content:flex-start">
+        <b style="color:${allRight?'var(--ac)':acc>=50?'var(--warn)':'var(--bad)'}">${acc}</b>
+        <span>分　${allRight?'全對':gaveUp?'看了答案':right+' / '+total+' 個正確'}</span>
+      </div>
+      <div class="tiny">正解</div>
+      <div style="font-weight:600;font-size:17px">${esc(cur.en)}</div>
+      ${wrongList.length?`<div class="tiny" style="margin-top:10px">你漏掉的字：<span class="fix">${wrongList.map(e=>esc(e.dataset.w)).join('、')}</span></div>`:''}
+      ${cur.note?`<div class="note">💡 ${esc(cur.note)}</div>`:''}
+      ${clzHint?`<div class="tiny" style="margin-top:8px">用了 ${clzHint} 次提示，扣 ${clzHint*15} 分</div>`:''}
+    </div>`);
+  $('#cControls').innerHTML=`
+    <div class="row" style="margin-bottom:10px">
+      <button class="btn grow" id="zPlay">🔊 唸一次</button>
+      <button class="btn grow" id="zAgain">🔁 再填一次</button>
+    </div>
+    <button class="btn pri full" id="zNext">下一題 →</button>`;
+  $('#zPlay').onclick=()=>speak(cur.en);
+  $('#zAgain').onclick=()=>stepCloze();
+  $('#zNext').onclick=()=>{ qi++; step(); window.scrollTo(0,0); };
+  speak(cur.en);
+}
+
+/* ---- 重組句型 ---- */
+function stepBuild(){
+  const words=cur.en.split(/\s+/);
+  let picked=[], bank=shuffle(words.map((w,i)=>({w,i})));
+  const draw=()=>{
+    $('#cStage').innerHTML=`
+      <div class="zh">${esc(cur.zh)}</div>
+      <div id="slot" style="min-height:58px;margin-top:16px;border-bottom:2px dashed var(--line);padding-bottom:10px;display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:center">
+        ${picked.length?picked.map((p,k)=>`<button class="chip on" data-k="${k}">${esc(p.w)}</button>`).join(''):'<span class="muted">點下面的字排出句子</span>'}
+      </div>
+      <div class="chips" style="margin-top:16px;justify-content:center">
+        ${bank.map(b=>`<button class="chip" data-i="${b.i}">${esc(b.w)}</button>`).join('')}
+      </div>`;
+    $$('#slot .chip').forEach(c=>c.onclick=()=>{ bank.push(picked[+c.dataset.k]); picked.splice(+c.dataset.k,1); draw(); });
+    $$('#cStage .chips .chip').forEach(c=>c.onclick=()=>{
+      const idx=bank.findIndex(b=>b.i===+c.dataset.i);
+      if(idx<0) return;
+      picked.push(bank[idx]); bank.splice(idx,1); draw();
+    });
+  };
+  draw();
+  $('#cControls').innerHTML=`
+    <button class="btn pri full" id="bCheck">檢查</button>
+    <button class="btn gho full sm" id="bSkip" style="margin-top:10px;color:var(--tx3)">跳過這題</button>`;
+  $('#bSkip').onclick=()=>{ qi++; step(); };
+  $('#bCheck').onclick=()=>{
+    const ans=picked.map(p=>p.w).join(' ');
+    const ok = norm(ans)===norm(cur.en);
+    const r=compare(cur.en,ans);
+    const sc=ok?100:r.acc;
+    grade(cur.id,sc);
+    S.scores.push(sc); if(S.scores.length>100) S.scores.shift();
+    if(sc<70) wrongAdd(cur.id,'句型重組排錯');
+    wrongHit(cur.id,sc);
+    bumpLog(); save();
+    $('#cStage').innerHTML=`
+      <div style="font-size:38px">${ok?'✅':'❌'}</div>
+      <div class="en" style="margin-top:10px">${esc(cur.en)}</div>
+      <div class="zh" style="font-size:15px;color:var(--tx2);margin-top:8px">${esc(cur.zh)}</div>
+      ${ok?'':`<div class="tiny" style="margin-top:12px">你排的：${esc(ans)||'（空）'}</div>`}
+      ${cur.note?`<div class="note">💡 ${esc(cur.note)}</div>`:''}`;
+    $('#cControls').innerHTML=`
+      <div class="row" style="margin-bottom:10px">
+        <button class="btn grow" id="bPlay">🔊 聽一次</button>
+        <button class="btn grow" id="bAgain">🔁 重排</button>
+      </div>
+      <button class="btn pri full" id="bNext">下一題 →</button>`;
+    $('#bPlay').onclick=()=>speak(cur.en);
+    $('#bAgain').onclick=()=>stepBuild();
+    $('#bNext').onclick=()=>{ qi++; step(); window.scrollTo(0,0); };
+    if(ok) speak(cur.en);
+  };
+}
+
+/* ======================================================================
+   AI 導師：單句點評
+   ====================================================================== */
+async function aiFeedback(item,said,acc){
+  if(!hasKey()){
+    openSheet(`<h2 style="margin-top:0">需要 API 金鑰</h2>
+      <p class="muted">這個功能需要 AI。到「我的 → AI 設定」選一家並貼上金鑰即可，Google Gemini 有免費額度、不用信用卡。金鑰只會存在這支手機裡。</p>
+      <button class="btn pri full" id="goSet" style="margin-top:14px">前往設定</button>`);
+    $('#goSet').onclick=()=>{ closeSheet(); $$('nav button')[3].click(); };
+    return;
+  }
+
+  openSheet(`<h2 style="margin-top:0">AI 導師點評 <span class="spin"></span></h2><p class="muted" id="fbBody">分析中…</p>`);
+  try{
+    const txt=await claude([{role:'user',content:
+`目標句：「${item.en}」（中文意思：${item.zh}）
+我實際說出來、經語音辨識轉成的文字是：「${said}」
+系統比對出的相似度：${acc}%
+
+請用繁體中文給我簡短的口說回饋，格式如下，不要有多餘開場白：
+
+【判斷】一句話說我大致講對了沒，並提醒語音辨識可能有誤差。
+【差在哪】最多 3 點，指出漏掉或說錯的字詞，說明那個字的正確發音重點（用注音式或音節提示，例如 comfortable 唸成 KUMF-ta-bul 三音節）。
+【更自然的說法】給 1～2 個母語者在這個情境更常用的替代句，附中文。
+【下一步】一句具體的練習建議。`}],
+      {system:'你是耐心的英文口說教練，學生母語是繁體中文（台灣）。回饋務必具體、簡短、可執行，不要空泛鼓勵。注意學生的輸入來自語音辨識，可能把正確發音辨識錯，判斷時要把這點考慮進去。',max:800});
+    $('#sheetBox').innerHTML=`<h2 style="margin-top:0">AI 導師點評</h2>
+      <div style="white-space:pre-wrap;line-height:1.75;font-size:15px">${esc(txt)}</div>
+      <button class="btn full" id="fbClose" style="margin-top:16px">關閉</button>`;
+    $('#fbClose').onclick=closeSheet;
+  }catch(e){
+    $('#sheetBox').innerHTML=`<h2 style="margin-top:0">連線失敗</h2><p class="muted">${esc(e.message)}</p>
+      <button class="btn full" id="fbClose" style="margin-top:14px">關閉</button>`;
+    $('#fbClose').onclick=closeSheet;
+  }
+}
+
+/* ======================================================================
+   AI 導師：情境對話
+   ====================================================================== */
+let RP={on:false,kind:'roleplay',msgs:[],said:[],sys:''};
+let tutorMode='roleplay';
+function renderTutorPick(){
+  const opts=[['roleplay','情境對話'],['free','自由聊天']];
+  $('#tutorChips').innerHTML=opts.map(([k,n])=>`<button class="chip ${tutorMode===k?'on':''}" data-t="${k}">${n}</button>`).join('');
+  $$('#tutorChips .chip').forEach(c=>c.onclick=()=>{ tutorMode=c.dataset.t; renderTutorPick(); });
+  $('#tutorSetup').style.display = tutorMode==='roleplay'?'':'none';
+  $('#freeSetup').style.display  = tutorMode==='free'?'':'none';
+}
+renderTutorPick();
+
+$('#btnFcStart').onclick=()=>{
+  if(!hasKey()){ toast('請先到「我的 → AI 設定」設定金鑰（Gemini 免費）'); return; }
+  const topic=$('#fcTopic').value.trim(), lv=$('#fcLevel').value;
+  RP={on:true,kind:'free',msgs:[],said:[],sys:
+`You are a warm, curious friend chatting in English with a Taiwanese learner. ${topic?`They want to talk about: ${topic}.`:'Pick a light everyday topic and open with a question.'}
+Level: ${lv}. Keep replies to 1-3 short sentences and ALWAYS end with a question so the conversation keeps going.
+Do NOT correct their English during the chat — just chat naturally. Their input comes from speech recognition, so ignore punctuation and minor transcription noise.
+
+Reply in EXACTLY this format, nothing else:
+SAY: <your English reply>
+ZH: <繁體中文翻譯>`};
+  $('#tutorPick').style.display='none'; $('#tutorSetup').style.display='none'; $('#freeSetup').style.display='none';
+  $('#tutorChat').style.display='';
+  $('#rpMsgs').innerHTML='';
+  rpTurn(null);
+};
+
+$('#btnRpStart').onclick=()=>{
+  if(!hasKey()){ toast('請先到「我的 → AI 設定」設定金鑰（Gemini 免費）'); return; }
+  const scene=$('#rpScene').value, lv=$('#rpLevel').value;
+  RP={on:true,kind:'roleplay',msgs:[],said:[],sys:
+`You are role-playing with a Taiwanese learner of English to help them practice speaking. The setting is: ${scene}.
+Play the other person in that situation (staff, local, colleague, etc.). Stay in character.
+Level: ${lv}. Keep your spoken reply to 1-3 short sentences, natural and conversational.
+Their input comes from speech recognition, so ignore missing punctuation and minor transcription noise.
+
+Reply in EXACTLY this format, nothing else:
+SAY: <your in-character English reply>
+ZH: <繁體中文翻譯你剛說的那句>
+TIP: <繁體中文，一句話。若學生上一句英文有文法或用字可以更自然的地方，指出來並給正確說法；若已經很好就寫「這句很自然，可以」加上一個小小的加分說法。第一輪沒有學生發言時寫「開始吧」>`};
+  $('#tutorPick').style.display='none'; $('#tutorSetup').style.display='none'; $('#freeSetup').style.display='none';
+  $('#tutorChat').style.display='';
+  $('#rpMsgs').innerHTML='';
+  rpTurn(null);
+};
+function leaveChat(){
+  RP.on=false; stopListen(); if('speechSynthesis' in window) speechSynthesis.cancel();
+  $('#tutorChat').style.display='none'; $('#tutorPick').style.display='';
+  renderTutorPick(); window.scrollTo(0,0);
+}
+$('#btnRpAbort').onclick=leaveChat;
+$('#btnRpEnd').onclick=()=>{
+  if(RP.said.length<2){ toast('至少先聊個兩句再產生報告'); return; }
+  stopListen(); if('speechSynthesis' in window) speechSynthesis.cancel();
+  chatReport();
+};
+function addMsg(cls,html){
+  const d=document.createElement('div'); d.className='msg '+cls; d.innerHTML=html;
+  $('#rpMsgs').appendChild(d); $('#rpMsgs').scrollTop=$('#rpMsgs').scrollHeight;
+  return d;
+}
+async function rpTurn(userText){
+  if(userText){ addMsg('me',esc(userText)); RP.msgs.push({role:'user',content:userText}); RP.said.push(userText); }
+  else RP.msgs.push({role:'user',content:'(Start the conversation. Greet me first.)'});
+  const ph=addMsg('ai','<span class="spin"></span>');
+  try{
+    const raw=await claude(RP.msgs,{system:RP.sys,max:500,temperature:0.8});
+    RP.msgs.push({role:'assistant',content:raw});
+    if(RP.msgs.length>26) RP.msgs.splice(0,4);
+    const say=(raw.match(/SAY:\s*([\s\S]*?)(?=\nZH:|\nTIP:|$)/)||[,raw])[1].trim();
+    const zh =(raw.match(/ZH:\s*([\s\S]*?)(?=\nTIP:|$)/)||[,''])[1].trim();
+    const tip=(raw.match(/TIP:\s*([\s\S]*)$/)||[,''])[1].trim();
+    ph.innerHTML=`<div>${esc(say)}</div>`+
+      (zh?`<div class="tiny" style="margin-top:5px">${esc(zh)}</div>`:'')+
+      (tip&&tip!=='開始吧'?`<span class="fb">💡 ${esc(tip)}</span>`:'');
+    $('#rpMsgs').scrollTop=$('#rpMsgs').scrollHeight;
+    speak(say);
+  }catch(e){
+    ph.innerHTML=`<span style="color:var(--bad)">${esc(e.message==='NOKEY'?'請先設定 API 金鑰':e.message)}</span>`;
+    RP.msgs.pop();
+  }
+}
+/* ---- 聊天結束：檢討報告 ---- */
+async function chatReport(){
+  openSheet(`<h2 style="margin-top:0">產生檢討報告 <span class="spin"></span></h2>
+    <p class="muted">正在把整段對話看過一遍…</p>`);
+  const transcript=RP.said.map((s,i)=>`${i+1}. ${s}`).join('\n');
+  try{
+    const txt=await claude([{role:'user',content:
+`以下是一位台灣英文學習者在英文對話練習中「說出來的每一句」（經語音辨識轉文字，標點可能缺漏，請不要把標點或大小寫當成錯誤）：
+
+${transcript}
+
+請幫他做一次完整檢討，只輸出 JSON，不要任何說明文字或 markdown：
+{
+ "overall":"兩句話總評，繁體中文，先講他做得好的地方再講最該改的一件事",
+ "level":"用 CEFR 估他的口說程度，例如 A2 或 B1",
+ "grammar":[{"said":"他原本說的那句","fix":"改正後的英文","why":"繁體中文說明錯在哪，20字內"}],
+ "habits":[{"h":"反覆出現的壞習慣，繁體中文","ex":"對話裡的實際例子","tip":"繁體中文，怎麼改，一句話"}],
+ "practice":[{"en":"正確且道地的英文句","zh":"繁體中文意思","note":"重點提示，繁體中文20字內"}]
+}
+
+規則：
+- grammar 只列真正的錯誤，最多 6 筆；完全沒錯就給空陣列
+- habits 是「跨多句反覆出現」的模式，例如老是漏三單現、時態前後不一致、只會用 I think 開頭、句子都很短不加細節。最多 3 筆，找不到就給空陣列
+- practice 是把他講錯或講得不自然的句子改寫成正確版本，讓他之後拿來練習，3～6 筆`}],
+      {system:'你是嚴謹但鼓勵人的英文口說教練。學生母語是繁體中文（台灣）。只輸出合法 JSON。',max:2500,temperature:0.4});
+    const R=jsonFrom(txt);
+    R.at=Date.now();
+    S.reports.unshift(R); if(S.reports.length>20) S.reports.pop(); save();
+    showReport(R);
+  }catch(e){
+    $('#sheetBox').innerHTML=`<h2 style="margin-top:0">產生失敗</h2><p class="muted">${esc(e.message==='NOKEY'?'請先設定 API 金鑰':e.message)}</p>
+      <button class="btn full" id="erClose" style="margin-top:14px">關閉</button>`;
+    $('#erClose').onclick=closeSheet;
+  }
+}
+function showReport(R){
+  const g=R.grammar||[], h=R.habits||[], p=R.practice||[];
+  $('#sheetBox').innerHTML=`
+    <h2 style="margin-top:0">這次聊天的檢討 ${R.level?`<span class="pill">${esc(R.level)}</span>`:''}</h2>
+    <p style="margin:0 0 6px;line-height:1.7">${esc(R.overall||'')}</p>
+
+    <hr><div class="tiny" style="margin-bottom:10px">文法錯誤　${g.length} 筆</div>
+    ${g.length?g.map(x=>`<div style="margin-bottom:14px">
+        <div class="muted" style="font-size:14px">你說：${esc(x.said||'')}</div>
+        <div style="font-weight:600">改成：<span class="fix">${esc(x.fix||'')}</span></div>
+        <div class="tiny" style="color:var(--warn)">${esc(x.why||'')}</div>
+      </div>`).join(''):'<p class="muted">這次沒有明顯文法錯誤 👍</p>'}
+
+    <hr><div class="tiny" style="margin-bottom:10px">反覆出現的壞習慣　${h.length} 項</div>
+    ${h.length?h.map(x=>`<div class="note" style="margin:0 0 10px">
+        <b>${esc(x.h||'')}</b>
+        ${x.ex?`<div class="tiny" style="color:var(--tx2);margin-top:4px">例：${esc(x.ex)}</div>`:''}
+        ${x.tip?`<div class="tiny" style="color:var(--ac);margin-top:4px">→ ${esc(x.tip)}</div>`:''}
+      </div>`).join(''):'<p class="muted">沒看到反覆出現的問題</p>'}
+
+    <hr><div class="tiny" style="margin-bottom:10px">建議拿來練的句子　${p.length} 句</div>
+    ${p.map(x=>`<div class="item"><div class="txt"><b>${esc(x.en||'')}</b><small>${esc(x.zh||'')}</small>
+      ${x.note?`<small style="color:var(--warn)">${esc(x.note)}</small>`:''}</div></div>`).join('')||'<p class="muted">無</p>'}
+
+    ${p.length?`<button class="btn pri full" id="repSave" style="margin-top:16px">把這 ${p.length} 句存進錯題本</button>`:''}
+    <button class="btn full" id="repClose" style="margin-top:10px">關閉</button>`;
+  const sv=$('#repSave');
+  if(sv) sv.onclick=()=>{
+    let n=0;
+    p.forEach((x,k)=>{
+      if(!x.en) return;
+      const id='c'+Date.now().toString(36)+k;
+      S.custom.push({id,en:String(x.en).trim(),zh:String(x.zh||'').trim(),cat:'daily',sc:'聊天錯句',lv:2,note:x.note?String(x.note).slice(0,60):undefined});
+      wrongAdd(id,'來自聊天檢討');
+      n++;
+    });
+    save(); toast('已存入錯題本 '+n+' 句');
+    sv.disabled=true; sv.textContent='已存入 ✅';
+    renderHome();
+  };
+  $('#repClose').onclick=()=>{ closeSheet(); if(RP.on) leaveChat(); };
+}
+
+$('#rpSend').onclick=()=>{
+  const v=$('#rpText').value.trim(); if(!v) return;
+  $('#rpText').value=''; $('#rpText').blur(); rpTurn(v);
+};
+$('#rpText').addEventListener('keydown',e=>{ if(e.key==='Enter'){e.preventDefault();$('#rpSend').click();} });
+$('#rpMic').onclick=()=>{
+  const btn=$('#rpMic'), hint=$('#rpHint');
+  if(recActive){ stopListen(); return; }
+  if('speechSynthesis' in window) speechSynthesis.cancel();
+  btn.classList.add('rec'); hint.textContent='聽你說…（說完再點一次）';
+  listen({
+    onPartial:t=>hint.textContent=t||'聽你說…',
+    onDone:t=>{ btn.classList.remove('rec'); hint.textContent='點麥克風開始說'; if(t) rpTurn(t); else toast('沒聽到聲音'); },
+    onError:e=>{ btn.classList.remove('rec'); hint.textContent = e==='not-allowed'?'麥克風被拒絕，請改用打字':'辨識失敗，請改用打字'; }
+  });
+};
+
+/* ======================================================================
+   題庫
+   ====================================================================== */
+let libFilter='all', libN=40;
+function renderLib(){
+  const chips=[['all','全部'],['daily','日常會話'],['travel','旅遊英文'],['custom','我的／AI 生成'],['weak','需要加強'],['mastered','已掌握']];
+  $('#libChips').innerHTML=chips.map(([k,n])=>`<button class="chip ${libFilter===k?'on':''}" data-k="${k}">${n}</button>`).join('');
+  $$('#libChips .chip').forEach(c=>c.onclick=()=>{libFilter=c.dataset.k;libN=40;renderLib();});
+
+  const q=norm($('#libSearch').value);
+  const customIds=new Set((S.custom||[]).map(i=>i.id));
+  let list=allItems().filter(i=>{
+    if(libFilter==='daily'&&i.cat!=='daily') return false;
+    if(libFilter==='travel'&&i.cat!=='travel') return false;
+    if(libFilter==='custom'&&!customIds.has(i.id)) return false;
+    if(libFilter==='mastered'&&!isMastered(i.id)) return false;
+    if(libFilter==='weak'){ const p=S.prog[i.id]; if(!p||!p.seen||p.best>=85) return false; }
+    if(q && !(norm(i.en).includes(q)||i.zh.includes($('#libSearch').value.trim()))) return false;
+    return true;
+  });
+  $('#libCount').textContent=list.length;
+  const show=list.slice(0,libN);
+  $('#libList').innerHTML= show.length? show.map(i=>`
+    <div class="item" data-id="${i.id}">
+      <button class="btn sm gho" style="padding:6px 8px" data-play="${i.id}">🔊</button>
+      <div class="txt"><b>${esc(i.en)}</b><small>${esc(i.zh)}　·　${esc(i.sc)}</small></div>
+      <div class="mast" title="掌握度"><i style="width:${mastery(i.id)}%"></i></div>
+    </div>`).join('') : '<p class="muted">找不到符合的句子</p>';
+  $('#libMore').style.display = list.length>libN ? '' : 'none';
+  $$('#libList [data-play]').forEach(b=>b.onclick=e=>{
+    e.stopPropagation();
+    const it=allItems().find(x=>x.id===b.dataset.play); if(it) speak(it.en);
+  });
+  $$('#libList .item').forEach(el=>el.onclick=()=>{
+    const it=allItems().find(x=>x.id===el.dataset.id); if(!it) return;
+    const p=S.prog[it.id];
+    openSheet(`
+      <div class="tiny">${esc(it.sc)}　·　${'★'.repeat(it.lv||1)}</div>
+      <div class="en" style="text-align:left;margin:8px 0">${esc(it.en)}</div>
+      <div class="zh" style="text-align:left;font-size:16px;color:var(--tx2)">${esc(it.zh)}</div>
+      ${it.note?`<div class="note">💡 ${esc(it.note)}</div>`:''}
+      ${((S.alts&&S.alts[it.id])||[]).length?`
+        <div class="tiny" style="margin-top:14px">其他也算對的說法</div>
+        <div id="altBox">${S.alts[it.id].map((a,k)=>`<div class="item">
+          <button class="btn sm gho" style="padding:6px 8px" data-ap="${esc(a)}">🔊</button>
+          <div class="txt"><b style="font-size:14px">${esc(a)}</b></div>
+          <button class="btn sm gho" style="padding:6px 8px;color:var(--tx3)" data-ad="${k}">✕</button>
+        </div>`).join('')}</div>`:''}
+      <div class="tiny" style="margin-top:14px">掌握度 ${mastery(it.id)}%　·　練過 ${p?p.seen:0} 次　·　最佳 ${p?p.best:0} 分</div>
+      <div class="row" style="margin-top:16px">
+        <button class="btn grow" id="shPlay">🔊 播放</button>
+        <button class="btn grow" id="shSlow">🐢 慢速</button>
+      </div>
+      <button class="btn full sm" id="shMore" style="margin-top:10px">📚 讓 AI 教我其他說法</button>
+      ${customIds.has(it.id)?`<button class="btn full sm" id="shDel" style="margin-top:10px;color:var(--bad)">刪除這句</button>`:''}`);
+    $('#shPlay').onclick=()=>speak(it.en);
+    $('#shSlow').onclick=()=>speak(it.en,{rate:0.62});
+    $('#shMore').onclick=()=>otherWays(it);
+    $$('#altBox [data-ap]').forEach(b=>b.onclick=()=>speak(b.dataset.ap));
+    $$('#altBox [data-ad]').forEach(b=>b.onclick=()=>{
+      S.alts[it.id].splice(+b.dataset.ad,1);
+      if(!S.alts[it.id].length) delete S.alts[it.id];
+      save(); closeSheet(); toast('已移除');
+    });
+    const del=$('#shDel'); if(del) del.onclick=()=>{
+      S.custom=S.custom.filter(x=>x.id!==it.id); delete S.prog[it.id]; save(); closeSheet(); renderLib(); toast('已刪除');
+    };
+  });
+}
+$('#libSearch').addEventListener('input',()=>{libN=40;renderLib();});
+$('#libMore').onclick=()=>{libN+=40;renderLib();};
+
+$('#btnAddOwn').onclick=()=>{
+  openSheet(`<h2 style="margin-top:0">新增句子</h2>
+    <label class="f">英文</label><input id="aEn" placeholder="I'd like to check in, please.">
+    <label class="f">中文</label><input id="aZh" placeholder="我想辦理入住。">
+    <label class="f">情境</label><input id="aSc" placeholder="飯店">
+    <label class="f">難度</label><select id="aLv"><option value="1">入門</option><option value="2" selected>中等</option><option value="3">進階</option></select>
+    <label class="f">重點筆記（可留空）</label><input id="aNote" placeholder="check in = 辦理入住">
+    <button class="btn pri full" id="aGo" style="margin-top:16px">新增</button>`);
+  $('#aGo').onclick=()=>{
+    const en=$('#aEn').value.trim(), zh=$('#aZh').value.trim();
+    if(!en||!zh) return toast('英文和中文都要填');
+    S.custom.push({id:'u'+Date.now().toString(36),en,zh,cat:'daily',sc:$('#aSc').value.trim()||'我的句子',lv:+$('#aLv').value,note:$('#aNote').value.trim()||undefined});
+    save(); closeSheet(); renderLib(); toast('已新增');
+  };
+};
+
+$('#btnGen').onclick=()=>{
+  openSheet(`<h2 style="margin-top:0">AI 產生新題庫</h2>
+    <p class="muted" style="margin-top:0">描述你想練的主題，AI 會生成一批句子加進你的題庫，馬上就能練。</p>
+    <label class="f">主題</label>
+    <input id="gTopic" placeholder="例如：在日本自助旅行搭電車、跟房東反映房子問題">
+    <label class="f">數量</label>
+    <select id="gN"><option>10</option><option selected>15</option><option>20</option><option>25</option></select>
+    <label class="f">難度</label>
+    <select id="gLv"><option value="1">入門</option><option value="2" selected>中等</option><option value="3">進階</option></select>
+    <button class="btn purple full" id="gGo" style="margin-top:16px">產生</button>
+    <p class="tiny" style="margin-top:10px">需要在「我的」設定 AI 金鑰。生成後會存在手機裡，離線也能練。</p>`);
+  $('#gGo').onclick=async()=>{
+    const topic=$('#gTopic').value.trim();
+    if(!topic) return toast('請先寫主題');
+    if(!hasKey()) return toast('請先到「我的 → AI 設定」設定金鑰');
+    const n=+$('#gN').value, lv=+$('#gLv').value;
+    const btn=$('#gGo'); btn.innerHTML='<span class="spin"></span> 產生中…'; btn.disabled=true;
+    try{
+      // 把最相關的既有句子當成排除清單，避免生出重複的
+      const have=allItems();
+      const kw=norm(topic).split(' ').filter(w=>w.length>2);
+      const scored=have.map(i=>({
+        en:i.en,
+        s:(kw.some(w=>norm(i.en).includes(w))?2:0)+(i.zh.includes(topic)?2:0)+(i.sc&&topic.includes(i.sc)?1:0)
+      }));
+      const avoid=scored.filter(x=>x.s>0).map(x=>x.en)
+        .concat(shuffle(have.slice()).slice(0,60).map(i=>i.en))
+        .filter((v,k,a)=>a.indexOf(v)===k).slice(0,120);
+
+      const txt=await claude([{role:'user',content:
+`請為一位台灣的英文學習者，針對主題「${topic}」生成 ${n} 個實用的英文口說練習句。
+難度：${lv===1?'入門（短句、基礎字彙）':lv===2?'中等（日常自然表達）':'進階（較長、道地、含常見片語與句型）'}
+
+他的題庫裡已經有下列句子，請勿產生相同或只差一兩個字的句子：
+${avoid.map(s=>'- '+s).join('\n')}
+
+要求：
+- 都是真的會在該情境開口說的句子，不要教科書式的怪句
+- 長度 5～16 字之間，適合開口朗讀
+- ${n} 句彼此之間也不要重複句型，涵蓋該情境的不同狀況
+只輸出 JSON 陣列，每個元素格式：
+{"en":"英文句","zh":"繁體中文意思","sc":"簡短情境標籤（4字內，中文）","note":"這句的句型或用字重點，繁體中文，25字內"}
+不要任何說明文字或 markdown 標記。`}],{max:3000,temperature:0.8});
+      const arr=jsonFrom(txt);
+      const seen=new Set(have.map(i=>norm(i.en)));
+      let added=0, dup=0;
+      arr.forEach((o,k)=>{
+        if(!o||!o.en||!o.zh) return;
+        const en=String(o.en).trim(), key=norm(en);
+        if(!key || seen.has(key)){ dup++; return; }      // 保險：本地再擋一次重複
+        seen.add(key);
+        S.custom.push({id:'g'+Date.now().toString(36)+k,en,zh:String(o.zh).trim(),
+          cat:'daily',sc:(o.sc||topic).slice(0,10),lv,note:o.note?String(o.note).slice(0,60):undefined});
+        added++;
+      });
+      save(); closeSheet(); libFilter='custom'; renderLib();
+      toast(added?('新增了 '+added+' 句'+(dup?`，濾掉 ${dup} 句重複的`:'')):'這批全都跟現有的重複，換個主題再試',3200);
+    }catch(e){
+      btn.innerHTML='產生'; btn.disabled=false;
+      toast(e.message==='NOKEY'?'請先設定 API 金鑰':('失敗：'+e.message),3200);
+    }
+  };
+};
+
+/* ======================================================================
+   我的
+   ====================================================================== */
+function renderMe(){
+  const items=allItems();
+  $('#mTotal').textContent=Object.values(S.log).reduce((a,b)=>a+b,0);
+  $('#mSeen').textContent=Object.keys(S.prog).length;
+  $('#mMast').textContent=items.filter(i=>isMastered(i.id)).length;
+  $('#mWrong').textContent=wrongIds().length;
+
+  const reps=S.reports||[];
+  $('#repCard').style.display=reps.length?'':'none';
+  $('#repList').innerHTML=reps.map((r,k)=>`
+    <div class="item" data-r="${k}">
+      <div class="txt"><b>${new Date(r.at).toLocaleDateString('zh-TW')} ${r.level?'· '+esc(r.level):''}</b>
+      <small>文法 ${(r.grammar||[]).length} 筆　·　壞習慣 ${(r.habits||[]).length} 項</small></div>
+    </div>`).join('');
+  $$('#repList .item').forEach(el=>el.onclick=()=>showReport(reps[+el.dataset.r]));
+
+  // 近 12 週熱力圖
+  const days=84, cells=[];
+  const max=Math.max(1,...Object.values(S.log));
+  for(let i=days-1;i>=0;i--){
+    const d=new Date(Date.now()-i*864e5).toLocaleDateString('sv');
+    const v=S.log[d]||0, a=v?0.22+0.78*Math.min(1,v/max):0;
+    cells.push(`<div title="${d}：${v} 題" style="width:100%;padding-bottom:100%;border-radius:3px;background:${v?`rgba(74,222,128,${a})`:'var(--bg2)'}"></div>`);
+  }
+  $('#heat').innerHTML=`<div class="tiny" style="margin-bottom:7px">最近 12 週</div>
+    <div style="display:grid;grid-template-columns:repeat(14,1fr);gap:4px">${cells.join('')}</div>`;
+
+  $('#verLine').textContent='版本 '+APPVER;
+  renderBackup();
+  renderSync('');
+  $('#setAuto2').value=S.sync.auto?'1':'0';
+  renderProvider();
+  renderGoalSettings();
+  $('#setAccent').value=S.set.accent;
+  $('#setRate').value=S.set.rate;
+  $('#rateVal').textContent='×'+(+S.set.rate).toFixed(2);
+  $('#setLen').value=S.set.len;
+  $('#setAuto').value=S.set.autoJudge?'1':'0';
+}
+
+const PROV_HELP={
+  gemini:`<b style="color:var(--ac)">完全免費，不用信用卡。</b><br>
+    1. 用手機或電腦開 <b>aistudio.google.com/apikey</b><br>
+    2. 用 Google 帳號登入 → <b>Create API key</b><br>
+    3. 複製整串貼到下面（<b>AIza…</b> 或 <b>AQ.…</b> 開頭都對）<br>
+    4. 按「測試連線」<br>
+    <span style="color:var(--warn)">免費層每天有次數上限，超過隔天重置。若某個模型顯示不可用，App 會自動換一個能用的。Google 可能會拿免費層的內容改進產品，所以聊天時別提敏感的事。</span>`,
+  anthropic:`<b>品質最好，但要付費。</b><br>
+    1. 開 <b>console.anthropic.com</b> 註冊登入<br>
+    2. 左側 <b>API keys</b> → <b>Create Key</b> → 複製 <b>sk-ant-</b> 開頭那串<br>
+    3. 左側 <b>Billing</b> 儲值（最低約 5 美金，<b style="color:var(--warn)">沒儲值金鑰會一直顯示無效</b>）<br>
+    4. 貼到下面 → 按「測試連線」<br>
+    <span class="muted">注意：Claude Pro／Max 訂閱不含 API 額度，這是兩套獨立計費。單句判斷約 0.02 元台幣，一份檢討報告約 0.3 元。</span>`
+};
+function renderProvider(){
+  const pv=curProv();
+  $('#provChips').innerHTML=Object.entries(PROVIDERS)
+    .map(([k,v])=>`<button class="chip ${pv===k?'on':''}" data-p="${k}">${v.name}</button>`).join('');
+  $$('#provChips .chip').forEach(c=>c.onclick=()=>{
+    S.set.provider=c.dataset.p; save(); renderProvider();
+  });
+  $('#provHelp').innerHTML=PROV_HELP[pv];
+  $('#keyLabel').textContent = (pv==='gemini'?'Google AI Studio':'Anthropic')+' API 金鑰（只存在這支手機裡）';
+  const inp=$('#setKey');
+  inp.placeholder = pv==='gemini' ? 'AIza… 或 AQ.…' : 'sk-ant-…';
+  $('#btnProbe').style.display = pv==='gemini' ? '' : 'none';
+  inp.value = (S.set.keys&&S.set.keys[pv])||'';
+  $('#setModel').innerHTML=PROVIDERS[pv].models.map(([v,n])=>`<option value="${v}">${n}</option>`).join('');
+  $('#setModel').value=curModel();
+}
+$('#setAuto').addEventListener('change',e=>{S.set.autoJudge=e.target.value==='1';save();});
+$('#setKey').addEventListener('change',e=>{
+  S.set.keys[curProv()]=e.target.value.trim(); save();
+  toast(e.target.value.trim()?'已儲存金鑰':'已清除金鑰');
+});
+$('#setModel').addEventListener('change',e=>{S.set.models[curProv()]=e.target.value;save();});
+$('#setAccent').addEventListener('change',e=>{S.set.accent=e.target.value;save();speak('Hello, how does this sound?');});
+$('#setRate').addEventListener('input',e=>{S.set.rate=+e.target.value;$('#rateVal').textContent='×'+S.set.rate.toFixed(2);save();});
+$('#setRate').addEventListener('change',()=>speak('This is the reading speed.'));
+$('#setLen').addEventListener('change',e=>{S.set.len=+e.target.value;save();});
+function renderGoalSettings(){
+  const opts=[0,3,5,10,15,20];
+  $('#goalSet').innerHTML=MODES.map(m=>`
+    <div class="row" style="margin-bottom:8px">
+      <span style="width:80px;flex-shrink:0;font-size:14px">${m.n}</span>
+      <select data-gs="${m.k}" style="flex:1">
+        ${opts.map(v=>`<option value="${v}" ${goalOf(m.k)===v?'selected':''}>${v?v+' 題':'不設目標'}</option>`).join('')}
+      </select>
+    </div>`).join('');
+  $$('#goalSet [data-gs]').forEach(sel=>sel.onchange=()=>{
+    S.set.goals[sel.dataset.gs]=+sel.value; save(); renderGoalSettings(); renderHome();
+  });
+  $('#goalSum').textContent='一天總共 '+goalTotal()+' 題。';
+}
+
+$('#btnRemind').onclick=()=>{
+  openSheet(`<h2 style="margin-top:0">每天定時提醒你來練</h2>
+    <p class="muted" style="margin-top:0">網頁 App 在 iPhone 上不能主動推播，但用 iOS 內建的<b>「捷徑」</b>可以做到一樣的效果，而且點通知就直接開啟 Echo。設定一次，約 2 分鐘。</p>
+    <div class="tiny" style="line-height:2;text-align:left;margin-top:12px">
+      1. 打開 iPhone 內建的 <b>捷徑</b> App<br>
+      2. 下方切到 <b>自動化</b> → 右上 <b>＋</b> → 選 <b>時間</b><br>
+      3. 挑一個你固定有空的時間（睡前或通勤時最容易養成習慣），重複選 <b>每天</b><br>
+      4. 下面選 <b>立即執行</b>，並把「執行前先詢問」<b>關掉</b><br>
+      5. 按 <b>下一步</b> → 搜尋動作 <b>「打開 App」</b> → 選 <b>Echo 英語</b><br>
+      6. 完成
+    </div>
+    <p class="tiny" style="margin-top:14px">如果找不到 Echo 英語，代表還沒用 Safari 加到主畫面，先做那一步。<br>
+    想要「只提醒不自動開啟」的話，第 5 步改選<b>「顯示通知」</b>，內容打「該練英文了」。</p>
+    <button class="btn full" id="rmClose" style="margin-top:14px">知道了</button>`);
+  $('#rmClose').onclick=closeSheet;
+};
+
+$('#btnTestKey').onclick=async()=>{
+  const b=$('#btnTestKey'); b.innerHTML='<span class="spin"></span> 測試中…'; b.disabled=true;
+  try{ await ai([{role:'user',content:'Reply with exactly: OK'}],{max:16,temperature:0}); toast('連線成功 ✅　'+curModel(),3000); }
+  catch(e){ toast(e.message==='NOKEY'?'還沒填金鑰':('失敗：'+e.message),5000); }
+  b.innerHTML='測試連線'; b.disabled=false;
+};
+
+/* 逐一試打每個模型，把能用的列出來 */
+$('#btnProbe').onclick=async()=>{
+  if(!hasKey()) return toast('請先填金鑰');
+  const list=PROVIDERS.gemini.models.map(m=>m[0]);
+  openSheet(`<h2 style="margin-top:0">偵測可用模型 <span class="spin"></span></h2>
+    <p class="muted">正在一個一個試，大約 20 秒…</p><div id="probeBox"></div>`);
+  const box=$('#probeBox'); const ok=[];
+  for(const m of list){
+    box.insertAdjacentHTML('beforeend',`<div class="item" id="pb-${m.replace(/\./g,'-')}">
+      <div class="txt"><b style="font-size:14px">${esc(m)}</b><small>測試中…</small></div></div>`);
+    const row=$('#pb-'+m.replace(/\./g,'-')).querySelector('small');
+    try{
+      await geminiOnce(m,[{role:'user',content:'Say OK'}],{temperature:0});
+      row.innerHTML='<span style="color:var(--ac)">✅ 可以用</span>'; ok.push(m);
+    }catch(e){
+      row.innerHTML='<span style="color:var(--bad)">✕ '+esc((e.message||'').slice(0,40))+'</span>';
+    }
+  }
+  $('#sheetBox').querySelector('h2').innerHTML='偵測可用模型';
+  $('#sheetBox').querySelector('p').textContent = ok.length
+    ? `你的金鑰可以用 ${ok.length} 個模型，已自動選用 ${ok[0]}。`
+    : '沒有任何模型可用。請確認金鑰是在 aistudio.google.com/apikey 建立的，或重新建一把。';
+  if(ok.length){ S.set.models.gemini=ok[0]; save(); renderProvider(); }
+  $('#sheetBox').insertAdjacentHTML('beforeend',`<button class="btn full" id="pbClose" style="margin-top:14px">關閉</button>`);
+  $('#pbClose').onclick=closeSheet;
+};
+
+const SQL_SNIPPET=`create table if not exists echo_sync (
+  code text primary key,
+  data jsonb not null,
+  updated_at timestamptz default now()
+);
+alter table echo_sync enable row level security;
+drop policy if exists echo_all on echo_sync;
+create policy echo_all on echo_sync
+  for all using (true) with check (true);`;
+
+$('#btnSyncNow').onclick=()=>syncNow(false);
+$('#setAuto2').addEventListener('change',e=>{S.sync.auto=e.target.value==='1';save();});
+
+$('#btnSyncSet').onclick=()=>{
+  const s=S.sync;
+  openSheet(`<h2 style="margin-top:0">雲端同步設定</h2>
+    <p class="tiny" style="margin-top:0">照著做一次，之後兩台裝置都填一樣的內容就會自動同步。</p>
+
+    <div class="note" style="color:var(--tx2);text-align:left;line-height:1.9">
+      <b style="color:var(--tx)">① 建立免費專案</b><br>
+      開 <b>supabase.com</b> → Start your project → 用 GitHub 或 Google 登入 → <b>New project</b><br>
+      名稱隨便取，資料庫密碼隨便設（用不到但要記著），地區選 <b>Northeast Asia (Tokyo)</b> → Create。等約 2 分鐘。
+    </div>
+
+    <div class="note" style="color:var(--tx2);text-align:left;line-height:1.9;margin-top:10px">
+      <b style="color:var(--tx)">② 建資料表</b><br>
+      左側 <b>SQL Editor</b> → New query → 貼上下面這段 → 按 <b>Run</b>，看到 Success 就好。
+    </div>
+    <textarea id="sqlBox" rows="7" readonly style="font-size:11px;margin-top:8px">${esc(SQL_SNIPPET)}</textarea>
+    <button class="btn sm full" id="sqlCopy" style="margin-top:8px">📋 複製這段 SQL</button>
+
+    <div class="note" style="color:var(--tx2);text-align:left;line-height:1.9;margin-top:10px">
+      <b style="color:var(--tx)">③ 拿網址與金鑰</b><br>
+      最快的方法：專案畫面<b>最上方</b>有一顆 <b>Connect</b> 按鈕，點開就同時看得到網址和金鑰。<br>
+      或走設定：左側 <b>Settings</b> → <b>API Keys</b>。<br><br>
+      <b style="color:var(--tx)">網址</b>長得像 <b>https://abcdefgh.supabase.co</b>，中間那串是系統給你的專案代號，每個人都不一樣，照抄就好。<br>
+      <b style="color:var(--tx)">金鑰</b>用 <b>Publishable key</b>（<b>sb_publishable_</b> 開頭）；舊專案叫 <b>anon public</b>（eyJ 開頭），兩種都可以。<br>
+      <span style="color:var(--bad)">千萬不要用 Secret 或 service_role 那把。</span>
+    </div>
+
+    <label class="f">Project URL（https://…supabase.co）</label>
+    <input id="syUrl" placeholder="https://abcdefgh.supabase.co" value="${esc(s.url||'')}" autocomplete="off" autocapitalize="off" spellcheck="false">
+    <label class="f">Publishable key（或舊版 anon public）</label>
+    <input id="syKey" type="password" placeholder="sb_publishable_… 或 eyJhbGci…" value="${esc(s.key||'')}" autocomplete="off">
+    <label class="f">同步代碼（兩台裝置要一模一樣）</label>
+    <div class="row">
+      <input id="syCode" placeholder="按右邊產生" value="${esc(s.code||'')}" autocomplete="off">
+      <button class="btn sm" id="syGen">產生</button>
+    </div>
+    <p class="tiny" style="margin-top:8px">這串代碼等於你的密碼，別公開。第二台裝置設定時，前兩欄一樣、<b>同步代碼要填一模一樣的</b>，用「📋 複製整組設定」最快。</p>
+
+    <button class="btn pri full" id="syTest" style="margin-top:16px">儲存並測試連線</button>
+    <button class="btn full" id="syShare" style="margin-top:10px">📋 複製整組設定給另一台</button>
+    <button class="btn full" id="syPaste" style="margin-top:10px">📥 貼上另一台的設定</button>
+    <button class="btn gho full sm" id="syOff" style="margin-top:12px;color:var(--bad)">停用雲端同步</button>`);
+
+  $('#sqlCopy').onclick=async()=>{
+    try{ await navigator.clipboard.writeText(SQL_SNIPPET); toast('SQL 已複製'); }
+    catch(e){ const t=$('#sqlBox'); t.focus(); t.select(); toast('請長按選取後複製'); }
+  };
+  $('#syGen').onclick=()=>{
+    const a=new Uint8Array(18); crypto.getRandomValues(a);
+    $('#syCode').value='echo-'+[...a].map(b=>b.toString(36)).join('').slice(0,24);
+  };
+  const grab=()=>({url:$('#syUrl').value.trim(),key:$('#syKey').value.trim(),code:$('#syCode').value.trim()});
+  $('#syTest').onclick=async()=>{
+    const v=grab();
+    if(!v.url||!v.key||!v.code) return toast('三欄都要填');
+    v.url=v.url.replace(/\s+/g,'').replace(/\/+$/,'');
+    if(!/^https?:\/\//.test(v.url)) v.url='https://'+v.url;              // 忘了打 https:// 也沒關係
+    v.url=v.url.replace(/^http:/,'https:').replace(/(\.supabase\.co).*$/,'$1');
+    if(!/^https:\/\/[a-z0-9-]+\.supabase\.co$/i.test(v.url))
+      return toast('網址要長得像 https://abcdefgh.supabase.co，在 Supabase 的 Connect 或 Settings→API Keys 找得到',5000);
+    if(/service_role|^sb_secret_/.test(v.key))
+      return toast('這把是 Secret／service_role 金鑰，不能用。請改用 Publishable 或 anon public',5000);
+    $('#syUrl').value=v.url;
+    Object.assign(S.sync,v); save();
+    const b=$('#syTest'); b.innerHTML='<span class="spin"></span> 測試中…'; b.disabled=true;
+    const ok=await syncNow(true);
+    b.innerHTML='儲存並測試連線'; b.disabled=false;
+    if(ok){ closeSheet(); renderMe(); toast('雲端同步已啟用 ✅'); }
+    else toast(lastSyncMsg||'連線失敗',5000);
+  };
+  $('#syShare').onclick=async()=>{
+    const v=grab();
+    if(!v.url||!v.key||!v.code) return toast('請先填完三欄');
+    const code='ECHOSYNC1:'+b64enc(JSON.stringify(v));
+    try{ await navigator.clipboard.writeText(code); toast('已複製，傳到另一台貼上就好',3000); }
+    catch(e){ openSheet(`<h2 style="margin-top:0">同步設定碼</h2><textarea rows="5" readonly style="font-size:11px">${esc(code)}</textarea>`); }
+  };
+  $('#syPaste').onclick=()=>{
+    openSheet(`<h2 style="margin-top:0">貼上同步設定</h2>
+      <p class="muted" style="margin-top:0">貼上另一台複製的 <b>ECHOSYNC1:</b> 那串。</p>
+      <textarea id="spIn" rows="5" placeholder="ECHOSYNC1:…"></textarea>
+      <button class="btn pri full" id="spGo" style="margin-top:14px">套用並同步</button>`);
+    $('#spGo').onclick=async()=>{
+      try{
+        const v=JSON.parse(b64dec($('#spIn').value.trim().replace(/^ECHOSYNC1:/,'')));
+        if(!v.url||!v.key||!v.code) throw 0;
+        Object.assign(S.sync,v); save();
+        closeSheet();
+        const ok=await syncNow(false);
+        renderMe(); if(ok) toast('已連上，兩台裝置同步了 ✅',3000);
+      }catch(e){ toast('設定碼不正確'); }
+    };
+  };
+  $('#syOff').onclick=()=>{
+    S.sync={url:'',key:'',code:'',last:0,auto:true}; save();
+    closeSheet(); renderMe(); toast('已停用雲端同步（本機資料保留）');
+  };
+};
+
+function markBackedUp(){ S.lastBackup=Date.now(); save(); renderBackup(); }
+function renderBackup(){
+  const d=daysSince(S.lastBackup);
+  $('#backupWhen').textContent = S.lastBackup
+    ? `上次備份：${new Date(S.lastBackup).toLocaleDateString('zh-TW')}（${d} 天前）`
+    : '你還沒備份過。';
+  $('#backupWarn').innerHTML = backupDue()
+    ? `<div class="note" style="color:var(--bad);background:rgba(248,113,113,.1);margin:0 0 12px">
+         ⚠️ 超過 ${d} 天沒備份了。按下面「複製備份碼」，貼到備忘錄或傳給自己就好，10 秒的事。</div>`
+    : '';
+}
+
+$('#btnCopyCode').onclick=async()=>{
+  const code='ECHO1:'+b64enc(JSON.stringify(S));
+  try{
+    await navigator.clipboard.writeText(code);
+    markBackedUp();
+    toast('備份碼已複製，貼到備忘錄存著 ✅',3000);
+  }catch(e){
+    openSheet(`<h2 style="margin-top:0">備份碼</h2>
+      <p class="muted">長按下面的文字全選複製，貼到備忘錄或傳給自己。</p>
+      <textarea id="bkOut" rows="6" readonly style="font-size:12px;font-family:var(--mono,monospace)">${esc(code)}</textarea>
+      <button class="btn pri full" id="bkDone" style="margin-top:14px">我複製好了</button>`);
+    setTimeout(()=>{ const t=$('#bkOut'); if(t){ t.focus(); t.select(); } },150);
+    $('#bkDone').onclick=()=>{ markBackedUp(); closeSheet(); toast('已記錄備份時間'); };
+  }
+};
+
+$('#btnPasteCode').onclick=()=>{
+  openSheet(`<h2 style="margin-top:0">貼上備份碼還原</h2>
+    <p class="muted" style="margin-top:0">貼上以 <b>ECHO1:</b> 開頭的那串字。<span style="color:var(--bad)">還原會覆蓋這支手機目前的所有進度。</span></p>
+    <textarea id="bkIn" rows="6" placeholder="ECHO1:…" style="font-size:12px"></textarea>
+    <button class="btn pri full" id="bkGo" style="margin-top:14px">還原</button>
+    <button class="btn full" id="bkCancel" style="margin-top:10px">取消</button>`);
+  $('#bkCancel').onclick=closeSheet;
+  $('#bkGo').onclick=()=>{
+    const v=$('#bkIn').value.trim();
+    if(!v) return toast('請先貼上備份碼');
+    try{
+      const json=b64dec(v.replace(/^ECHO1:/,''));
+      const o=JSON.parse(json);
+      if(!o||typeof o!=='object'||!('prog' in o)) throw 0;
+      S=migrate(o); save();
+      closeSheet(); renderMe(); renderHome();
+      toast('還原成功 ✅',3000);
+    }catch(e){ toast('這串備份碼看起來不完整或不正確',3200); }
+  };
+};
+
+$('#btnExport').onclick=()=>{
+  const blob=new Blob([JSON.stringify(S,null,1)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='echo-backup-'+today()+'.json';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1500);
+  markBackedUp();
+  toast('已存成檔案，可放到「檔案」或雲端硬碟');
+};
+$('#btnImport').onclick=()=>$('#fileIn').click();
+$('#fileIn').addEventListener('change',e=>{
+  const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=()=>{
+    try{
+      const o=JSON.parse(r.result);
+      if(!o||typeof o!=='object') throw 0;
+      S=migrate(o); save();
+      renderMe(); renderHome(); toast('匯入成功');
+    }catch(err){ toast('檔案格式不對'); }
+  };
+  r.readAsText(f); e.target.value='';
+});
+$('#btnReset').onclick=()=>{
+  openSheet(`<h2 style="margin-top:0">清除全部資料？</h2>
+    <p class="muted">學習進度、自訂句子、API 金鑰都會被刪除，無法復原。建議先匯出備份。</p>
+    <button class="btn full" id="rNo" style="margin-top:14px">取消</button>
+    <button class="btn full" id="rYes" style="margin-top:10px;color:var(--bad)">確定清除</button>`);
+  $('#rNo').onclick=closeSheet;
+  $('#rYes').onclick=()=>{
+    localStorage.removeItem(KEY);
+    idbSet(KEY,'').catch(()=>{});
+    S=JSON.parse(JSON.stringify(DEFAULT));
+    closeSheet(); renderMe(); renderHome(); toast('已清除');
+  };
+};
+
+/* ======================================================================
+   底部彈出面板
+   ====================================================================== */
+function openSheet(html){ $('#sheetBox').innerHTML=html; $('#sheet').classList.add('on'); }
+function closeSheet(){ $('#sheet').classList.remove('on'); }
+$('#sheet').addEventListener('click',e=>{ if(e.target.id==='sheet') closeSheet(); });
+
+/* ======================================================================
+   啟動
+   ====================================================================== */
+renderHome();
+bootRestore();
+
+/* 開啟時拉一次；切回前景超過 3 分鐘也拉一次；離開時把進度推上去 */
+if(syncOn()&&S.sync.auto) setTimeout(()=>syncNow(true),900);
+let lastPull=Date.now();
+document.addEventListener('visibilitychange',()=>{
+  if(!syncOn()||!S.sync.auto) return;
+  if(document.hidden){ syncNow(true); }
+  else if(Date.now()-lastPull>18e4){ lastPull=Date.now(); syncNow(true); }
+});
+window.addEventListener('pagehide',()=>{ if(syncOn()&&S.sync.auto) syncNow(true); });
+// 請瀏覽器不要在空間不足時清掉我們的資料
+if(navigator.storage&&navigator.storage.persist) navigator.storage.persist().catch(()=>{});
+// 太久沒備份就提醒一次
+if(backupDue()) setTimeout(()=>toast('⚠️ 超過一週沒備份了，到「我的」按一下複製備份碼',4500),1800);
+
+/* ---------- 程式自動更新 ---------- */
+let swReg=null, waitingSW=null;
+function showUpdateBar(){
+  if($('#updBar')) return;
+  document.body.insertAdjacentHTML('beforeend',
+    `<div id="updBar"><span>有新版本可以更新</span><button id="updGo">立即更新</button></div>`);
+  $('#updGo').onclick=()=>{
+    $('#updGo').textContent='更新中…';
+    if(waitingSW) waitingSW.postMessage('SKIP_WAITING');
+    setTimeout(()=>location.reload(),700);
+  };
+}
+if('serviceWorker' in navigator && location.protocol==='https:'){
+  navigator.serviceWorker.register('sw.js').then(reg=>{
+    swReg=reg;
+    if(reg.waiting && navigator.serviceWorker.controller){ waitingSW=reg.waiting; showUpdateBar(); }
+    reg.addEventListener('updatefound',()=>{
+      const nw=reg.installing;
+      if(!nw) return;
+      nw.addEventListener('statechange',()=>{
+        if(nw.state==='installed' && navigator.serviceWorker.controller){ waitingSW=nw; showUpdateBar(); }
+      });
+    });
+    // 每次把 App 叫回前景就檢查一次有沒有新版
+    document.addEventListener('visibilitychange',()=>{ if(!document.hidden) reg.update().catch(()=>{}); });
+    setInterval(()=>reg.update().catch(()=>{}), 60*60*1000);
+  }).catch(()=>{});
+
+  let reloaded=false;
+  navigator.serviceWorker.addEventListener('controllerchange',()=>{
+    if(reloaded) return; reloaded=true; location.reload();
+  });
+}
+// 解鎖 iOS 語音（需使用者手勢）
+document.addEventListener('touchstart',function unlock(){
+  if('speechSynthesis' in window){ const u=new SpeechSynthesisUtterance(''); u.volume=0; try{speechSynthesis.speak(u);}catch(e){} }
+  document.removeEventListener('touchstart',unlock);
+},{once:true});
+</script>
+</body>
+</html>
