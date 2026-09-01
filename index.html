@@ -417,7 +417,7 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
    ====================================================================== */
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const KEY='echo.v1';
-const APPVER='echo-v15';   // 更新腳本會自動同步這個數字，用來確認手機跑的是哪一版
+const APPVER='echo-v16';   // 更新腳本會自動同步這個數字，用來確認手機跑的是哪一版
 
 /* ---------- 儲存 ---------- */
 const DEFAULT={
@@ -805,9 +805,10 @@ function grade(id,acc){
 const mastery=id=>{ const p=S.prog[id]; if(!p||!p.reps) return 0; return Math.min(100,Math.round(Math.min(p.int,30)/30*70 + p.best*0.3)); };
 
 /* ---------- 錯題本 ---------- */
-function wrongAdd(id,why){
+function wrongAdd(id,why,acc){
   const w=S.wrong[id]||{t:0,streak:0,why:''};
   w.t=Date.now(); w.streak=0; if(why) w.why=why;
+  if(typeof acc==='number') w.acc=acc;            // 記下這次的分數，之後出題用（分數越低越常出）
   S.wrong[id]=w; delete S.wrongGone[id]; save();
 }
 function wrongDel(id){ delete S.wrong[id]; S.wrongGone[id]=Date.now(); save(); }
@@ -816,7 +817,7 @@ function wrongHit(id,acc){
   if(acc>=85){
     S.wrong[id].streak=(S.wrong[id].streak||0)+1;
     if(S.wrong[id].streak>=2){ wrongDel(id); toast('這句從錯題本移除了 ✅'); }
-  } else S.wrong[id].streak=0;
+  } else { S.wrong[id].streak=0; S.wrong[id].acc=acc; }
   save();
 }
 const wrongIds=()=>Object.keys(S.wrong).filter(id=>allItems().some(i=>i.id===id));
@@ -1108,24 +1109,52 @@ function pool(){
     (F.lv==='all'||String(i.lv)===F.lv)
   );
 }
-/* 出題優先順序：該複習的錯題 > 沒看過 > 該複習了 > 還在休息期（越熟越後面）
-   目的：答對的句子要過很久才再出現，答錯的隔幾天再考、之後跟答對一樣慢慢拉長間隔，
-   同時穿插一些完全沒看過的句子——但都要等到真正「到期」才會被排進來，不是答錯就馬上再考一次 */
-function itemTier(i){
-  const p=S.prog[i.id];
-  if(p && isDue(i.id) && S.wrong[i.id]) return 0;
-  if(!p) return 1;
-  if(isDue(i.id)) return 2;
-  return 3;
+/* 出題組成：一回合約 7 成給「沒看過」的新句，約 3 成給錯題本裡的句子。
+   錯題用加權隨機挑選——分數越低越容易被抽到（低分到高分依機率出現）。
+   新句不夠時，先用「該複習了」的舊句補，再不夠才多給一點錯題。 */
+function wrongScore(id){
+  const w=S.wrong[id]||{}, p=S.prog[id]||{};
+  if(typeof w.acc==='number') return w.acc;      // 上次在這句拿的分數
+  if(typeof p.best==='number') return p.best;
+  return 50;
 }
-function itemFamiliarity(i){
-  const p=S.prog[i.id];
-  return p ? (p.int||0)*1000+(p.best||0) : 0;
+/* 依權重不放回抽樣 n 個 */
+function weightedPick(list,weightFn,n){
+  const src=list.slice(), out=[];
+  while(out.length<n && src.length){
+    let total=0; const ws=src.map(x=>{ const v=Math.max(0.001,weightFn(x)); total+=v; return v; });
+    let r=Math.random()*total, idx=0;
+    while(idx<src.length-1 && (r-=ws[idx])>0) idx++;
+    out.push(src.splice(idx,1)[0]);
+  }
+  return out;
 }
 function pickRound(items,len){
-  return shuffle(items.slice())
-    .sort((a,b)=> itemTier(a)-itemTier(b) || itemFamiliarity(a)-itemFamiliarity(b))
-    .slice(0,len);
+  const wrongSet=new Set(wrongIds());
+  const wrong  = items.filter(i=>wrongSet.has(i.id));
+  const unseen = items.filter(i=>!S.prog[i.id] && !wrongSet.has(i.id));
+  const seen   = items.filter(i=>S.prog[i.id]  && !wrongSet.has(i.id));
+
+  const wantWrong = Math.min(wrong.length, Math.round(len*0.3));  // 3 成錯題
+  const wantNew   = len - wantWrong;
+
+  let newPick = shuffle(unseen.slice()).slice(0, wantNew);
+  if(newPick.length < wantNew){                                    // 新句不夠，用該複習的舊句補
+    const fill = shuffle(seen.slice())
+      .sort((a,b)=> (isDue(b.id)?1:0)-(isDue(a.id)?1:0))
+      .slice(0, wantNew-newPick.length);
+    newPick = newPick.concat(fill);
+  }
+
+  let takeWrong = Math.min(wrong.length, wantWrong + (wantNew - newPick.length));
+  const wrongPick = weightedPick(wrong, i=> 105 - wrongScore(i.id), takeWrong);
+
+  let round = shuffle(newPick.concat(wrongPick));
+  if(round.length < len){                                          // 還湊不滿就用剩下的補
+    const used=new Set(round.map(i=>i.id));
+    round = round.concat(shuffle(items.filter(i=>!used.has(i.id))).slice(0, len-round.length));
+  }
+  return round.slice(0,len);
 }
 function renderHome(){
   // 模式
@@ -1367,7 +1396,7 @@ function showResult(said,forced){
     S.scores.push(acc); if(S.scores.length>100) S.scores.shift();
     if(acc<70){
       const miss=r.parts.filter(p=>p.s==='miss'||p.s==='near').map(p=>p.w).slice(0,4);
-      wrongAdd(cur.id, miss.length?('沒說對：'+miss.join(', ')):'口說分數偏低');
+      wrongAdd(cur.id, miss.length?('沒說對：'+miss.join(', ')):'口說分數偏低', acc);
     }
     wrongHit(cur.id,acc);
     bumpLog();
@@ -1568,7 +1597,7 @@ function clozeResult(gaveUp){
 
   grade(cur.id,acc);
   S.scores.push(acc); if(S.scores.length>100) S.scores.shift();
-  if(acc<70) wrongAdd(cur.id, gaveUp?'填空直接看答案':'填空答錯：'+inputs.filter(e=>e.classList.contains('no')).map(e=>e.dataset.w).join(', '));
+  if(acc<70) wrongAdd(cur.id, gaveUp?'填空直接看答案':'填空答錯：'+inputs.filter(e=>e.classList.contains('no')).map(e=>e.dataset.w).join(', '), acc);
   wrongHit(cur.id,acc);
   bumpLog(); save();
 
@@ -1629,7 +1658,7 @@ function stepBuild(){
     const sc=ok?100:r.acc;
     grade(cur.id,sc);
     S.scores.push(sc); if(S.scores.length>100) S.scores.shift();
-    if(sc<70) wrongAdd(cur.id,'句型重組排錯');
+    if(sc<70) wrongAdd(cur.id,'句型重組排錯', sc);
     wrongHit(cur.id,sc);
     bumpLog(); save();
     $('#cStage').innerHTML=`
