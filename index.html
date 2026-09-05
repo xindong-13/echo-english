@@ -192,6 +192,7 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
         <h2>練習模式</h2>
         <div class="chips" id="modeChips"></div>
         <p class="tiny" id="modeDesc" style="margin:11px 0 0"></p>
+        <div id="buildOpt" style="display:none;margin-top:11px"></div>
       </div>
 
       <div class="card">
@@ -417,7 +418,7 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
    ====================================================================== */
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const KEY='echo.v1';
-const APPVER='echo-v16';   // 更新腳本會自動同步這個數字，用來確認手機跑的是哪一版
+const APPVER='echo-v17';   // 更新腳本會自動同步這個數字，用來確認手機跑的是哪一版
 
 /* ---------- 儲存 ---------- */
 const DEFAULT={
@@ -438,6 +439,7 @@ const DEFAULT={
     keys:{gemini:'',anthropic:''},
     models:{gemini:'gemini-3.6-flash',anthropic:'claude-sonnet-5'},
     accent:'en-US',rate:0.9,len:10,autoJudge:true,
+    buildConfuse:false,                                // 重組句型：混淆模式（多塞用不到的字）
     goals:{translate:5,listen:5,cloze:10,build:5}      // 每個模式各自的每日目標
   }
 };
@@ -702,9 +704,30 @@ function allItems(){ return (window.BANK||[]).concat(S.custom||[]); }
    文字比對評分
    ====================================================================== */
 const NUMW={zero:'0',one:'1',two:'2',three:'3',four:'4',five:'5',six:'6',seven:'7',eight:'8',nine:'9',ten:'10'};
+/* 縮寫展開：you've ↔ you have、don't ↔ do not 都會被拉成同一種寫法，打縮寫或全寫都算對。
+   'd / 's 兩義（would/had、is/has）看後面的字判斷，判不出來就取較常見的。 */
+function expandContractions(s){
+  return String(s||'').replace(/[’‘`]/g,"'")
+    .replace(/\bwon't\b/gi,'will not')
+    .replace(/\bcan't\b/gi,'can not')
+    .replace(/\bshan't\b/gi,'shall not')
+    .replace(/\bain't\b/gi,'is not')
+    .replace(/\bcannot\b/gi,'can not')
+    .replace(/n't\b/gi,' not')
+    .replace(/'m\b/gi,' am')
+    .replace(/'re\b/gi,' are')
+    .replace(/'ve\b/gi,' have')
+    .replace(/'ll\b/gi,' will')
+    .replace(/'d\s+better\b/gi,' had better')
+    .replace(/'d\s+rather\b/gi,' would rather')
+    .replace(/'d\b/gi,' would')
+    .replace(/\blet's\b/gi,'let us')
+    .replace(/'s\s+(got|been|had)\b/gi,' has $1')
+    .replace(/'s\b/gi,' is')
+    .replace(/\s+/g,' ').trim();
+}
 function norm(s){
-  return String(s||'').toLowerCase()
-    .replace(/[’‘]/g,"'")
+  return expandContractions(s).toLowerCase()
     .replace(/[-–—]/g,' ')                 // ten-minute → ten minute
     .replace(/[^a-z0-9'\s]/g,' ')
     .replace(/\s+/g,' ').trim();
@@ -712,7 +735,7 @@ function norm(s){
 /* 每個字保留兩份：n 用來比對（正規化），r 用來顯示（原本的大小寫與撇號） */
 function tokens(s){
   const out=[];
-  String(s||'').replace(/[’‘]/g,"'").split(/[\s\-–—]+/).forEach(w=>{
+  expandContractions(s).split(/[\s\-–—]+/).forEach(w=>{
     const r=w.replace(/[^A-Za-z0-9']/g,'').replace(/^'+|'+$/g,'');
     if(!r) return;
     let n=r.toLowerCase().replace(/'/g,'');   // 撇號不列入比對，辨識常漏掉
@@ -1162,6 +1185,14 @@ function renderHome(){
   $$('#modeChips .chip').forEach(c=>c.onclick=()=>{F.mode=c.dataset.m;renderHome();});
   $('#modeDesc').textContent=MODES.find(m=>m.k===F.mode).d;
 
+  const bo=$('#buildOpt');
+  if(F.mode==='build'){
+    bo.style.display='';
+    bo.innerHTML=`<button class="chip ${S.set.buildConfuse?'on':''}" id="confuseChip">🎭 混淆模式${S.set.buildConfuse?'：開':''}</button>
+      <p class="tiny" style="margin:7px 0 0">開啟後題目會多幾個「用不到的字」，測你有沒有真的看懂句型；選到多餘的字就算排錯。</p>`;
+    $('#confuseChip').onclick=()=>{ S.set.buildConfuse=!S.set.buildConfuse; save(); renderHome(); };
+  } else bo.style.display='none';
+
   // 分類
   const cats=[['all','全部'],['daily','日常會話'],['travel','旅遊英文'],['vocab','單字強化']];
   $('#catChips').innerHTML=cats.map(([k,n])=>`<button class="chip ${F.cat===k?'on':''}" data-c="${k}">${n}</button>`).join('');
@@ -1237,7 +1268,7 @@ $('#btnWrongRun').onclick=()=>{
   const ids=wrongIds();
   if(!ids.length) return toast('錯題本是空的');
   Q=shuffle(allItems().filter(i=>ids.includes(i.id))).slice(0,+S.set.len);
-  qi=0; ROUND.wrongOnly=true;
+  qi=0; ROUND.wrongOnly=true; roundLogged.clear();
   $('#pHome').style.display='none'; $('#pRun').style.display='';
   step();
 };
@@ -1260,11 +1291,12 @@ $('#btnWrongList').onclick=()=>{
 };
 
 let Q=[],qi=0,cur=null;
+let roundLogged=new Set();     // 這一回合已計入「今日練習」的題目；重答同一題不重複計
 $('#btnStart').onclick=()=>{
   const p=pool();
   if(!p.length) return toast('這個範圍沒有句子');
   Q=pickRound(p,+S.set.len);
-  qi=0; ROUND.wrongOnly=false;
+  qi=0; ROUND.wrongOnly=false; roundLogged.clear();
   $('#pHome').style.display='none'; $('#pRun').style.display='';
   step();
 };
@@ -1277,6 +1309,9 @@ function endRound(){
 }
 
 function bumpLog(){
+  const key=F.mode+':'+(cur&&cur.id);
+  if(roundLogged.has(key)) return;     // 同一回合重答同一題不再計入今日練習／目標
+  roundLogged.add(key);
   const d=today();
   S.log[d]=(S.log[d]||0)+1;
   S.mlog[d]=S.mlog[d]||{};
@@ -1387,12 +1422,15 @@ function showResult(said,forced){
   const r=B.r;
   const acc = forced ? forced.acc : r.acc;
 
-  grade(cur.id,acc);
+  // 同一回合重答同一題：只顯示分數，不再計入練習次數、不再動間隔複習排程
+  const firstTry = !forced && !roundLogged.has(F.mode+':'+cur.id);
   if(forced){
     // AI 改判：修正剛剛那筆分數，不重複計入練習次數
+    grade(cur.id,acc);
     if(S.scores.length) S.scores[S.scores.length-1]=acc; else S.scores.push(acc);
     wrongDel(cur.id);
-  }else{
+  }else if(firstTry){
+    grade(cur.id,acc);
     S.scores.push(acc); if(S.scores.length>100) S.scores.shift();
     if(acc<70){
       const miss=r.parts.filter(p=>p.s==='miss'||p.s==='near').map(p=>p.w).slice(0,4);
@@ -1595,11 +1633,14 @@ function clozeResult(gaveUp){
   if(!gaveUp && clzHint) acc=Math.max(0,acc-clzHint*15);
   const allRight = right===total && !gaveUp;
 
-  grade(cur.id,acc);
-  S.scores.push(acc); if(S.scores.length>100) S.scores.shift();
-  if(acc<70) wrongAdd(cur.id, gaveUp?'填空直接看答案':'填空答錯：'+inputs.filter(e=>e.classList.contains('no')).map(e=>e.dataset.w).join(', '), acc);
-  wrongHit(cur.id,acc);
-  bumpLog(); save();
+  if(!roundLogged.has(F.mode+':'+cur.id)){    // 同一回合重填同一題不重複計
+    grade(cur.id,acc);
+    S.scores.push(acc); if(S.scores.length>100) S.scores.shift();
+    if(acc<70) wrongAdd(cur.id, gaveUp?'填空直接看答案':'填空答錯：'+inputs.filter(e=>e.classList.contains('no')).map(e=>e.dataset.w).join(', '), acc);
+    wrongHit(cur.id,acc);
+    bumpLog();
+  }
+  save();
 
   const wrongList=inputs.filter(e=>e.classList.contains('no'));
   $('#cStage').insertAdjacentHTML('beforeend',`
@@ -1627,12 +1668,21 @@ function clozeResult(gaveUp){
 }
 
 /* ---- 重組句型 ---- */
+const CONFUSE_WORDS=['really','actually','just','very','quite','maybe','perhaps','also','still','already','again','even','only','some','many','much','often','usually','suddenly','finally','probably','certainly','basically','totally','rather','fairly','pretty','almost','never','always','sometimes','today','tomorrow','yesterday','here','there','now','then','because','although','however','therefore','moreover','kind','sort','soon','later','once','instead'];
 function stepBuild(){
   const words=cur.en.split(/\s+/);
-  let picked=[], bank=shuffle(words.map((w,i)=>({w,i})));
+  const used=new Set(words.map(w=>w.toLowerCase().replace(/[^a-z']/g,'')));
+  let distractors=[];
+  if(S.set.buildConfuse){
+    const cands=shuffle(CONFUSE_WORDS.filter(w=>!used.has(w)));
+    const n=Math.min(1+Math.floor(Math.random()*3), cands.length); // 1~3 個
+    distractors=cands.slice(0,n).map((w,k)=>({w,i:-(k+1),d:true}));
+  }
+  let picked=[], bank=shuffle(words.map((w,i)=>({w,i})).concat(distractors));
   const draw=()=>{
     $('#cStage').innerHTML=`
       <div class="zh">${esc(cur.zh)}</div>
+      ${S.set.buildConfuse?'<div class="tiny" style="margin-top:6px;color:var(--tx3)">🎭 混淆模式：字庫裡混了用不到的字</div>':''}
       <div id="slot" style="min-height:58px;margin-top:16px;border-bottom:2px dashed var(--line);padding-bottom:10px;display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:center">
         ${picked.length?picked.map((p,k)=>`<button class="chip on" data-k="${k}">${esc(p.w)}</button>`).join(''):'<span class="muted">點下面的字排出句子</span>'}
       </div>
@@ -1656,16 +1706,21 @@ function stepBuild(){
     const ok = norm(ans)===norm(cur.en);
     const r=compare(cur.en,ans);
     const sc=ok?100:r.acc;
-    grade(cur.id,sc);
-    S.scores.push(sc); if(S.scores.length>100) S.scores.shift();
-    if(sc<70) wrongAdd(cur.id,'句型重組排錯', sc);
-    wrongHit(cur.id,sc);
-    bumpLog(); save();
+    const usedDecoys=picked.filter(p=>p.d).map(p=>p.w);
+    if(!roundLogged.has(F.mode+':'+cur.id)){    // 同一回合重排同一題不重複計
+      grade(cur.id,sc);
+      S.scores.push(sc); if(S.scores.length>100) S.scores.shift();
+      if(sc<70) wrongAdd(cur.id,'句型重組排錯', sc);
+      wrongHit(cur.id,sc);
+      bumpLog();
+    }
+    save();
     $('#cStage').innerHTML=`
       <div style="font-size:38px">${ok?'✅':'❌'}</div>
       <div class="en" style="margin-top:10px">${esc(cur.en)}</div>
       <div class="zh" style="font-size:15px;color:var(--tx2);margin-top:8px">${esc(cur.zh)}</div>
       ${ok?'':`<div class="tiny" style="margin-top:12px">你排的：${esc(ans)||'（空）'}</div>`}
+      ${usedDecoys.length?`<div class="tiny" style="margin-top:8px;color:#e55">⚠️ 選到了混淆字：${usedDecoys.map(esc).join('、')}</div>`:''}
       ${cur.note?`<div class="note">💡 ${esc(cur.note)}</div>`:''}`;
     $('#cControls').innerHTML=`
       <div class="row" style="margin-bottom:10px">
