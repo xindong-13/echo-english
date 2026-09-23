@@ -1,5 +1,5 @@
 /* Echo 英語 — Service Worker（離線快取 ＋ 自動更新） */
-const CACHE = 'echo-v17';
+const CACHE = 'echo-v18';
 const ASSETS = [
   './',
   './index.html',
@@ -7,6 +7,8 @@ const ASSETS = [
   './bank2.js',
   './bank3.js',
   './bank4.js',
+  './bank5.js',
+  './articles.js',
   './manifest.webmanifest',
   './icon-192.png',
   './icon-512.png'

@@ -125,7 +125,7 @@ input.blk.no{color:var(--bad);border-color:var(--bad);background:rgba(248,113,11
 
 /* 底部導覽 */
 nav{position:fixed;left:0;right:0;bottom:0;background:rgba(14,17,22,.93);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-top:1px solid var(--line);padding-bottom:var(--safe-b);z-index:50}
-nav .in{max-width:640px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
+nav .in{max-width:640px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr)}
 nav button{padding:9px 0 8px;font-size:11px;color:var(--tx3);display:flex;flex-direction:column;align-items:center;gap:3px}
 nav button svg{width:22px;height:22px;fill:currentColor}
 nav button.on{color:var(--ac)}
@@ -155,6 +155,23 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
 .syncdot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:1px}
 .spin{display:inline-block;width:14px;height:14px;border:2px solid #0003;border-top-color:currentColor;border-radius:50%;animation:sp .7s linear infinite}
 @keyframes sp{to{transform:rotate(360deg)}}
+
+/* 長文章閱讀 */
+.art{font-size:17px;line-height:1.8;text-align:left}
+.art .para{margin:0 0 16px}
+.art .para:last-child{margin-bottom:0}
+.sn{cursor:pointer;border-radius:5px;padding:1px 0;transition:background .15s}
+.sn.on{background:rgba(74,222,128,.2)}
+.sn.lo{text-decoration:underline dotted var(--bad);text-underline-offset:4px}
+.pz{font-size:14px;line-height:1.65;color:var(--tx2);margin-top:6px;padding-left:10px;border-left:2px solid var(--line)}
+.aitem{display:block;width:100%;text-align:left;border-bottom:1px solid var(--line);padding:12px 0}
+.aitem:last-child{border-bottom:0}
+.aitem b{display:block;font-size:15px;line-height:1.4}
+.aitem small{color:var(--tx2);font-size:13px}
+.qopt{display:block;width:100%;text-align:left;background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:7px;font-size:15px}
+.qopt.pick{border-color:var(--blue);background:rgba(96,165,250,.12)}
+.qopt.right{border-color:var(--ac);background:rgba(74,222,128,.14)}
+.qopt.wrong{border-color:var(--bad);background:rgba(248,113,113,.12)}
 </style>
 </head>
 <body>
@@ -218,6 +235,47 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
         <div class="stage" id="cStage"></div>
       </div>
       <div id="cControls"></div>
+    </div>
+  </section>
+
+  <!-- ============ 閱讀（長文章） ============ -->
+  <section class="view" id="v-read">
+    <div id="rdHome">
+      <div class="card">
+        <h2>長文章閱讀</h2>
+        <div class="stats" style="grid-template-columns:repeat(3,1fr)">
+          <div><b id="rdN">0</b><span>讀完的文章</span></div>
+          <div><b id="rdQ">–</b><span>測驗答對率</span></div>
+          <div><b id="rdS">–</b><span>跟讀平均分</span></div>
+        </div>
+        <p class="tiny" style="margin:12px 0 0">每篇都能：逐句點聽、朗讀全文、看中文對照、整篇跟讀評分、閱讀測驗，有設 AI 金鑰還能寫摘要讓 AI 批改。</p>
+      </div>
+      <div class="card">
+        <div class="chips" id="rdGenre" style="margin-bottom:9px"></div>
+        <div class="chips" id="rdLv"></div>
+      </div>
+      <div class="card">
+        <h2><span id="rdCount">0</span> 篇</h2>
+        <div id="rdList"></div>
+      </div>
+      <button class="btn purple full" id="btnArtGen">✨ 用 AI 產生新文章</button>
+      <button class="btn full" id="btnArtPaste" style="margin-top:10px">📋 貼上自己找的英文文章</button>
+      <p class="tiny" style="text-align:center;margin-top:10px">想練真的新聞？把英文新聞網站上的文章複製貼上就行。</p>
+    </div>
+
+    <div id="rdView" style="display:none">
+      <div class="row" style="margin-bottom:10px">
+        <button class="btn sm gho" id="rdBack" style="color:var(--tx2)">← 文章列表</button>
+        <div class="grow"></div>
+        <button class="btn sm gho" id="rdDel" style="color:var(--tx3);display:none">刪除</button>
+      </div>
+      <div class="card" style="padding-bottom:12px">
+        <div class="scene-tag" id="rdTag" style="margin-bottom:6px"></div>
+        <div style="font-size:21px;font-weight:700;line-height:1.35" id="rdTitle"></div>
+        <div class="muted" id="rdTitleZh" style="margin-top:4px"></div>
+        <div class="chips" id="rdTabs" style="margin-top:12px"></div>
+      </div>
+      <div id="rdBody"></div>
     </div>
   </section>
 
@@ -343,7 +401,7 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
         <option value="0">關閉 — 我自己按「🤔 我這樣說也對嗎？」</option>
       </select>
       <p class="tiny" style="margin-top:8px">開啟後，中翻英答案跟參考答案不同但意思正確時，AI 會改判為正確並把你的說法存起來，之後離線也算對。</p>
-      <p class="tiny" style="margin-top:10px">沒有金鑰也能用：發音比對評分、SRS 複習、錯題本、350 句題庫、五種練習模式都不需要 AI。兩家的金鑰可以各自存著，隨時切換。</p>
+      <p class="tiny" style="margin-top:10px">沒有金鑰也能用：發音比對評分、SRS 複習、錯題本、1000 句題庫、四種練習模式、長文章閱讀（朗讀、跟讀、測驗）都不需要 AI。兩家的金鑰可以各自存著，隨時切換。</p>
     </div>
 
     <div class="card">
@@ -380,7 +438,6 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
 
     <div class="card">
       <h2>備份與資料</h2>
-      <div id="backupWarn"></div>
       <p class="tiny" id="backupWhen" style="margin:0 0 12px"></p>
 
       <button class="btn pri full" id="btnCopyCode">📋 複製備份碼</button>
@@ -392,13 +449,14 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
       <button class="btn gho full sm" id="btnReset" style="margin-top:12px;color:var(--bad)">清除全部資料</button>
       <input type="file" id="fileIn" accept=".json" style="display:none">
       <p class="tiny" id="verLine" style="margin-top:14px;text-align:center;color:var(--tx3)"></p>
-      <p class="tiny" style="margin-top:12px">資料只存在這支手機，不會上傳。App 同時寫進兩個地方（localStorage 與 IndexedDB），其中一個被清掉還能自動救回，但<b>兩個一起被清就救不回來了</b>，所以每週複製一次備份碼貼到備忘錄最保險。換手機時貼上那串碼就能完整還原。</p>
+      <p class="tiny" style="margin-top:12px">資料只存在這支手機，不會上傳。App 同時寫進兩個地方（localStorage 與 IndexedDB），其中一個被清掉還能自動救回，但<b>兩個一起被清就救不回來了</b>，所以偶爾複製一次備份碼貼到備忘錄比較保險（App 不會再跳提醒，自己想到再按就好）。換手機時貼上那串碼就能完整還原。</p>
     </div>
   </section>
 </div>
 
 <nav><div class="in">
   <button data-v="practice" class="on"><svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z"/><path d="M19 11a1 1 0 1 0-2 0 5 5 0 0 1-10 0 1 1 0 1 0-2 0 7 7 0 0 0 6 6.92V21H8a1 1 0 1 0 0 2h8a1 1 0 1 0 0-2h-3v-3.08A7 7 0 0 0 19 11z"/></svg>練習</button>
+  <button data-v="read"><svg viewBox="0 0 24 24"><path d="M3 5.5A1.5 1.5 0 0 1 4.5 4H9a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4.5A1.5 1.5 0 0 1 3 16z"/><path d="M21 5.5A1.5 1.5 0 0 0 19.5 4H15a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5h5a1.5 1.5 0 0 0 1.5-1.5z" opacity=".55"/></svg>閱讀</button>
   <button data-v="library"><svg viewBox="0 0 24 24"><path d="M4 4h7v16H4zM13 4h7v16h-7z" opacity=".45"/><path d="M4 3h7a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm9 0h7a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1h-7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/></svg>題庫</button>
   <button data-v="tutor"><svg viewBox="0 0 24 24"><path d="M12 3c5 0 9 3.4 9 7.5S17 18 12 18a10 10 0 0 1-2.4-.3L5 20l1.2-3.3A8 8 0 0 1 3 10.5C3 6.4 7 3 12 3z"/></svg>導師</button>
   <button data-v="me"><svg viewBox="0 0 24 24"><path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9zm0 2c-4.4 0-8 2.4-8 5.3V21h16v-1.7c0-2.9-3.6-5.3-8-5.3z"/></svg>我的</button>
@@ -411,6 +469,8 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
 <script src="bank2.js"></script>
 <script src="bank3.js"></script>
 <script src="bank4.js"></script>
+<script src="bank5.js"></script>
+<script src="articles.js"></script>
 <script>
 'use strict';
 /* ======================================================================
@@ -418,7 +478,7 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
    ====================================================================== */
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const KEY='echo.v1';
-const APPVER='echo-v17';   // 更新腳本會自動同步這個數字，用來確認手機跑的是哪一版
+const APPVER='echo-v18';   // 更新腳本會自動同步這個數字，用來確認手機跑的是哪一版
 
 /* ---------- 儲存 ---------- */
 const DEFAULT={
@@ -433,6 +493,9 @@ const DEFAULT={
   mlog:{},          // 'YYYY-MM-DD' -> {模式: 次數}
   scores:[],        // 最近 100 次分數
   reports:[],       // 聊天總結報告
+  articles:[],      // AI 生成 / 自己貼上的長文章（格式同 articles.js）
+  reads:{},         // 文章 id -> {t,n,quiz:[答對,題數],sh:跟讀平均分}
+  artGone:{},       // 刪掉的文章 id -> 刪除時間（同步時避免被對面救回來）
   streak:0, lastDay:'',
   set:{
     provider:'gemini',
@@ -596,6 +659,12 @@ function mergeState(local,remote){
   const rep={}; [...(L.reports||[]),...(R.reports||[])].forEach(r=>{ if(r&&r.at) rep[r.at]=r; });
   m.reports=Object.values(rep).sort((a,b)=>b.at-a.at).slice(0,20);
 
+  // 長文章：依 id 聯集；閱讀紀錄取較新的那筆
+  m.artGone = maxObj(L.artGone,R.artGone,(a,b)=>Math.max(a,b));
+  const arts={}; [...(L.articles||[]),...(R.articles||[])].forEach(a=>{ if(a&&a.id&&!arts[a.id]&&!m.artGone[a.id]) arts[a.id]=a; });
+  m.articles=Object.values(arts);
+  m.reads = maxObj(L.reads,R.reads,(a,b)=>((b.t||0)>(a.t||0)?b:a));
+
   m.scores=[...(R.scores||[]),...(L.scores||[])].slice(-100);
   m.lastBackup=Math.max(L.lastBackup||0,R.lastBackup||0);
 
@@ -685,10 +754,6 @@ function b64dec(b){
   return new TextDecoder().decode(Uint8Array.from(s,c=>c.charCodeAt(0)));
 }
 const daysSince=t=>t?Math.floor((Date.now()-t)/864e5):999;
-function backupDue(){
-  const practiced=Object.values(S.log||{}).reduce((a,b)=>a+b,0);
-  return practiced>=20 && daysSince(S.lastBackup)>=7;
-}
 
 /* ---------- 小工具 ---------- */
 const today=()=>new Date().toLocaleDateString('sv');   // YYYY-MM-DD 本地時間
@@ -1104,6 +1169,8 @@ $$('nav button').forEach(b=>b.onclick=()=>{
   $$('nav button').forEach(x=>x.classList.toggle('on',x===b));
   $$('.view').forEach(v=>v.classList.toggle('on',v.id==='v-'+b.dataset.v));
   window.scrollTo(0,0);
+  if(b.dataset.v!=='read') rdStop();
+  if(b.dataset.v==='read') renderRead();
   if(b.dataset.v==='library') renderLib();
   if(b.dataset.v==='me') renderMe();
   if(b.dataset.v==='practice') renderHome();
@@ -1316,13 +1383,18 @@ function bumpLog(){
   S.log[d]=(S.log[d]||0)+1;
   S.mlog[d]=S.mlog[d]||{};
   S.mlog[d][F.mode]=(S.mlog[d][F.mode]||0)+1;
-  if(S.lastDay!==d){
-    const y=new Date(Date.now()-864e5).toLocaleDateString('sv');
-    S.streak = (S.lastDay===y)? (S.streak||0)+1 : 1;
-    S.lastDay=d;
-  }
+  touchStreak();
   save();
   checkGoal();
+}
+/* 今天有練習就把連續天數接上（練習題、讀文章都算） */
+function touchStreak(){
+  const d=today();
+  if(S.lastDay===d) return;
+  const y=new Date(Date.now()-864e5).toLocaleDateString('sv');
+  S.streak = (S.lastDay===y)? (S.streak||0)+1 : 1;
+  S.lastDay=d;
+  $('#streakPill').textContent='🔥 '+S.streak+' 天';
 }
 
 function step(){
@@ -1743,7 +1815,7 @@ async function aiFeedback(item,said,acc){
     openSheet(`<h2 style="margin-top:0">需要 API 金鑰</h2>
       <p class="muted">這個功能需要 AI。到「我的 → AI 設定」選一家並貼上金鑰即可，Google Gemini 有免費額度、不用信用卡。金鑰只會存在這支手機裡。</p>
       <button class="btn pri full" id="goSet" style="margin-top:14px">前往設定</button>`);
-    $('#goSet').onclick=()=>{ closeSheet(); $$('nav button')[3].click(); };
+    $('#goSet').onclick=()=>{ closeSheet(); $('nav button[data-v="me"]').click(); };
     return;
   }
 
@@ -2132,6 +2204,556 @@ ${avoid.map(s=>'- '+s).join('\n')}
 };
 
 /* ======================================================================
+   閱讀：長文章（內建 articles.js ＋ AI 生成 ＋ 自己貼上的文章）
+   ---------------------------------------------------------------------
+   文章格式：paras = [ [ [en,zh], [en,zh] ], ... ]  段落 → 句子。
+   逐句切好，點句朗讀、朗讀全文的高亮、跟讀評分都以「句」為單位。
+   ====================================================================== */
+const GENRES=['新聞','故事','科普','生活','觀點'];
+const allArticles=()=>(window.ARTICLES||[]).concat(S.articles||[]);
+const artById=id=>allArticles().find(a=>a.id===id);
+const artSents=a=>a.paras.flat();
+const artWords=a=>artSents(a).map(s=>s[0]).join(' ').split(/\s+/).filter(Boolean).length;
+const artHasZh=a=>artSents(a).some(s=>s[1]);
+const isOwnArt=a=>(S.articles||[]).some(x=>x.id===a.id);
+let RF={genre:'all',lv:'all'};
+let RD={id:null,tab:'read',zh:false,slow:false,playing:false,si:-1,sh:null,quiz:null};
+
+function rdStop(){
+  if(!RD.playing) return;
+  RD.playing=false;
+  if('speechSynthesis' in window) speechSynthesis.cancel();
+  const b=$('#rdPlay'); if(b) b.textContent='▶ 朗讀全文';
+}
+function markRead(id,patch){
+  const r=S.reads[id]||{t:0,n:0};
+  if(!patch||patch.first) r.n=(r.n||0)+1;
+  Object.assign(r,patch||{}); delete r.first;
+  r.t=Date.now(); S.reads[id]=r;
+  touchStreak(); save();
+}
+
+function renderRead(){
+  if(RD.id && artById(RD.id)) return renderArticle();
+  RD.id=null;
+  $('#rdHome').style.display=''; $('#rdView').style.display='none';
+
+  const reads=Object.entries(S.reads||{}).filter(([id])=>artById(id));
+  $('#rdN').textContent=reads.length;
+  const qz=reads.map(([,r])=>r.quiz).filter(Boolean);
+  const qc=qz.reduce((a,q)=>a+q[0],0), qn=qz.reduce((a,q)=>a+q[1],0);
+  $('#rdQ').textContent=qn?Math.round(qc/qn*100)+'%':'–';
+  const sh=reads.map(([,r])=>r.sh).filter(x=>typeof x==='number');
+  $('#rdS').textContent=sh.length?Math.round(sh.reduce((a,b)=>a+b,0)/sh.length):'–';
+
+  const hasOwn=(S.articles||[]).length>0;
+  const gs=[['all','全部'],...GENRES.map(g=>[g,g]),...(hasOwn?[['own','AI／我貼的']]:[])];
+  if(RF.genre==='own'&&!hasOwn) RF.genre='all';
+  $('#rdGenre').innerHTML=gs.map(([k,n])=>`<button class="chip ${RF.genre===k?'on':''}" data-g="${esc(k)}">${n}</button>`).join('');
+  $$('#rdGenre .chip').forEach(c=>c.onclick=()=>{RF.genre=c.dataset.g;renderRead();});
+  const lvs=[['all','不限'],['1','入門'],['2','中等'],['3','進階']];
+  $('#rdLv').innerHTML=lvs.map(([k,n])=>`<button class="chip ${RF.lv===k?'on':''}" data-l="${k}">${n}</button>`).join('');
+  $$('#rdLv .chip').forEach(c=>c.onclick=()=>{RF.lv=c.dataset.l;renderRead();});
+
+  const list=allArticles().filter(a=>
+    (RF.genre==='all' || (RF.genre==='own'?isOwnArt(a):a.genre===RF.genre)) &&
+    (RF.lv==='all' || String(a.lv)===RF.lv)
+  ).sort((a,b)=>(isOwnArt(b)?1:0)-(isOwnArt(a)?1:0) || (a.lv||2)-(b.lv||2));
+  $('#rdCount').textContent=list.length;
+  $('#rdList').innerHTML=list.length?list.map(a=>{
+    const r=S.reads[a.id];
+    const st=r ? `<span style="color:var(--ac)">✅ 讀過${r.n>1?' '+r.n+' 次':''}</span>${r.quiz?`　測驗 ${r.quiz[0]}/${r.quiz[1]}`:''}${typeof r.sh==='number'?`　跟讀 ${r.sh} 分`:''}` : '';
+    return `<button class="aitem" data-a="${esc(a.id)}">
+      <b>${esc(a.title)}</b>
+      <small>${esc(a.zh||'')}</small><br>
+      <small style="color:var(--tx3)">${esc(a.genre||'文章')}　·　${'★'.repeat(a.lv||2)}　·　${artWords(a)} 字${a.src==='paste'?'　·　我貼的':a.ai?'　·　AI':''}</small>
+      ${st?`<br><small>${st}</small>`:''}
+    </button>`;
+  }).join(''):'<p class="muted">這個範圍沒有文章</p>';
+  $$('#rdList .aitem').forEach(b=>b.onclick=()=>openArticle(b.dataset.a));
+}
+
+function openArticle(id){
+  rdStop();
+  RD={id,tab:'read',zh:false,slow:RD.slow,playing:false,si:-1,sh:null,quiz:null};
+  renderArticle(); window.scrollTo(0,0);
+}
+$('#rdBack').onclick=()=>{ rdStop(); stopListen(); RD.id=null; renderRead(); window.scrollTo(0,0); };
+$('#rdDel').onclick=()=>{
+  const a=artById(RD.id); if(!a||!isOwnArt(a)) return;
+  openSheet(`<h2 style="margin-top:0">刪除這篇文章？</h2>
+    <p class="muted">「${esc(a.title)}」會從這支手機（和雲端同步）移除，閱讀紀錄一起刪掉。</p>
+    <div class="row" style="margin-top:14px"><button class="btn grow" id="adNo">取消</button>
+    <button class="btn grow" id="adYes" style="color:var(--bad)">刪除</button></div>`);
+  $('#adNo').onclick=closeSheet;
+  $('#adYes').onclick=()=>{
+    S.articles=S.articles.filter(x=>x.id!==a.id); delete S.reads[a.id];
+    S.artGone[a.id]=Date.now(); save();
+    closeSheet(); RD.id=null; renderRead(); toast('已刪除');
+  };
+};
+
+function renderArticle(){
+  const a=artById(RD.id);
+  $('#rdHome').style.display='none'; $('#rdView').style.display='';
+  $('#rdTag').textContent=`${a.genre||'文章'}　·　${'★'.repeat(a.lv||2)}　·　${artWords(a)} 字　·　${artSents(a).length} 句`;
+  $('#rdTitle').textContent=a.title;
+  $('#rdTitleZh').textContent=a.zh||'';
+  $('#rdDel').style.display=isOwnArt(a)?'':'none';
+  const tabs=[['read','📖 閱讀'],['shadow','🎤 跟讀'],['quiz','❓ 測驗'],['sum','✍️ 摘要']];
+  $('#rdTabs').innerHTML=tabs.map(([k,n])=>`<button class="chip ${RD.tab===k?'on':''}" data-t="${k}">${n}</button>`).join('');
+  $$('#rdTabs .chip').forEach(c=>c.onclick=()=>{ rdStop(); stopListen(); RD.tab=c.dataset.t; renderArticle(); });
+  if(RD.tab==='shadow') rdShadow(a);
+  else if(RD.tab==='quiz') rdQuiz(a);
+  else if(RD.tab==='sum') rdSummary(a);
+  else rdReadView(a);
+}
+
+/* ---------- 📖 閱讀：點句朗讀、朗讀全文、中文對照 ---------- */
+function rdReadView(a){
+  const hasZh=artHasZh(a);
+  let n=0;
+  const low=(RD.sh&&RD.sh.low)||new Set();
+  const paras=a.paras.map((p,pi)=>{
+    const sents=p.map(s=>{ const i=n++; return `<span class="sn${low.has(i)?' lo':''}" data-s="${i}">${esc(s[0])}</span>`; }).join(' ');
+    const zh=p.map(s=>s[1]||'').join('');
+    return `<div class="para"><div>${sents}</div>
+      <div class="pz" data-pz="${pi}" style="${RD.zh&&zh?'':'display:none'}">${esc(zh)}</div></div>`;
+  }).join('');
+  $('#rdBody').innerHTML=`
+    <div class="card">
+      <div class="row wrap" style="gap:8px;margin-bottom:12px">
+        <button class="btn sm pri" id="rdPlay">${RD.playing?'⏸ 停止':'▶ 朗讀全文'}</button>
+        <button class="btn sm" id="rdSlow">🐢 慢速：${RD.slow?'開':'關'}</button>
+        ${hasZh?`<button class="btn sm" id="rdZh">中文：${RD.zh?'開':'關'}</button>`:''}
+      </div>
+      <p class="tiny" style="margin:0 0 12px">點任何一句可以單獨聽${hasZh?'，並看那句的中文':''}。從某句按「朗讀全文」會從那句開始唸。</p>
+      <div class="art" id="rdArt">${paras}</div>
+    </div>
+    ${(a.vocab&&a.vocab.length)?`<div class="card"><h2>重點單字</h2>
+      ${a.vocab.map((v,k)=>`<div class="item" style="padding:8px 0">
+        <button class="btn sm gho" style="padding:4px 8px" data-vw="${k}">🔊</button>
+        <div class="txt"><b>${esc(v[0])}</b><small>${esc(v[1]||'')}</small></div></div>`).join('')}</div>`:''}
+    <button class="btn pri full" id="rdNext">${(a.qs&&a.qs.length)?'讀完了，去做測驗 →':'✅ 讀完了'}</button>`;
+
+  const sents=artSents(a);
+  $$('#rdArt .sn').forEach(el=>el.onclick=()=>{
+    rdStop();
+    const i=+el.dataset.s; RD.si=i; rdHi(i);
+    speak(sents[i][0],{rate:RD.slow?0.65:undefined});
+    if(hasZh && !RD.zh){
+      const pz=el.closest('.para').querySelector('.pz');
+      pz.textContent=sents[i][1]||''; pz.style.display=sents[i][1]?'':'none';
+    }
+  });
+  $$('[data-vw]').forEach(b=>b.onclick=()=>speak(String(a.vocab[+b.dataset.vw][0]).replace(/（.*?）|\(.*?\)/g,'')));
+  $('#rdSlow').onclick=()=>{ RD.slow=!RD.slow; $('#rdSlow').textContent='🐢 慢速：'+(RD.slow?'開':'關'); };
+  const zb=$('#rdZh'); if(zb) zb.onclick=()=>{ RD.zh=!RD.zh; rdStop(); rdReadView(a); if(RD.si>=0) rdHi(RD.si); };
+  $('#rdPlay').onclick=()=>{
+    if(RD.playing){ rdStop(); return; }
+    RD.playing=true; $('#rdPlay').textContent='⏸ 停止';
+    const start=RD.si>=0&&RD.si<sents.length-1?RD.si:0;
+    const go=i=>{
+      if(!RD.playing||RD.id!==a.id) return;
+      if(i>=sents.length){ rdStop(); RD.si=-1; rdHi(-1); return; }
+      RD.si=i; rdHi(i,true);
+      speak(sents[i][0],{rate:RD.slow?0.65:undefined,onEnd:()=>setTimeout(()=>go(i+1),250)});
+    };
+    go(start);
+  };
+  $('#rdNext').onclick=()=>{
+    rdStop();
+    if(a.qs&&a.qs.length){ RD.tab='quiz'; renderArticle(); window.scrollTo(0,0); }
+    else { markRead(a.id); toast('已記錄為讀過 ✅'); RD.id=null; renderRead(); window.scrollTo(0,0); }
+  };
+}
+function rdHi(i,scroll){
+  $$('#rdArt .sn').forEach(el=>el.classList.toggle('on',+el.dataset.s===i));
+  if(scroll){ const el=$(`#rdArt .sn[data-s="${i}"]`); if(el) el.scrollIntoView({block:'center',behavior:'smooth'}); }
+}
+
+/* ---------- 🎤 跟讀：整篇一句一句說，逐句評分 ---------- */
+function rdShadow(a){
+  const sents=artSents(a);
+  if(!RD.sh) RD.sh={i:0,sc:{},hide:false,low:new Set()};
+  const sh=RD.sh;
+  if(sh.i>=sents.length) return rdShadowEnd(a);
+  const s=sents[sh.i];
+  $('#rdBody').innerHTML=`
+    <div class="prog"><i style="width:${sh.i/sents.length*100}%"></i></div>
+    <div class="card">
+      <div class="scene-tag">第 ${sh.i+1} / ${sents.length} 句${Object.keys(sh.sc).length?`　·　目前平均 ${rdAvg(sh)} 分`:''}</div>
+      <div class="stage" id="shStage" style="min-height:150px">
+        <div class="en ${sh.hide?'hidden':''}" style="font-size:20px">${esc(s[0])}</div>
+        ${s[1]?`<div class="muted" style="margin-top:10px">${esc(s[1])}</div>`:''}
+      </div>
+    </div>
+    <div class="card">
+      <div class="mic" id="shMic"><svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z"/><path d="M19 11a1 1 0 1 0-2 0 5 5 0 0 1-10 0 1 1 0 1 0-2 0 7 7 0 0 0 6 6.92V21H8a1 1 0 1 0 0 2h8a1 1 0 1 0 0-2h-3v-3.08A7 7 0 0 0 19 11z"/></svg></div>
+      <p class="muted" id="shHint" style="text-align:center;margin:11px 0 0">先聽一次，再點麥克風跟著說</p>
+      <div class="row wrap" style="margin-top:14px;justify-content:center">
+        <button class="btn sm" id="shPlay">🔊 播放</button>
+        <button class="btn sm" id="shSlow">🐢 慢速</button>
+        <button class="btn sm" id="shHide">${sh.hide?'👁 顯示原文':'🙈 蓋住原文'}</button>
+        <button class="btn sm" id="shType">⌨️ 用打的</button>
+      </div>
+    </div>
+    <div class="row" id="shRow">
+      <button class="btn gho grow sm" id="shPrev" style="color:var(--tx3)" ${sh.i?'':'disabled'}>← 上一句</button>
+      <button class="btn gho grow sm" id="shSkip" style="color:var(--tx3)">跳過 →</button>
+    </div>`;
+  $('#shPlay').onclick=()=>speak(s[0]);
+  $('#shSlow').onclick=()=>speak(s[0],{rate:0.62});
+  $('#shHide').onclick=()=>{ sh.hide=!sh.hide; rdShadow(a); };
+  $('#shType').onclick=()=>{
+    openSheet(`<h2 style="margin-top:0">用打的</h2>
+      <textarea id="shIn" rows="3" placeholder="Type the sentence…"></textarea>
+      <button class="btn pri full" id="shGo" style="margin-top:14px">送出比對</button>`);
+    setTimeout(()=>$('#shIn').focus(),120);
+    $('#shGo').onclick=()=>{ const v=$('#shIn').value.trim(); if(!v) return; closeSheet(); rdShadowResult(a,v); };
+  };
+  $('#shPrev').onclick=()=>{ stopListen(); sh.i=Math.max(0,sh.i-1); rdShadow(a); };
+  $('#shSkip').onclick=()=>{ stopListen(); sh.i++; rdShadow(a); window.scrollTo(0,0); };
+  $('#shMic').onclick=()=>{
+    const btn=$('#shMic'), hint=$('#shHint');
+    if(recActive){ stopListen(); return; }
+    if('speechSynthesis' in window) speechSynthesis.cancel();
+    btn.classList.add('rec'); hint.textContent='聽你說…（說完再點一次）';
+    listen({
+      onPartial:t=>{ hint.textContent=t||'聽你說…'; },
+      onDone:t=>{ btn.classList.remove('rec'); if(!t){ hint.textContent='沒聽到聲音，再試一次'; return; } rdShadowResult(a,t); },
+      onError:e=>{ btn.classList.remove('rec');
+        hint.innerHTML=e==='not-allowed'?'<span style="color:var(--bad)">麥克風被拒絕，可以改用「⌨️ 用打的」</span>'
+          : e==='no-speech'?'沒聽到聲音，再點一次試試':'<span style="color:var(--warn)">辨識失敗（'+esc(e)+'），可改用打字</span>'; }
+    });
+  };
+  if(!srSupported) $('#shHint').innerHTML='<span style="color:var(--warn)">這個瀏覽器不支援語音辨識，請用「⌨️ 用打的」</span>';
+  setTimeout(()=>{ if(RD.tab==='shadow'&&RD.id===a.id) speak(s[0]); },300);
+}
+const rdAvg=sh=>{ const v=Object.values(sh.sc); return v.length?Math.round(v.reduce((x,y)=>x+y,0)/v.length):0; };
+function rdShadowResult(a,said){
+  const sh=RD.sh, sents=artSents(a), s=sents[sh.i];
+  const r=compare(s[0],said), acc=r.acc;
+  sh.sc[sh.i]=Math.max(sh.sc[sh.i]||0,acc);
+  if(sh.sc[sh.i]<70) sh.low.add(sh.i); else sh.low.delete(sh.i);
+  touchStreak(); save();
+  const color=acc>=85?'var(--ac)':acc>=65?'var(--warn)':'var(--bad)';
+  $('#shStage').innerHTML=`
+    <div class="score"><b style="color:${color}">${acc}</b><span>分</span></div>
+    <div class="diff" style="font-size:18px">${renderDiff(r.parts)}</div>
+    <div style="margin-top:12px;text-align:left">
+      <div class="tiny">你說的</div><div class="muted">${esc(said)}</div>
+      ${s[1]?`<div class="tiny" style="margin-top:8px">中文</div><div class="muted">${esc(s[1])}</div>`:''}
+    </div>`;
+  const hint=$('#shHint'); if(hint) hint.textContent='可以再說一次，或按下一句';
+  $('#shRow').innerHTML=`<button class="btn grow" id="shAdd">➕ 加入題庫</button>
+    <button class="btn pri grow" id="shNext">下一句 →</button>`;
+  $('#shNext').onclick=()=>{ sh.i++; rdShadow(a); window.scrollTo(0,0); };
+  $('#shAdd').onclick=()=>rdAddSentence(a,sh.i);
+}
+function rdShadowEnd(a){
+  const sh=RD.sh, sents=artSents(a);
+  const done=Object.keys(sh.sc).length, avg=rdAvg(sh);
+  if(done) markRead(a.id,{sh:avg,first:!S.reads[a.id]});
+  const low=[...sh.low].sort((x,y)=>x-y);
+  $('#rdBody').innerHTML=`
+    <div class="card" style="text-align:center">
+      <div style="font-size:40px">🎤</div>
+      <div class="zh" style="margin-top:6px">整篇跟讀完成</div>
+      <p class="muted">說了 ${done} / ${sents.length} 句${done?`，平均 <b style="color:var(--ac)">${avg}</b> 分`:''}</p>
+    </div>
+    ${low.length?`<div class="card"><h2>低於 70 分的句子（${low.length}）</h2>
+      <p class="tiny" style="margin:0 0 8px">加進題庫後，這些句子就會出現在一般練習和 SRS 複習裡。</p>
+      ${low.map(i=>`<div class="item">
+        <button class="btn sm gho" style="padding:6px 8px" data-lp="${i}">🔊</button>
+        <div class="txt"><b style="font-size:14px">${esc(sents[i][0])}</b><small>${sh.sc[i]} 分</small></div>
+        <button class="btn sm" data-la="${i}">➕</button></div>`).join('')}
+      <button class="btn full sm" id="shAddAll" style="margin-top:10px">全部加進題庫</button></div>`:''}
+    <button class="btn full" id="shAgain">🔁 再跟讀一次</button>
+    <button class="btn pri full" id="shQuiz" style="margin-top:10px">${(a.qs&&a.qs.length)?'去做測驗 →':'回文章列表'}</button>`;
+  $$('[data-lp]').forEach(b=>b.onclick=()=>speak(sents[+b.dataset.lp][0]));
+  $$('[data-la]').forEach(b=>b.onclick=()=>{ rdAddSentence(a,+b.dataset.la); b.disabled=true; });
+  const all=$('#shAddAll'); if(all) all.onclick=()=>{ const n=low.filter(i=>rdAddSentence(a,i,true)).length; all.disabled=true; toast(n?`加入了 ${n} 句`:'這些句子已經在題庫裡了'); };
+  $('#shAgain').onclick=()=>{ RD.sh=null; rdShadow(a); window.scrollTo(0,0); };
+  $('#shQuiz').onclick=()=>{ if(a.qs&&a.qs.length){ RD.tab='quiz'; renderArticle(); } else { RD.id=null; renderRead(); } window.scrollTo(0,0); };
+}
+/* 把文章裡的一句加進自訂題庫（之後一般練習、SRS、錯題本都會用到） */
+function rdAddSentence(a,i,quiet){
+  const s=artSents(a)[i]; if(!s) return false;
+  const key=norm(s[0]);
+  if(allItems().some(x=>norm(x.en)===key)){ if(!quiet) toast('這句已經在題庫裡了'); return false; }
+  if(!s[1]){ if(!quiet) toast('這句沒有中文翻譯，沒辦法出成中翻英題'); return false; }
+  const wc=s[0].split(/\s+/).length;
+  S.custom.push({id:'r'+Date.now().toString(36)+i,en:s[0],zh:s[1],cat:'daily',sc:'文章句',lv:wc>14?3:wc>8?2:1,note:'出自文章：'+a.title.slice(0,40)});
+  save(); if(!quiet) toast('已加入題庫 ✅');
+  return true;
+}
+
+/* ---------- ❓ 測驗：選擇題，選項每次打亂 ---------- */
+function rdQuiz(a){
+  const qs=a.qs||[];
+  if(!qs.length){
+    $('#rdBody').innerHTML=`<div class="card"><p class="muted" style="margin:0">這篇還沒有測驗題。</p>
+      ${hasKey()?`<button class="btn purple full" id="qzGen" style="margin-top:14px">✨ 請 AI 出幾題</button>`
+        :`<p class="tiny" style="margin-top:10px">到「我的 → AI 設定」設好金鑰，就能請 AI 幫這篇出題。</p>`}</div>`;
+    const g=$('#qzGen'); if(g) g.onclick=()=>rdGenQuiz(a,g);
+    return;
+  }
+  if(!RD.quiz||RD.quiz.id!==a.id) RD.quiz={id:a.id,ord:qs.map(q=>shuffle(q.o.map((_,k)=>k))),pick:{},done:false};
+  const Z=RD.quiz;
+  const right=qs.filter((q,k)=>Z.pick[k]===q.a).length;
+  $('#rdBody').innerHTML=`
+    ${Z.done?`<div class="card" style="text-align:center"><div class="score" style="margin:0"><b style="color:${right===qs.length?'var(--ac)':right>=qs.length/2?'var(--warn)':'var(--bad)'}">${right} / ${qs.length}</b><span>題答對</span></div></div>`:''}
+    ${qs.map((q,k)=>`<div class="card">
+      <div style="font-weight:600;line-height:1.5">${k+1}. ${esc(q.q)}</div>
+      ${q.zh?`<div class="tiny" style="margin-top:2px">${esc(q.zh)}</div>`:''}
+      ${Z.ord[k].map(oi=>{
+        let c='';
+        if(Z.done){ if(oi===q.a) c='right'; else if(Z.pick[k]===oi) c='wrong'; }
+        else if(Z.pick[k]===oi) c='pick';
+        return `<button class="qopt ${c}" data-q="${k}" data-o="${oi}">${esc(q.o[oi])}</button>`;
+      }).join('')}
+    </div>`).join('')}
+    ${Z.done
+      ? `<div class="row"><button class="btn grow" id="qzRe">🔁 重做</button><button class="btn grow" id="qzRead">📖 回去看文章</button></div>
+         <button class="btn pri full" id="qzBack" style="margin-top:10px">回文章列表</button>`
+      : `<button class="btn pri full" id="qzGo">交卷</button>`}`;
+  if(!Z.done) $$('.qopt').forEach(b=>b.onclick=()=>{ Z.pick[+b.dataset.q]=+b.dataset.o; rdQuiz(a); });
+  const go=$('#qzGo'); if(go) go.onclick=()=>{
+    if(Object.keys(Z.pick).length<qs.length) return toast('還有題目沒選');
+    Z.done=true;
+    const c=qs.filter((q,k)=>Z.pick[k]===q.a).length;
+    markRead(a.id,{quiz:[c,qs.length],first:true});
+    rdQuiz(a); window.scrollTo(0,0);
+  };
+  const re=$('#qzRe'); if(re) re.onclick=()=>{ RD.quiz=null; rdQuiz(a); window.scrollTo(0,0); };
+  const rr=$('#qzRead'); if(rr) rr.onclick=()=>{ RD.tab='read'; renderArticle(); window.scrollTo(0,0); };
+  const bk=$('#qzBack'); if(bk) bk.onclick=()=>{ RD.id=null; renderRead(); window.scrollTo(0,0); };
+}
+async function rdGenQuiz(a,btn){
+  btn.disabled=true; btn.innerHTML='<span class="spin"></span> 出題中…';
+  try{
+    const text=a.paras.map(p=>p.map(s=>s[0]).join(' ')).join('\n\n');
+    const J=jsonFrom(await claude([{role:'user',content:
+`以下是一篇英文文章。請出 4 題英文閱讀理解選擇題，給母語繁體中文的學習者練習。
+每題 4 個選項，只有一個正確；考主旨、細節、字義、推論都要有。只輸出 JSON 陣列：
+[{"q":"英文題目","zh":"題目的繁體中文翻譯","o":["選項A","選項B","選項C","選項D"],"a":正確選項索引(0-3)}]
+
+文章：
+${text}`}],{max:2000,temperature:0.4}));
+    const qs=rdCleanQs(J);
+    if(!qs.length) throw new Error('AI 出的題目格式不對，請再試一次');
+    a.qs=qs; save(); RD.quiz=null; rdQuiz(a);
+  }catch(e){ btn.disabled=false; btn.textContent='✨ 請 AI 出幾題'; toast('失敗：'+e.message,3200); }
+}
+function rdCleanQs(arr){
+  return (Array.isArray(arr)?arr:[]).filter(q=>q&&q.q&&Array.isArray(q.o)&&q.o.length>=2&&Number.isInteger(+q.a)&&+q.a>=0&&+q.a<q.o.length)
+    .map(q=>({q:String(q.q),zh:q.zh?String(q.zh):'',o:q.o.map(String),a:+q.a})).slice(0,8);
+}
+
+/* ---------- ✍️ 摘要：用英文寫／說摘要，AI 批改 ---------- */
+function rdSummary(a){
+  const last=(S.reads[a.id]||{}).sum||'';
+  $('#rdBody').innerHTML=`
+    <div class="card">
+      <h2>用英文寫摘要</h2>
+      <p class="tiny" style="margin:0 0 10px">用 3～5 句英文說說這篇在講什麼。AI 會看你有沒有抓到重點、文法用字哪裡可以更好，最後給你一段範例摘要。可以打字，也可以按麥克風用說的。</p>
+      <textarea id="smIn" rows="6" placeholder="This article is about…">${esc(last)}</textarea>
+      <div class="row" style="margin-top:10px">
+        <button class="btn grow" id="smMic">🎤 用說的</button>
+        <button class="btn purple grow" id="smGo">✨ 請 AI 批改</button>
+      </div>
+      ${hasKey()?'':'<p class="tiny" style="margin-top:10px">需要在「我的 → AI 設定」設定 AI 金鑰，Gemini 免費。</p>'}
+    </div>
+    <div id="smOut"></div>`;
+  $('#smMic').onclick=()=>{
+    const b=$('#smMic');
+    if(recActive){ stopListen(); return; }
+    b.textContent='⏺ 聽你說…（再按一次停止）';
+    const base=$('#smIn').value.trim();
+    listen({
+      onPartial:t=>{ $('#smIn').value=(base?base+' ':'')+t; },
+      onDone:t=>{ b.textContent='🎤 用說的'; if(t) $('#smIn').value=(base?base+' ':'')+t; },
+      onError:e=>{ b.textContent='🎤 用說的'; toast(e==='not-allowed'?'麥克風被拒絕，請改用打字':'辨識失敗，可以改用打字'); }
+    });
+  };
+  $('#smGo').onclick=async()=>{
+    const v=$('#smIn').value.trim();
+    if(v.split(/\s+/).length<8) return toast('至少寫一兩句完整的英文再送出');
+    if(!hasKey()) return toast('請先到「我的 → AI 設定」設定金鑰（Gemini 免費）');
+    stopListen();
+    const r=S.reads[a.id]||{}; r.sum=v; S.reads[a.id]=r; save();
+    const btn=$('#smGo'); btn.disabled=true; btn.innerHTML='<span class="spin"></span> 批改中…';
+    $('#smOut').innerHTML='';
+    try{
+      const text=a.paras.map(p=>p.map(s=>s[0]).join(' ')).join('\n\n');
+      const txt=await claude([{role:'user',content:
+`文章標題：${a.title}
+文章內容：
+${text}
+
+學習者（母語繁體中文）寫的英文摘要（可能來自語音辨識，請忽略標點大小寫）：
+「${v}」
+
+請用繁體中文回饋，格式如下，不要開場白：
+【理解】他有沒有抓到文章重點？漏了什麼重要資訊或有沒有誤解？（2～3 句）
+【語言】最多 4 點文法或用字問題，每點寫：原句片段 → 修正，加一句說明。沒問題就說哪裡用得好。
+【改寫】把他的摘要改成自然正確的英文版本（保留他的意思與程度，不要大改）。
+【範例摘要】一段 3～4 句、程度適中的英文範例摘要，附中文翻譯。
+【分數】理解 x/10，語言 x/10`}],
+        {system:'你是嚴謹但溫和的英文閱讀與寫作老師，學生母語是繁體中文（台灣）。回饋要具體、可執行。',max:1500});
+      const m=txt.match(/理解\s*(\d+)\s*\/\s*10/);
+      if(m){ const rr=S.reads[a.id]||{}; rr.sumScore=+m[1]; }
+      markRead(a.id,{first:!S.reads[a.id]||!S.reads[a.id].n});
+      $('#smOut').innerHTML=`<div class="card"><h2>AI 批改</h2>
+        <div style="white-space:pre-wrap;line-height:1.75;font-size:15px">${esc(txt)}</div></div>`;
+    }catch(e){
+      $('#smOut').innerHTML=`<div class="card"><p class="muted" style="margin:0">失敗：${esc(e.message==='NOKEY'?'請先設定 API 金鑰':e.message)}</p></div>`;
+    }
+    btn.disabled=false; btn.textContent='✨ 請 AI 批改';
+  };
+}
+
+/* ---------- 文章整理：切段、切句、清理 AI 回傳的格式 ---------- */
+function splitSentences(t){
+  // U.S.、e.g. 這種縮寫中間的點先換成暫代符號，切完句再換回來
+  const s=String(t||'').replace(/\s+/g,' ').trim().replace(/\b([A-Za-z])\.(?=[A-Za-z]\.)/g,'$1․');
+  if(!s) return [];
+  const raw=(s.match(/[^.!?]+(?:[.!?]+["'”’)\]]*|$)/g)||[s]).map(x=>x.trim()).filter(Boolean);
+  const out=[];
+  raw.forEach(x=>{
+    const prev=out[out.length-1];
+    if(prev && /\d\.$/.test(prev) && /^\d/.test(x)) out[out.length-1]=prev+x;                     // 3.5 這種小數
+    else if(prev && (/\b(Mr|Mrs|Ms|Dr|St|Jr|Sr|vs|etc|No|Inc|Co|[A-Z])\.$/.test(prev) || /^[a-z,;:]/.test(x))) out[out.length-1]=prev+' '+x;
+    else out.push(x);
+  });
+  return out.map(x=>x.replace(/․/g,'.'));
+}
+function textToParas(text){
+  return String(text||'').replace(/\r/g,'').split(/\n+/).map(p=>splitSentences(p)).filter(p=>p.length).map(p=>p.map(s=>[s,'']));
+}
+/* AI 回傳的段落可能是 [[en,zh]]、[{en,zh}] 或字串，全部整理成 [[en,zh]] */
+function cleanParas(ps){
+  return (Array.isArray(ps)?ps:[]).map(p=>(Array.isArray(p)?p:[p]).map(s=>{
+    if(Array.isArray(s)) return [String(s[0]||'').trim(),String(s[1]||'').trim()];
+    if(s&&typeof s==='object') return [String(s.en||'').trim(),String(s.zh||'').trim()];
+    return [String(s||'').trim(),''];
+  }).filter(s=>s[0])).filter(p=>p.length);
+}
+function cleanVocab(v){
+  return (Array.isArray(v)?v:[]).map(x=>Array.isArray(x)?[String(x[0]||''),String(x[1]||'')]:(x&&x.w)?[String(x.w),String(x.zh||'')]:null)
+    .filter(x=>x&&x[0]).slice(0,15);
+}
+function saveArticle(o){
+  S.articles=S.articles||[];
+  S.articles.unshift(o); save();
+  RF.genre='all'; openArticle(o.id);
+}
+
+/* ---------- ✨ AI 產生新文章 ---------- */
+$('#btnArtGen').onclick=()=>{
+  openSheet(`<h2 style="margin-top:0">AI 產生新文章</h2>
+    <p class="muted" style="margin-top:0">AI 會寫一篇逐句附中文的文章，加上重點單字和測驗題，存在手機裡離線也能讀。</p>
+    <label class="f">類型</label>
+    <select id="agGenre">${GENRES.map(g=>`<option>${g}</option>`).join('')}</select>
+    <label class="f">主題（可留空，讓 AI 自己挑）</label>
+    <input id="agTopic" placeholder="例如：遠距工作、台灣夜市、太空旅行、一個關於貓的故事" autocomplete="off">
+    <label class="f">難度</label>
+    <select id="agLv"><option value="1">入門 — 短句、常用字</option><option value="2" selected>中等 — 一般新聞／雜誌程度</option><option value="3">進階 — 較長句子、較難的字彙</option></select>
+    <label class="f">長度</label>
+    <select id="agLen"><option value="150">短（約 150 字）</option><option value="250" selected>中（約 250 字）</option><option value="400">長（約 400 字）</option></select>
+    <button class="btn purple full" id="agGo" style="margin-top:16px">產生</button>
+    <p class="tiny" style="margin-top:10px">「新聞」類是 AI 寫的新聞風格練習文，內容是虛構的，不是真實新聞。想讀真新聞請用「📋 貼上自己找的英文文章」。</p>`);
+  $('#agGo').onclick=async()=>{
+    if(!hasKey()) return toast('請先到「我的 → AI 設定」設定金鑰（Gemini 免費）');
+    const genre=$('#agGenre').value, topic=$('#agTopic').value.trim(), lv=+$('#agLv').value, len=+$('#agLen').value;
+    const btn=$('#agGo'); btn.disabled=true; btn.innerHTML='<span class="spin"></span> 寫文章中…（約 20～40 秒）';
+    const have=allArticles().map(a=>a.title).slice(0,40);
+    try{
+      const txt=await claude([{role:'user',content:
+`請為母語繁體中文（台灣）的英文學習者寫一篇英文閱讀文章。
+類型：${genre}${genre==='新聞'?'（新聞報導的寫法：導言、背景、引述、後續發展；人物地名用虛構的，不要寫成真實事件）':''}
+主題：${topic||'你自己挑一個有趣、生活化、不重複的主題'}
+難度：${lv===1?'入門（CEFR A2，短句、常用字）':lv===2?'中等（CEFR B1～B2）':'進階（CEFR B2～C1，較長句子與較豐富字彙）'}
+長度：約 ${len} 個英文字，分 4～6 段
+避免跟這些既有文章重複：${have.join('; ')}
+
+只輸出 JSON，不要 markdown：
+{"title":"英文標題","zh":"繁體中文標題",
+ "paras":[[["英文句子","這句的繁體中文翻譯"],["下一句","翻譯"]],[["第二段第一句","翻譯"]]],
+ "vocab":[["單字或片語","中文意思"]],
+ "qs":[{"q":"英文閱讀理解題","zh":"題目中文","o":["選項A","選項B","選項C","選項D"],"a":正確選項索引0-3}]}
+要求：paras 每個元素是一段，段落裡每個元素是「一句」英文和它的中文；vocab 6～10 個；qs 4 題，考主旨、細節和字義。`}],
+        {max:8000,temperature:0.8});
+      const J=jsonFrom(txt);
+      const paras=cleanParas(J.paras);
+      if(!paras.length||!J.title) throw new Error('AI 回傳的文章格式不對，請再試一次');
+      saveArticle({id:'ga'+Date.now().toString(36),title:String(J.title),zh:String(J.zh||''),genre,lv,ai:true,
+        paras,vocab:cleanVocab(J.vocab),qs:rdCleanQs(J.qs)});
+      closeSheet(); toast('文章寫好了 ✅');
+    }catch(e){
+      btn.disabled=false; btn.textContent='產生';
+      toast(e.message==='NOKEY'?'請先設定 API 金鑰':('失敗：'+e.message),3500);
+    }
+  };
+};
+
+/* ---------- 📋 貼上自己找的文章（真實新聞、部落格、課本都行） ---------- */
+$('#btnArtPaste').onclick=()=>{
+  openSheet(`<h2 style="margin-top:0">貼上英文文章</h2>
+    <p class="muted" style="margin-top:0">從新聞網站、部落格、電子報複製一段英文貼進來，App 會自動切成一句一句，能點句朗讀和整篇跟讀。</p>
+    <label class="f">標題（可留空）</label>
+    <input id="apTitle" placeholder="例如：BBC 上看到的一篇報導" autocomplete="off">
+    <label class="f">內容</label>
+    <textarea id="apText" rows="9" placeholder="Paste the English text here…"></textarea>
+    <label class="f" style="display:flex;align-items:center;gap:8px;margin-top:12px">
+      <input type="checkbox" id="apAI" style="width:auto" ${hasKey()?'checked':''}> 用 AI 加上逐句中文、重點單字和測驗題
+    </label>
+    <label class="f">類型</label>
+    <select id="apGenre">${GENRES.map(g=>`<option>${g}</option>`).join('')}</select>
+    <button class="btn pri full" id="apGo" style="margin-top:16px">存起來開始讀</button>
+    <p class="tiny" style="margin-top:10px">文章只存在你自己的手機（和你的雲端同步），不會分享給別人。太長的文章只取前 80 句。</p>`);
+  $('#apGo').onclick=async()=>{
+    const text=$('#apText').value.trim();
+    let paras=textToParas(text);
+    if(!paras.length||artWords({paras})<20) return toast('內容太短了，至少貼一段完整的英文');
+    let n=0; paras=paras.map(p=>p.filter(()=>n++<80)).filter(p=>p.length);
+    const genre=$('#apGenre').value, useAI=$('#apAI').checked;
+    const words=artWords({paras});
+    const o={id:'pa'+Date.now().toString(36),title:$('#apTitle').value.trim()||paras[0][0][0].slice(0,60),zh:'',genre,
+      lv:words>350?3:2,src:'paste',paras,vocab:[],qs:[]};
+    if(useAI){
+      if(!hasKey()) return toast('請先到「我的 → AI 設定」設定金鑰，或取消勾選 AI');
+      const btn=$('#apGo'); btn.disabled=true; btn.innerHTML='<span class="spin"></span> AI 翻譯中…（長文章要等一下）';
+      const flat=artSents(o).map(s=>s[0]);
+      try{
+        const J=jsonFrom(await claude([{role:'user',content:
+`下面是一篇英文文章，已經切成編號的句子。請幫母語繁體中文（台灣）的學習者：
+1. 把每一句翻成自然的繁體中文（台灣用語），順序和數量要跟原文完全一樣，共 ${flat.length} 句
+2. 挑 6～10 個值得學的單字或片語
+3. 出 4 題英文閱讀理解選擇題
+4. 判斷難度 1（入門）、2（中等）、3（進階）
+
+只輸出 JSON，不要 markdown：
+{"title":"英文標題（原文沒有就幫它下一個）","zh":"繁體中文標題","lv":2,"zh_sents":["第1句翻譯","第2句翻譯"],
+ "vocab":[["單字","中文"]],"qs":[{"q":"英文題目","zh":"題目中文","o":["A","B","C","D"],"a":0}]}
+
+${flat.map((s,i)=>(i+1)+'. '+s).join('\n')}`}],{max:8000,temperature:0.3}));
+        const zs=Array.isArray(J.zh_sents)?J.zh_sents:[];
+        let k=0; o.paras=o.paras.map(p=>p.map(s=>[s[0],String(zs[k++]||'')]));
+        if(!$('#apTitle').value.trim()&&J.title) o.title=String(J.title);
+        o.zh=String(J.zh||''); if([1,2,3].includes(+J.lv)) o.lv=+J.lv;
+        o.vocab=cleanVocab(J.vocab); o.qs=rdCleanQs(J.qs);
+      }catch(e){
+        btn.disabled=false; btn.textContent='存起來開始讀';
+        return toast((e.message==='NOKEY'?'請先設定 API 金鑰':'AI 失敗：'+e.message)+'。可以取消勾選 AI 先存起來',4000);
+      }
+    }
+    closeSheet(); saveArticle(o); toast('已存起來 ✅');
+  };
+};
+
+/* ======================================================================
    我的
    ====================================================================== */
 function renderMe(){
@@ -2398,10 +3020,6 @@ function renderBackup(){
   $('#backupWhen').textContent = S.lastBackup
     ? `上次備份：${new Date(S.lastBackup).toLocaleDateString('zh-TW')}（${d} 天前）`
     : '你還沒備份過。';
-  $('#backupWarn').innerHTML = backupDue()
-    ? `<div class="note" style="color:var(--bad);background:rgba(248,113,113,.1);margin:0 0 12px">
-         ⚠️ 超過 ${d} 天沒備份了。按下面「複製備份碼」，貼到備忘錄或傳給自己就好，10 秒的事。</div>`
-    : '';
 }
 
 $('#btnCopyCode').onclick=async()=>{
@@ -2503,8 +3121,6 @@ document.addEventListener('visibilitychange',()=>{
 window.addEventListener('pagehide',()=>{ if(syncOn()&&S.sync.auto) syncNow(true); });
 // 請瀏覽器不要在空間不足時清掉我們的資料
 if(navigator.storage&&navigator.storage.persist) navigator.storage.persist().catch(()=>{});
-// 太久沒備份就提醒一次
-if(backupDue()) setTimeout(()=>toast('⚠️ 超過一週沒備份了，到「我的」按一下複製備份碼',4500),1800);
 
 /* ---------- 程式自動更新 ---------- */
 let swReg=null, waitingSW=null;
