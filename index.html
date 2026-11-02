@@ -189,10 +189,10 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
         <h2>今日目標 <span id="goalTag" style="float:right;font-weight:400"></span></h2>
         <div id="goalBox" style="margin-bottom:16px"></div>
         <div class="stats">
-          <div><b id="sDue">0</b><span>待複習</span></div>
+          <div><b id="sDue">0</b><span id="sDueL">這模式待過</span></div>
           <div><b id="sToday">0</b><span>今日練習</span></div>
-          <div><b id="sMastered">0</b><span>已掌握</span></div>
-          <div><b id="sAvg">–</b><span>平均分</span></div>
+          <div><b id="sMastered">0</b><span id="sMastL">已畢業</span></div>
+          <div><b id="sAvg">–</b><span id="sAvgL">平均分</span></div>
         </div>
       </div>
 
@@ -212,7 +212,15 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
         <div id="buildOpt" style="display:none;margin-top:11px"></div>
       </div>
 
-      <div class="card">
+      <div class="card" id="vocCard" style="display:none">
+        <h2>單字等級 <span id="vocTag" style="float:right;font-weight:400"></span></h2>
+        <div class="chips" id="vocLvChips"></div>
+        <div class="prog" style="margin:14px 0 6px;height:8px"><i id="vocXp" style="width:0%"></i></div>
+        <p class="tiny" id="vocInfo" style="margin:0 0 12px"></p>
+        <div class="chips" id="vocDirChips"></div>
+      </div>
+
+      <div class="card" id="scopeCard">
         <h2>範圍</h2>
         <div class="chips" id="catChips" style="margin-bottom:9px"></div>
         <div class="chips" id="sceneChips" style="margin-bottom:9px"></div>
@@ -227,6 +235,7 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
       <div class="row" style="margin-bottom:10px">
         <button class="btn sm gho" id="btnPrev" style="color:var(--tx2)">← 上一題</button>
         <div class="grow"></div>
+        <button class="btn sm gho" id="btnTrash" style="color:var(--tx3)">🗑 這題怪怪的</button>
         <button class="btn sm gho" id="btnQuit" style="color:var(--tx3)">結束</button>
       </div>
       <div class="prog"><i id="progBar" style="width:0%"></i></div>
@@ -290,7 +299,8 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
       <div id="libList"></div>
       <button class="btn gho full sm" id="libMore" style="margin-top:12px;display:none">載入更多</button>
     </div>
-    <button class="btn full" id="btnAddOwn">＋ 自己新增句子</button>
+    <button class="btn full" id="btnTrashList">🗑 垃圾桶（<span id="trashN">0</span>）</button>
+    <button class="btn full" id="btnAddOwn" style="margin-top:10px">＋ 自己新增句子</button>
     <button class="btn purple full" id="btnGen" style="margin-top:10px">✨ 用 AI 產生新題庫</button>
   </section>
 
@@ -370,7 +380,7 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
       <div class="stats">
         <div><b id="mTotal">0</b><span>總練習次數</span></div>
         <div><b id="mSeen">0</b><span>接觸過的句子</span></div>
-        <div><b id="mMast">0</b><span>已掌握</span></div>
+        <div><b id="mMast">0</b><span>已畢業</span></div>
         <div><b id="mWrong" style="color:var(--bad)">0</b><span>錯題本</span></div>
       </div>
       <div id="heat" style="margin-top:16px"></div>
@@ -401,7 +411,7 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
         <option value="0">關閉 — 我自己按「🤔 我這樣說也對嗎？」</option>
       </select>
       <p class="tiny" style="margin-top:8px">開啟後，中翻英答案跟參考答案不同但意思正確時，AI 會改判為正確並把你的說法存起來，之後離線也算對。</p>
-      <p class="tiny" style="margin-top:10px">沒有金鑰也能用：發音比對評分、SRS 複習、錯題本、1000 句題庫、四種練習模式、長文章閱讀（朗讀、跟讀、測驗）都不需要 AI。兩家的金鑰可以各自存著，隨時切換。</p>
+      <p class="tiny" style="margin-top:10px">沒有金鑰也能用：發音比對評分、錯題本、1225 句題庫、四種句子練習＋單字練習、長文章閱讀（朗讀、跟讀、測驗）都不需要 AI。兩家的金鑰可以各自存著，隨時切換。</p>
     </div>
 
     <div class="card">
@@ -466,10 +476,7 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
 <div class="sheet" id="sheet"><div class="box" id="sheetBox"></div></div>
 
 <script src="bank.js"></script>
-<script src="bank2.js"></script>
-<script src="bank3.js"></script>
-<script src="bank4.js"></script>
-<script src="bank5.js"></script>
+<script src="words.js"></script>
 <script src="articles.js"></script>
 <script>
 'use strict';
@@ -478,9 +485,11 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
    ====================================================================== */
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const KEY='echo.v1';
-const APPVER='echo-v18';   // 更新腳本會自動同步這個數字，用來確認手機跑的是哪一版
+const APPVER='echo-v19';   // 更新腳本會自動同步這個數字，用來確認手機跑的是哪一版
 
 /* ---------- 儲存 ---------- */
+/* 句子進度重置：把 EPOCH 加 1 就會在下次開 App 時清掉所有句子進度（保留金鑰、設定、自訂句、文章、連續天數） */
+const EPOCH=1;
 const DEFAULT={
   prog:{},          // id -> {ease,int,due,reps,lapses,best,seen}
   custom:[],        // 自訂 / AI 生成 / 聊天錯句
@@ -496,6 +505,11 @@ const DEFAULT={
   articles:[],      // AI 生成 / 自己貼上的長文章（格式同 articles.js）
   reads:{},         // 文章 id -> {t,n,quiz:[答對,題數],sh:跟讀平均分}
   artGone:{},       // 刪掉的文章 id -> 刪除時間（同步時避免被對面救回來）
+  pass:{},          // 句子 id -> {模式: 通過時間}；四個句子模式都過了就「畢業」不再出題
+  trash:{},         // 垃圾桶 id -> {t,en,zh,why}；內容被修正（版本更新後 en/zh 變了）就自動放回
+  trashGone:{},     // 從垃圾桶放回的 id -> 時間（同步用）
+  voc:{lv:1,xp:0,dir:'mix',w:{},t:0},   // 單字練習：目前等級、經驗值、出題方向、每個字的對錯紀錄
+  epoch:EPOCH,      // 句子進度的「重置代號」，比對面新就忽略對面的舊進度
   streak:0, lastDay:'',
   set:{
     provider:'gemini',
@@ -503,9 +517,10 @@ const DEFAULT={
     models:{gemini:'gemini-3.6-flash',anthropic:'claude-sonnet-5'},
     accent:'en-US',rate:0.9,len:10,autoJudge:true,
     buildConfuse:false,                                // 重組句型：混淆模式（多塞用不到的字）
-    goals:{translate:5,listen:5,cloze:10,build:5}      // 每個模式各自的每日目標
+    goals:{translate:5,listen:5,cloze:10,build:5,vocab:20}      // 每個模式各自的每日目標
   }
 };
+let didReset=false;
 let S=load();
 function load(){
   try{
@@ -518,13 +533,13 @@ function load(){
 function migrate(o){
   const base=JSON.parse(JSON.stringify(DEFAULT));
   const S2=Object.assign(base,o);
-  const s=Object.assign({},base.set,o.set||{});
+  const s=Object.assign({},DEFAULT.set,o.set||{});
   s.keys=Object.assign({gemini:'',anthropic:''},s.keys||{});
   s.models=Object.assign({gemini:'gemini-3.6-flash',anthropic:'claude-sonnet-5'},s.models||{});
   // 舊版存的 Gemini 模型已被 Google 停用給新帳號，自動換掉
   if(/^gemini-2\.5-(flash|pro)$/.test(s.models.gemini||'')) s.models.gemini='gemini-3.6-flash';
   S2.sync=Object.assign({url:'',key:'',code:'',last:0,auto:true},o.sync||{});
-  s.goals=Object.assign({translate:5,listen:5,cloze:10,build:5},s.goals||{});
+  s.goals=Object.assign({translate:5,listen:5,cloze:10,build:5,vocab:20},s.goals||{});
   delete s.goals.shadow;                                  // 跟讀模式已移除
   delete s.goal;
   if(o.set&&o.set.key){ s.keys.anthropic=s.keys.anthropic||o.set.key; s.provider=s.provider||'anthropic'; }
@@ -532,7 +547,15 @@ function migrate(o){
   if(s.provider!=='gemini'&&s.provider!=='anthropic') s.provider = (s.keys.anthropic&&!s.keys.gemini) ? 'anthropic' : 'gemini';
   delete s.key; delete s.model;
   S2.set=s;
+  S2.voc=Object.assign({lv:1,xp:0,dir:'mix',w:{},t:0},o.voc||{});
+  if((o.epoch||0)<EPOCH) resetProgress(S2);
   return S2;
+}
+function resetProgress(o){
+  const now=Date.now();
+  Object.keys(o.wrong||{}).forEach(id=>{ (o.wrongGone=o.wrongGone||{})[id]=now; });
+  o.prog={}; o.wrong={}; o.pass={}; o.scores=[];
+  o.epoch=EPOCH; didReset=true;
 }
 /* ---------- 儲存：localStorage ＋ IndexedDB 雙寫 ----------
    Safari 有機會清掉網站的本機資料，兩邊同時寫可以互相救援。 */
@@ -580,10 +603,10 @@ async function bootRestore(){
     const localRaw=localStorage.getItem(KEY);
     const backup=await idbGet(KEY);
     if(!backup){ if(localRaw) idbSet(KEY,localRaw).catch(()=>{}); return; }
-    const b=JSON.parse(backup);
+    const b=migrate(JSON.parse(backup));
     const bRicher=Object.keys(b.prog||{}).length > Object.keys(S.prog||{}).length;
     if(!localRaw || bRicher){
-      S=migrate(b);
+      S=b;
       try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){}
       renderHome(); if($('#v-me').classList.contains('on')) renderMe();
       toast('已從備援儲存救回你的進度 ✅',3500);
@@ -614,11 +637,26 @@ const maxObj=(a,b,pick)=>{
 /* 兩份資料合併成一份，取「練得比較多」的那邊 */
 function mergeState(local,remote){
   if(!remote||typeof remote!=='object') return local;
-  const L=local, R=remote, m=JSON.parse(JSON.stringify(L));
+  let L=local, R=remote;
+  // 其中一邊還是重置前的舊進度 → 兩邊的句子進度都改用較新那邊的，舊進度不會被合併回來
+  const Le=L.epoch||0, Re=R.epoch||0;
+  if(Re!==Le){
+    const N=Re>Le?R:L;
+    const pick=o=>Object.assign({},o,{prog:N.prog||{},wrong:N.wrong||{},pass:N.pass||{},scores:N.scores||[],epoch:N.epoch||0});
+    L=pick(L); R=pick(R);
+  }
+  const m=JSON.parse(JSON.stringify(L));
+
+  m.pass = maxObj(L.pass,R.pass,(a,b)=>maxObj(a,b,(x,y)=>Math.min(x,y)));
+  m.trashGone = maxObj(L.trashGone,R.trashGone,(a,b)=>Math.max(a,b));
+  m.trash = maxObj(L.trash,R.trash,(a,b)=>((b.t||0)>(a.t||0)?b:a));
+  Object.keys(m.trash).forEach(k=>{ if((m.trashGone[k]||0) >= (m.trash[k].t||0)) delete m.trash[k]; });
+  const LV=L.voc||{}, RV=R.voc||{};
+  m.voc = Object.assign({}, (RV.t||0)>(LV.t||0)?RV:LV);
+  m.voc.w = maxObj(LV.w,RV.w,(a,b)=>((b.t||0)>(a.t||0)?b:a));
 
   m.prog = maxObj(L.prog,R.prog,(a,b)=>{
     if((b.seen||0)!==(a.seen||0)) return (b.seen||0)>(a.seen||0)?b:a;
-    if((b.due||0)!==(a.due||0))   return (b.due||0)>(a.due||0)?b:a;
     return (b.best||0)>(a.best||0)?b:a;
   });
   m.log  = maxObj(L.log ,R.log ,(a,b)=>Math.max(a,b));
@@ -665,7 +703,7 @@ function mergeState(local,remote){
   m.articles=Object.values(arts);
   m.reads = maxObj(L.reads,R.reads,(a,b)=>((b.t||0)>(a.t||0)?b:a));
 
-  m.scores=[...(R.scores||[]),...(L.scores||[])].slice(-100);
+  m.scores = Re!==Le ? (L.scores||[]).slice(-100) : [...(R.scores||[]),...(L.scores||[])].slice(-100);
   m.lastBackup=Math.max(L.lastBackup||0,R.lastBackup||0);
 
   // 連續天數以紀錄較新的那台為準
@@ -873,24 +911,37 @@ function renderDiff(parts){
 }
 
 /* ======================================================================
-   間隔複習 SRS（SM-2 簡化版）
+   進度：每句的練習紀錄 ＋ 四模式過關（畢業）
+   ---------------------------------------------------------------------
+   每個句子模式（中翻英、聽力、填空、重組）第一次作答就拿到 90 分以上
+   （或中翻英被 AI 判定意思一樣）就算「這個模式過了」。四個模式都過 → 畢業，之後不再出題。
    ====================================================================== */
-function pget(id){ return S.prog[id] || (S.prog[id]={ease:2.5,int:0,due:0,reps:0,lapses:0,best:0,seen:0}); }
+const SENT_MODES=['translate','listen','cloze','build'];
+const PASS_AT=90;
+function pget(id){ return S.prog[id] || (S.prog[id]={seen:0,best:0,lapses:0}); }
 function grade(id,acc){
   const p=pget(id);
-  p.seen++; p.best=Math.max(p.best,acc);
-  const q = acc>=95?5 : acc>=85?4 : acc>=70?3 : acc>=50?2 : 1;
-  if(q<3){ p.reps=0; p.int=2; p.lapses++; p.ease=Math.max(1.3,p.ease-0.2); }  // 答錯：不是馬上再考，隔幾天再出現一次
-  else{
-    p.ease=Math.max(1.3, p.ease + (0.1-(5-q)*(0.08+(5-q)*0.02)));
-    p.reps++;
-    p.int = p.reps===1?1 : p.reps===2?3 : Math.round(p.int*p.ease);
-    if(p.int>180) p.int=180;
-  }
-  p.due = Date.now() + p.int*864e5;
+  p.seen=(p.seen||0)+1; p.best=Math.max(p.best||0,acc);
+  if(acc<70) p.lapses=(p.lapses||0)+1;
   return p;
 }
-const mastery=id=>{ const p=S.prog[id]; if(!p||!p.reps) return 0; return Math.min(100,Math.round(Math.min(p.int,30)/30*70 + p.best*0.3)); };
+const passOf   =id=>(S.pass&&S.pass[id])||{};
+const passCount=id=>SENT_MODES.filter(k=>passOf(id)[k]).length;
+const isDone   =id=>passCount(id)>=SENT_MODES.length;
+const inTrash  =id=>!!(S.trash&&S.trash[id]);
+/* 回傳 'new'（這次剛過這個模式）、'done'（這次剛好畢業），沒變化回傳 '' */
+function markPass(id,mode){
+  if(!SENT_MODES.includes(mode)) return '';
+  const p=S.pass[id]=S.pass[id]||{};
+  if(p[mode]) return '';
+  p[mode]=Date.now();
+  if(isDone(id)){ if(S.wrong[id]) wrongDel(id); save(); return 'done'; }
+  save(); return 'new';
+}
+function passBadges(id){
+  const p=passOf(id);
+  return MODES.filter(m=>SENT_MODES.includes(m.k)).map(m=>`<span style="color:${p[m.k]?'var(--ac)':'var(--tx3)'}">${p[m.k]?'✓':'·'}${m.n}</span>`).join('　');
+}
 
 /* ---------- 錯題本 ---------- */
 function wrongAdd(id,why,acc){
@@ -908,7 +959,7 @@ function wrongHit(id,acc){
   } else { S.wrong[id].streak=0; S.wrong[id].acc=acc; }
   save();
 }
-const wrongIds=()=>Object.keys(S.wrong).filter(id=>allItems().some(i=>i.id===id));
+const wrongIds=()=>{ const have=new Set(allItems().map(i=>i.id)); return Object.keys(S.wrong).filter(id=>have.has(id)&&!inTrash(id)&&!isDone(id)); };
 
 /* ---------- 填空：決定要挖掉哪些字 ---------- */
 const STOP=new Set(('a an the i you he she it we they me him her us them my your his its our their this that these those is am are was were be been being do does did done have has had having will would can could shall should may might must to of in on at for with from by as and or but if so not no yes there here what when where who how why which than then too very just about into over under up down out off again more most some any all each other one two get got go going went come came take took make made say said see saw know knew think thought want wanted need needed like liked let put keep kept give gave tell told ask asked work worked look looked feel felt seem back way thing things time day today tomorrow yesterday now well also still only even much many lot bit little sure okay ok please thanks thank sorry yeah').split(' '));
@@ -940,8 +991,6 @@ function clozeParts(item){
   });
   return out;
 }
-const isDue=id=>{ const p=S.prog[id]; return !p || !p.due || p.due<=Date.now(); };
-const isMastered=id=>{ const p=S.prog[id]; return !!p && p.int>=21 && p.best>=85; };
 
 /* ======================================================================
    語音：朗讀 + 辨識
@@ -1027,8 +1076,6 @@ const hasKey  = ()=> !!curKey();
 async function ai(messages,opt={}){
   return curProv()==='anthropic' ? callAnthropic(messages,opt) : callGemini(messages,opt);
 }
-/* 舊名稱保留，程式其他地方都還是叫 claude() */
-const claude = ai;
 
 async function callAnthropic(messages,{system,max=900,temperature=0.6}={}){
   const k=curKey();
@@ -1183,8 +1230,10 @@ const MODES=[
   {k:'translate',n:'中翻英',  d:'只看中文，直接用英文說出來。最接近真實開口的情境。'},
   {k:'listen',   n:'聽力',    d:'只聽不看，把聽到的句子說出來。練耳朵。'},
   {k:'cloze',    n:'填空',    d:'看中文，把英文句子挖掉的關鍵字打出來。專攻單字拼寫與用法。'},
-  {k:'build',    n:'重組句型',d:'把打散的單字排回正確語序，專攻句型結構，不用開口。'}
+  {k:'build',    n:'重組句型',d:'把打散的單字排回正確語序，專攻句型結構，不用開口。'},
+  {k:'vocab',    n:'單字',    d:'看英文選中文、看中文選英文，四選一。答對升級、答錯降級，自動找到適合你的程度。'}
 ];
+const isSentMode=k=>SENT_MODES.includes(k);
 let F={mode:'translate',cat:'all',scene:'all',lv:'all'};
 let ROUND={wrongOnly:false};
 
@@ -1192,16 +1241,21 @@ function scenesFor(cat){
   const set=new Set(allItems().filter(i=>cat==='all'||i.cat===cat).map(i=>i.sc));
   return [...set];
 }
+/* 目前範圍內「還在出題」的句子：不含垃圾桶裡的、不含已畢業的 */
 function pool(){
   return allItems().filter(i=>
     (F.cat==='all'||i.cat===F.cat) &&
     (F.scene==='all'||i.sc===F.scene) &&
-    (F.lv==='all'||String(i.lv)===F.lv)
+    (F.lv==='all'||String(i.lv)===F.lv) &&
+    !inTrash(i.id) && !isDone(i.id)
   );
 }
-/* 出題組成：一回合約 7 成給「沒看過」的新句，約 3 成給錯題本裡的句子。
-   錯題用加權隨機挑選——分數越低越容易被抽到（低分到高分依機率出現）。
-   新句不夠時，先用「該複習了」的舊句補，再不夠才多給一點錯題。 */
+/* 這個模式還沒過的句子 */
+const todoIn=(items,mode)=>items.filter(i=>!passOf(i.id)[mode]);
+
+/* 出題組成：只從「這個模式還沒過」的句子出。
+   約 3 成給錯題本裡的句子（分數越低越容易被抽到），其餘優先出這個模式還沒作答過的，
+   再來才是作答過但還沒過的。 */
 function wrongScore(id){
   const w=S.wrong[id]||{}, p=S.prog[id]||{};
   if(typeof w.acc==='number') return w.acc;      // 上次在這句拿的分數
@@ -1220,31 +1274,15 @@ function weightedPick(list,weightFn,n){
   return out;
 }
 function pickRound(items,len){
+  const todo=todoIn(items,F.mode);
   const wrongSet=new Set(wrongIds());
-  const wrong  = items.filter(i=>wrongSet.has(i.id));
-  const unseen = items.filter(i=>!S.prog[i.id] && !wrongSet.has(i.id));
-  const seen   = items.filter(i=>S.prog[i.id]  && !wrongSet.has(i.id));
-
-  const wantWrong = Math.min(wrong.length, Math.round(len*0.3));  // 3 成錯題
-  const wantNew   = len - wantWrong;
-
-  let newPick = shuffle(unseen.slice()).slice(0, wantNew);
-  if(newPick.length < wantNew){                                    // 新句不夠，用該複習的舊句補
-    const fill = shuffle(seen.slice())
-      .sort((a,b)=> (isDue(b.id)?1:0)-(isDue(a.id)?1:0))
-      .slice(0, wantNew-newPick.length);
-    newPick = newPick.concat(fill);
-  }
-
-  let takeWrong = Math.min(wrong.length, wantWrong + (wantNew - newPick.length));
-  const wrongPick = weightedPick(wrong, i=> 105 - wrongScore(i.id), takeWrong);
-
-  let round = shuffle(newPick.concat(wrongPick));
-  if(round.length < len){                                          // 還湊不滿就用剩下的補
-    const used=new Set(round.map(i=>i.id));
-    round = round.concat(shuffle(items.filter(i=>!used.has(i.id))).slice(0, len-round.length));
-  }
-  return round.slice(0,len);
+  const wrong=todo.filter(i=>wrongSet.has(i.id));
+  const rest =todo.filter(i=>!wrongSet.has(i.id));
+  const fresh=rest.filter(i=>!S.prog[i.id]), tried=rest.filter(i=>S.prog[i.id]);
+  const wantWrong=Math.min(wrong.length, Math.round(len*0.3));
+  let pick=shuffle(fresh).concat(shuffle(tried)).slice(0,len-wantWrong);
+  pick=pick.concat(weightedPick(wrong,i=>105-wrongScore(i.id),len-pick.length));
+  return shuffle(pick).slice(0,len);
 }
 function renderHome(){
   // 模式
@@ -1259,6 +1297,17 @@ function renderHome(){
       <p class="tiny" style="margin:7px 0 0">開啟後題目會多幾個「用不到的字」，測你有沒有真的看懂句型；選到多餘的字就算排錯。</p>`;
     $('#confuseChip').onclick=()=>{ S.set.buildConfuse=!S.set.buildConfuse; save(); renderHome(); };
   } else bo.style.display='none';
+
+  const voc=F.mode==='vocab';
+  $('#vocCard').style.display=voc?'':'none';
+  $('#scopeCard').style.display=voc?'none':'';
+  $('#sToday').textContent=S.log[today()]||0;
+  $('#streakPill').textContent='🔥 '+(S.streak||0)+' 天';
+  renderGoals();
+  const wn=wrongIds().length;
+  $('#wrongCard').style.display = (wn&&!voc)?'':'none';
+  $('#wrongN').textContent = wn?`（${wn}）`:'';
+  if(voc){ renderVocHome(); return; }
 
   // 分類
   const cats=[['all','全部'],['daily','日常會話'],['travel','旅遊英文'],['vocab','單字強化']];
@@ -1276,22 +1325,21 @@ function renderHome(){
   $$('#lvChips .chip').forEach(c=>c.onclick=()=>{F.lv=c.dataset.l;renderHome();});
 
   // 統計
-  const p=pool();
-  const due=p.filter(i=>isDue(i.id)).length;
-  $('#sDue').textContent=due;
-  $('#sToday').textContent=S.log[today()]||0;
-  $('#sMastered').textContent=allItems().filter(i=>isMastered(i.id)).length;
+  const p=pool(), todo=todoIn(p,F.mode).length;
+  const mn=MODES.find(m=>m.k===F.mode).n;
+  const all=allItems().filter(i=>!inTrash(i.id));
+  const done=all.filter(i=>isDone(i.id)).length;
+  $('#sDueL').textContent='這模式待過';
+  $('#sDue').textContent=todo;
+  $('#sMastL').textContent='已畢業';
+  $('#sMastered').textContent=done;
+  $('#sAvgL').textContent='平均分';
   const sc=S.scores.slice(-20);
   $('#sAvg').textContent=sc.length?Math.round(sc.reduce((a,b)=>a+b,0)/sc.length):'–';
-  $('#poolInfo').textContent=`目前範圍 ${p.length} 句，其中 ${due} 句待複習`;
-  $('#btnStart').disabled=p.length===0;
-  $('#streakPill').textContent='🔥 '+(S.streak||0)+' 天';
-
-  renderGoals();
-
-  const wn=wrongIds().length;
-  $('#wrongCard').style.display = wn?'':'none';
-  $('#wrongN').textContent = wn?`（${wn}）`:'';
+  $('#poolInfo').textContent= todo
+    ? `目前範圍 ${p.length} 句還沒畢業，其中 ${todo} 句「${mn}」還沒過（一次拿 ${PASS_AT} 分以上就算過）`
+    : (p.length ? `這個範圍的句子「${mn}」全部過了 🎉 換個模式或範圍吧` : '這個範圍的句子全部畢業了 🎓');
+  $('#btnStart').disabled=todo===0;
 }
 
 /* ---------- 每個模式各自的每日目標 ---------- */
@@ -1327,13 +1375,14 @@ function checkGoal(){
     const rest=MODES.filter(m=>doneOf(m.k)<goalOf(m.k));
     toast(rest.length
       ? `✅ ${MODES.find(m=>m.k===k).n}達成！還剩 ${rest.map(m=>m.n).join('、')}`
-      : `🎉 今天四項目標全部達成！連續 ${S.streak} 天`, 3800);
+      : `🎉 今天的目標全部達成！連續 ${S.streak} 天`, 3800);
   }
 }
 
 $('#btnWrongRun').onclick=()=>{
   const ids=wrongIds();
   if(!ids.length) return toast('錯題本是空的');
+  if(!isSentMode(F.mode)) F.mode='translate';
   Q=shuffle(allItems().filter(i=>ids.includes(i.id))).slice(0,+S.set.len);
   qi=0; ROUND.wrongOnly=true; roundLogged.clear();
   $('#pHome').style.display='none'; $('#pRun').style.display='';
@@ -1360,8 +1409,9 @@ $('#btnWrongList').onclick=()=>{
 let Q=[],qi=0,cur=null;
 let roundLogged=new Set();     // 這一回合已計入「今日練習」的題目；重答同一題不重複計
 $('#btnStart').onclick=()=>{
+  if(F.mode==='vocab') return startVocab();
   const p=pool();
-  if(!p.length) return toast('這個範圍沒有句子');
+  if(!todoIn(p,F.mode).length) return toast('這個範圍沒有還沒過的句子');
   Q=pickRound(p,+S.set.len);
   qi=0; ROUND.wrongOnly=false; roundLogged.clear();
   $('#pHome').style.display='none'; $('#pRun').style.display='';
@@ -1399,10 +1449,12 @@ function touchStreak(){
 
 function step(){
   if(qi>=Q.length) return finishRound();
+  if(F.mode==='vocab' && !Q[qi]) Q[qi]=vocNext();
   cur=Q[qi];
   $('#progBar').style.width=(qi/Q.length*100)+'%';
-  $('#cScene').textContent=`${ROUND.wrongOnly?'錯題本　·　':''}${qi+1} / ${Q.length}　·　${cur.sc}　·　${'★'.repeat(cur.lv||1)}`;
   $('#btnPrev').disabled = qi===0;
+  if(F.mode==='vocab') return stepVocab();
+  $('#cScene').textContent=`${ROUND.wrongOnly?'錯題本　·　':''}${qi+1} / ${Q.length}　·　${cur.sc}　·　${'★'.repeat(cur.lv||1)}`;
   if(F.mode==='build') stepBuild();
   else if(F.mode==='cloze') stepCloze();
   else stepSpeak();
@@ -1412,6 +1464,69 @@ $('#btnPrev').onclick=()=>{
   stopListen(); if('speechSynthesis' in window) speechSynthesis.cancel();
   qi--; step(); window.scrollTo(0,0);
 };
+/* ---------- 垃圾桶：覺得題目怪怪的就先丟進來，修好之後更新版本會自動放回 ---------- */
+function trashAdd(item,why){
+  S.trash[item.id]={t:Date.now(),en:item.en,zh:item.zh,why:String(why||'').slice(0,200)};
+  save();
+}
+function trashDel(id){ delete S.trash[id]; S.trashGone[id]=Date.now(); save(); }
+/* 開 App 時檢查：垃圾桶裡的題目內容跟丟進來時不一樣了（代表修好了）→ 自動放回 */
+function trashAutoRestore(){
+  const by={}; allItems().forEach(i=>by[i.id]=i); vocItems().forEach(i=>by[i.id]=i);
+  let back=0;
+  Object.entries(S.trash||{}).forEach(([id,t])=>{
+    const it=by[id];
+    if(!it){ trashDel(id); return; }          // 題目已經被刪掉了，垃圾桶也不用留
+    if(it.en!==t.en || it.zh!==t.zh){ trashDel(id); back++; }
+  });
+  if(back) toast(`🛠 ${back} 題修好的題目已放回練習`,3500);
+}
+function openTrashSheet(item,after){
+  const reasons=['中文翻譯怪怪的','英文不自然','答案有問題','填空挖的字不好','太難／太冷門'];
+  openSheet(`<h2 style="margin-top:0">🗑 丟進垃圾桶</h2>
+    <div style="font-weight:600">${esc(item.en)}</div><div class="muted">${esc(item.zh)}</div>
+    <p class="tiny" style="margin:12px 0 8px">先不再出這題。等你請 Claude 修好、更新版本之後，修過的題目會自動放回來。</p>
+    <div class="chips" id="trR">${reasons.map(r=>`<button class="chip" data-r="${esc(r)}">${esc(r)}</button>`).join('')}</div>
+    <label class="f">哪裡怪？（可留空）</label>
+    <input id="trWhy" placeholder="例如：中文應該是「…」" autocomplete="off">
+    <button class="btn pri full" id="trGo" style="margin-top:14px">丟進垃圾桶</button>
+    <button class="btn full" id="trNo" style="margin-top:10px">取消</button>`);
+  $$('#trR .chip').forEach(c=>c.onclick=()=>c.classList.toggle('on'));
+  $('#trNo').onclick=closeSheet;
+  $('#trGo').onclick=()=>{
+    const why=$$('#trR .chip.on').map(c=>c.dataset.r).concat($('#trWhy').value.trim()?[$('#trWhy').value.trim()]:[]).join('；');
+    trashAdd(item,why); closeSheet(); toast('已丟進垃圾桶，先不會再出現');
+    after&&after();
+  };
+}
+$('#btnTrash').onclick=()=>{
+  if(!cur) return;
+  stopListen(); if('speechSynthesis' in window) speechSynthesis.cancel();
+  openTrashSheet(cur,()=>{ Q.splice(qi,1); step(); window.scrollTo(0,0); });
+};
+$('#btnTrashList').onclick=()=>{
+  const by={}; allItems().forEach(i=>by[i.id]=i); vocItems().forEach(i=>by[i.id]=i);
+  const list=Object.entries(S.trash||{}).sort((a,b)=>b[1].t-a[1].t);
+  openSheet(`<h2 style="margin-top:0">🗑 垃圾桶 ${list.length} 題</h2>
+    <p class="tiny" style="margin-top:0">這些題目暫時不會出現。按「複製給 Claude」把清單貼給 Claude 請它修，修好更新版本後會自動放回；也可以按 ↩︎ 直接放回。</p>
+    <div id="trList">${list.map(([id,t])=>`
+      <div class="item">
+        <div class="txt"><b>${esc(t.en)}</b><small>${esc(t.zh)}　·　${esc(id)}</small>
+        ${t.why?`<small style="color:var(--warn)">${esc(t.why)}</small>`:''}</div>
+        <button class="btn sm gho" style="padding:6px 8px;color:var(--tx2)" data-tb="${esc(id)}">↩︎</button>
+      </div>`).join('')||'<p class="muted">垃圾桶是空的</p>'}</div>
+    ${list.length?`<button class="btn pri full" id="trCopy" style="margin-top:14px">📋 複製給 Claude</button>`:''}
+    <button class="btn full" id="trClose" style="margin-top:10px">關閉</button>`);
+  $('#trClose').onclick=closeSheet;
+  $$('#trList [data-tb]').forEach(b=>b.onclick=()=>{ trashDel(b.dataset.tb); closeSheet(); renderLib(); toast('已放回練習'); });
+  const cp=$('#trCopy'); if(cp) cp.onclick=async()=>{
+    const txt='Echo 英語垃圾桶裡的題目，請幫我檢查並修正 bank.js / words.js（id 不要改）：\n\n'+
+      list.map(([id,t])=>`- ${id}｜${t.en}｜${t.zh}${t.why?'｜'+t.why:''}`).join('\n');
+    try{ await navigator.clipboard.writeText(txt); toast('已複製，貼給 Claude 就好',3000); }
+    catch(e){ openSheet(`<h2 style="margin-top:0">複製這段給 Claude</h2><textarea rows="10" readonly style="font-size:12px">${esc(txt)}</textarea>`); }
+  };
+};
+
 function finishRound(){
   $('#progBar').style.width='100%';
   const n=Q.length;
@@ -1422,13 +1537,24 @@ function finishRound(){
   $('#againBtn').onclick=()=>{ endRound(); $('#btnStart').click(); };
 }
 
-/* ---- 口說類三種模式 ---- */
+/* 過關提示：這次剛過某個模式或剛好畢業時顯示 */
+function passNote(res,id,mode){
+  if(res==='done') return `<p class="tiny" style="text-align:center;color:var(--ac);margin-top:10px">🎓 四種練習都過了，這句畢業！之後不會再出現</p>`;
+  if(res==='new')  return `<p class="tiny" style="text-align:center;color:var(--ac);margin-top:10px">✅「${MODES.find(m=>m.k===mode).n}」過關　·　這句已過 ${passCount(id)} / 4 種練習</p>`;
+  return '';
+}
+/* 第一次作答且 ≥90 分就記為這個模式過關 */
+const tryPass=(id,acc,ok=true)=> ok && acc>=PASS_AT ? markPass(id,F.mode) : '';
+
+/* ---- 口說類：中翻英、聽力 ---- */
+let peeked=false;                    // 先偷看答案再說的話，這次不算過關
 function stepSpeak(){
-  const showEn = false;              // 中翻英與聽力都要先自己說，答案按「看答案」才出現
+  peeked=false;
+  // 中翻英與聽力都要先自己說，英文答案按「看答案」才出現
   const showZh = F.mode!=='listen';
   $('#cStage').innerHTML=
     (showZh?`<div class="zh">${esc(cur.zh)}</div>`:'<div class="muted">聽聽看這句是什麼</div>')+
-    `<div class="en ${showEn?'':'hidden'}" id="enLine" style="margin-top:12px">${esc(cur.en)}</div>`;
+    `<div class="en hidden" id="enLine" style="margin-top:12px">${esc(cur.en)}</div>`;
   $('#cControls').innerHTML=`
     <div class="card">
       <div class="mic" id="micBtn"><svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z"/><path d="M19 11a1 1 0 1 0-2 0 5 5 0 0 1-10 0 1 1 0 1 0-2 0 7 7 0 0 0 6 6.92V21H8a1 1 0 1 0 0 2h8a1 1 0 1 0 0-2h-3v-3.08A7 7 0 0 0 19 11z"/></svg></div>
@@ -1444,7 +1570,7 @@ function stepSpeak(){
 
   $('#btnPlay').onclick=()=>speak(cur.en);
   $('#btnSlow').onclick=()=>speak(cur.en,{rate:0.62});
-  $('#btnPeek').onclick=()=>{ $('#enLine').classList.remove('hidden'); };
+  $('#btnPeek').onclick=()=>{ $('#enLine').classList.remove('hidden'); peeked=true; };
   $('#btnType').onclick=()=>typeAnswer();
   $('#btnSkip').onclick=()=>{ qi++; step(); };
   $('#micBtn').onclick=toggleMic;
@@ -1496,11 +1622,13 @@ function showResult(said,forced){
 
   // 同一回合重答同一題：只顯示分數，不再計入練習次數、不再動間隔複習排程
   const firstTry = !forced && !roundLogged.has(F.mode+':'+cur.id);
+  let passRes='';
   if(forced){
-    // AI 改判：修正剛剛那筆分數，不重複計入練習次數
+    // AI 改判：修正剛剛那筆分數，不重複計入練習次數；AI 判定意思一樣就算過關
     grade(cur.id,acc);
     if(S.scores.length) S.scores[S.scores.length-1]=acc; else S.scores.push(acc);
     wrongDel(cur.id);
+    passRes=markPass(cur.id,F.mode);
   }else if(firstTry){
     grade(cur.id,acc);
     S.scores.push(acc); if(S.scores.length>100) S.scores.shift();
@@ -1509,6 +1637,7 @@ function showResult(said,forced){
       wrongAdd(cur.id, miss.length?('沒說對：'+miss.join(', ')):'口說分數偏低', acc);
     }
     wrongHit(cur.id,acc);
+    passRes=tryPass(cur.id,acc,!peeked);
     bumpLog();
   }
   save();
@@ -1526,6 +1655,8 @@ function showResult(said,forced){
       <span class="w-ok">綠＝正確</span>　<span class="w-near">黃＝發音接近</span>　<span class="w-miss">紅＝漏掉</span>　<span class="w-extra">灰＝多說的</span>
     </p>
     ${B.isAlt&&acc>=70?`<p class="tiny" style="text-align:center;color:var(--ac)">✅ 比對的是你存過的說法：${esc(B.target)}</p>`:''}
+    ${passNote(passRes,cur.id,F.mode)}
+    ${firstTry&&peeked&&acc>=PASS_AT?`<p class="tiny" style="text-align:center">先看了答案，這次不算過關</p>`:''}
     <div style="margin-top:14px;text-align:left">
       <div class="tiny">標準答案</div><div style="font-weight:600">${esc(cur.en)}</div>
       <div class="tiny" style="margin-top:8px">你說的</div><div class="muted">${esc(said)}</div>
@@ -1567,7 +1698,7 @@ async function judgeAnswer(item,said,auto){
   const jb=$('#rJudge'); if(jb){ jb.disabled=true; jb.innerHTML='<span class="spin"></span> AI 判斷中…'; }
   slot.innerHTML=`<div class="note" style="color:var(--blue);background:rgba(96,165,250,.09)"><span class="spin"></span> AI 正在看你的說法…</div>`;
   try{
-    const txt=await claude([{role:'user',content:
+    const txt=await ai([{role:'user',content:
 `中文題目：「${item.zh}」
 參考答案：「${item.en}」
 學生（母語繁體中文）用英文說出來的是：「${said}」
@@ -1629,7 +1760,7 @@ async function otherWays(item){
   }
   body.innerHTML=`<p class="muted"><span class="spin"></span> AI 正在想其他講法…</p>`;
   try{
-    const txt=await claude([{role:'user',content:
+    const txt=await ai([{role:'user',content:
 `中文：「${item.zh}」
 一種英文說法是：「${item.en}」
 
@@ -1705,11 +1836,13 @@ function clozeResult(gaveUp){
   if(!gaveUp && clzHint) acc=Math.max(0,acc-clzHint*15);
   const allRight = right===total && !gaveUp;
 
+  let passRes='';
   if(!roundLogged.has(F.mode+':'+cur.id)){    // 同一回合重填同一題不重複計
     grade(cur.id,acc);
     S.scores.push(acc); if(S.scores.length>100) S.scores.shift();
     if(acc<70) wrongAdd(cur.id, gaveUp?'填空直接看答案':'填空答錯：'+inputs.filter(e=>e.classList.contains('no')).map(e=>e.dataset.w).join(', '), acc);
     wrongHit(cur.id,acc);
+    passRes=tryPass(cur.id,acc);
     bumpLog();
   }
   save();
@@ -1726,6 +1859,7 @@ function clozeResult(gaveUp){
       ${wrongList.length?`<div class="tiny" style="margin-top:10px">你漏掉的字：<span class="fix">${wrongList.map(e=>esc(e.dataset.w)).join('、')}</span></div>`:''}
       ${cur.note?`<div class="note">💡 ${esc(cur.note)}</div>`:''}
       ${clzHint?`<div class="tiny" style="margin-top:8px">用了 ${clzHint} 次提示，扣 ${clzHint*15} 分</div>`:''}
+      ${passNote(passRes,cur.id,F.mode)}
     </div>`);
   $('#cControls').innerHTML=`
     <div class="row" style="margin-bottom:10px">
@@ -1779,11 +1913,13 @@ function stepBuild(){
     const r=compare(cur.en,ans);
     const sc=ok?100:r.acc;
     const usedDecoys=picked.filter(p=>p.d).map(p=>p.w);
+    let passRes='';
     if(!roundLogged.has(F.mode+':'+cur.id)){    // 同一回合重排同一題不重複計
       grade(cur.id,sc);
       S.scores.push(sc); if(S.scores.length>100) S.scores.shift();
       if(sc<70) wrongAdd(cur.id,'句型重組排錯', sc);
       wrongHit(cur.id,sc);
+      passRes=tryPass(cur.id,sc);
       bumpLog();
     }
     save();
@@ -1793,7 +1929,8 @@ function stepBuild(){
       <div class="zh" style="font-size:15px;color:var(--tx2);margin-top:8px">${esc(cur.zh)}</div>
       ${ok?'':`<div class="tiny" style="margin-top:12px">你排的：${esc(ans)||'（空）'}</div>`}
       ${usedDecoys.length?`<div class="tiny" style="margin-top:8px;color:#e55">⚠️ 選到了混淆字：${usedDecoys.map(esc).join('、')}</div>`:''}
-      ${cur.note?`<div class="note">💡 ${esc(cur.note)}</div>`:''}`;
+      ${cur.note?`<div class="note">💡 ${esc(cur.note)}</div>`:''}
+      ${passNote(passRes,cur.id,F.mode)}`;
     $('#cControls').innerHTML=`
       <div class="row" style="margin-bottom:10px">
         <button class="btn grow" id="bPlay">🔊 聽一次</button>
@@ -1805,6 +1942,142 @@ function stepBuild(){
     $('#bNext').onclick=()=>{ qi++; step(); window.scrollTo(0,0); };
     if(ok) speak(cur.en);
   };
+}
+
+/* ======================================================================
+   單字練習（第五種模式，只有單字、沒有句子）
+   ---------------------------------------------------------------------
+   字庫在 words.js，分級照大考中心 Level 1～6。
+   出題：約 75% 出目前等級的字，25% 複習較低等級的字；答錯過的字比較常出，熟的字比較少出。
+   升降級：答對 +10、答錯 −20，滿 100 升一級，扣到 0 以下降一級。
+   ====================================================================== */
+const VOC_LV=['','入門 ≈A1','基礎 ≈A2','中級 ≈B1','中高級 ≈B1+','高級 ≈B2','進階 ≈C1'];
+const VOC_UP=10, VOC_DOWN=20;
+let _voc=null;
+function vocItems(){
+  if(!_voc) _voc=(window.WORDS||[]).map(([en,pos,zh,lv])=>({id:'w:'+en,en,pos,zh,lv}));
+  return _voc;
+}
+const vocLive=()=>vocItems().filter(w=>!inTrash(w.id));
+const vw=id=>(S.voc.w[id]||{});
+const vocKnown=id=>(vw(id).st||0)>=2;               // 連續答對兩次以上算熟記
+/* 兩個中文意思太像（互相包含或有共同的兩字詞）就不拿來當干擾選項 */
+function zhClash(a,b){
+  const A=a.replace(/[；、（）\s]/g,''), B=b.replace(/[；、（）\s]/g,'');
+  if(A.includes(B)||B.includes(A)) return true;
+  const bg=s=>{ const o=new Set(); for(let i=0;i<s.length-1;i++) o.add(s.slice(i,i+2)); return o; };
+  const x=bg(A); for(const g of bg(B)) if(x.has(g)) return true;
+  return false;
+}
+function vocWeight(w){
+  const r=vw(w.id);
+  if(!r.t) return 2;                                 // 沒出過
+  if((r.bad||0)>(r.ok||0)) return 3;                 // 錯的比對的多
+  if((r.st||0)>=3) return 0.15;
+  if((r.st||0)>=2) return 0.4;
+  return 1;
+}
+function vocNext(){
+  const lv=S.voc.lv, used=new Set(Q.filter(Boolean).map(q=>q.id));
+  const live=vocLive().filter(w=>!used.has(w.id));
+  const low=live.filter(w=>w.lv<lv), here=live.filter(w=>w.lv===lv);
+  const src = (lv>1 && low.length && (Math.random()<0.25 || !here.length)) ? low : (here.length?here:live);
+  if(!src.length) return null;
+  const w=weightedPick(src,vocWeight,1)[0];
+  const dir = S.voc.dir==='mix' ? (Math.random()<0.5?'e2c':'c2e') : S.voc.dir;
+  // 干擾選項：同詞性、等級相近、中文意思不撞
+  const okD=d=>d.id!==w.id && !zhClash(d.zh,w.zh);
+  let cand=vocItems().filter(d=>d.pos===w.pos && Math.abs(d.lv-w.lv)<=1 && okD(d));
+  if(cand.length<3) cand=vocItems().filter(okD);
+  const opts=[];
+  for(const d of shuffle(cand.slice())){
+    if(opts.length>=3) break;
+    if(opts.some(o=>zhClash(o.zh,d.zh))) continue;   // 干擾選項彼此也不要太像
+    opts.push(d);
+  }
+  return Object.assign({},w,{dir,opts:shuffle(opts.concat([w]))});
+}
+function vocRecord(id,ok){
+  const r=S.voc.w[id]=Object.assign({ok:0,bad:0,st:0},S.voc.w[id]||{});
+  if(ok){ r.ok++; r.st++; } else { r.bad++; r.st=0; }
+  r.t=Date.now();
+  let msg='';
+  if(ok){
+    S.voc.xp+=VOC_UP;
+    if(S.voc.xp>=100){ if(S.voc.lv<6){ S.voc.lv++; S.voc.xp=0; msg=`⬆️ 升級！現在是 Level ${S.voc.lv}`; } else S.voc.xp=100; }
+  }else{
+    S.voc.xp-=VOC_DOWN;
+    if(S.voc.xp<0){ if(S.voc.lv>1){ S.voc.lv--; S.voc.xp=60; msg=`⬇️ 降到 Level ${S.voc.lv}，先把這級練穩`; } else S.voc.xp=0; }
+  }
+  S.voc.t=Date.now(); save();
+  return msg;
+}
+function renderVocHome(){
+  const v=S.voc;
+  $('#vocLvChips').innerHTML=[1,2,3,4,5,6].map(k=>`<button class="chip ${v.lv===k?'on':''}" data-vl="${k}">L${k}</button>`).join('');
+  $$('#vocLvChips .chip').forEach(c=>c.onclick=()=>{ S.voc.lv=+c.dataset.vl; S.voc.xp=0; S.voc.t=Date.now(); save(); renderHome(); });
+  $('#vocXp').style.width=Math.max(0,Math.min(100,v.xp))+'%';
+  $('#vocTag').innerHTML=`<span class="tiny">Level ${v.lv}　${VOC_LV[v.lv]}　·　${v.xp} / 100</span>`;
+  $('#vocInfo').textContent=`答對 +${VOC_UP}、答錯 −${VOC_DOWN}，滿 100 升一級，扣到 0 以下降一級。題目大多出目前等級，偶爾複習低一點的等級。`;
+  const dirs=[['mix','混合'],['e2c','看英文選中文'],['c2e','看中文選英文']];
+  $('#vocDirChips').innerHTML=dirs.map(([k,n])=>`<button class="chip ${v.dir===k?'on':''}" data-vd="${k}">${n}</button>`).join('');
+  $$('#vocDirChips .chip').forEach(c=>c.onclick=()=>{ S.voc.dir=c.dataset.vd; save(); renderHome(); });
+
+  const here=vocLive().filter(w=>w.lv===v.lv);
+  const todo=here.filter(w=>!vocKnown(w.id)).length;
+  const known=vocLive().filter(w=>vocKnown(w.id)).length;
+  let ok=0,all=0; Object.values(v.w||{}).forEach(r=>{ ok+=r.ok||0; all+=(r.ok||0)+(r.bad||0); });
+  $('#sDueL').textContent='本級待熟'; $('#sDue').textContent=todo;
+  $('#sMastL').textContent='熟記單字'; $('#sMastered').textContent=known;
+  $('#sAvgL').textContent='答對率';   $('#sAvg').textContent=all?Math.round(ok/all*100)+'%':'–';
+  $('#poolInfo').textContent=`Level ${v.lv} 共 ${here.length} 個字，還有 ${todo} 個沒熟（連續答對兩次算熟）`;
+  $('#btnStart').disabled=!vocLive().length;
+}
+function startVocab(){
+  Q=new Array(+S.set.len).fill(null);
+  qi=0; ROUND.wrongOnly=false; roundLogged.clear();
+  $('#pHome').style.display='none'; $('#pRun').style.display='';
+  step();
+}
+let vocTimer=null;
+function stepVocab(){
+  clearTimeout(vocTimer);
+  if(!cur){ Q.length=qi; return finishRound(); }
+  const e2c=cur.dir==='e2c';
+  $('#cScene').textContent=`${qi+1} / ${Q.length}　·　Level ${cur.lv}　·　${e2c?'看英文選中文':'看中文選英文'}`;
+  $('#cStage').innerHTML=`
+    ${e2c?`<div class="en" style="font-size:30px">${esc(cur.en)}</div>`:`<div class="zh" style="font-size:24px;font-weight:600">${esc(cur.zh)}</div>`}
+    <div class="tiny" style="margin-top:6px">${esc(cur.pos)}</div>
+    <div id="vOpts" style="margin-top:16px">${cur.opts.map((o,k)=>`<button class="qopt" data-k="${k}" style="text-align:center;font-size:17px">${esc(e2c?o.zh:o.en)}</button>`).join('')}</div>
+    <div id="vRes" style="min-height:24px;margin-top:10px"></div>`;
+  $('#cControls').innerHTML=`
+    <div class="row" style="margin-bottom:10px">
+      <button class="btn grow" id="vPlay">🔊 唸</button>
+      <button class="btn grow" id="vSkip">不知道</button>
+    </div>`;
+  $('#vPlay').onclick=()=>speak(cur.en);
+  $('#vSkip').onclick=()=>vocAnswer(-1);
+  $$('#vOpts .qopt').forEach(b=>b.onclick=()=>vocAnswer(+b.dataset.k));
+  if(e2c) setTimeout(()=>speak(cur.en),200);
+}
+function vocAnswer(k){
+  const btns=$$('#vOpts .qopt'); if(!btns.length||btns[0].disabled) return;
+  const right=cur.opts.findIndex(o=>o.id===cur.id), ok=k===right;
+  btns.forEach((b,i)=>{ b.disabled=true; if(i===right) b.classList.add('right'); else if(i===k) b.classList.add('wrong'); });
+  const first=!roundLogged.has(F.mode+':'+cur.id);
+  let msg='';
+  if(first){ msg=vocRecord(cur.id,ok); bumpLog(); }
+  const e2c=cur.dir==='e2c';
+  $('#vRes').innerHTML=`<div style="font-weight:700;color:${ok?'var(--ac)':'var(--bad)'}">${ok?'✅ 答對':'❌ 答錯'}${first?`　${ok?'+'+VOC_UP:'−'+VOC_DOWN}`:''}</div>
+    <div class="muted" style="margin-top:4px">${esc(cur.en)}　${esc(cur.pos)}　${esc(cur.zh)}</div>
+    ${msg?`<div style="margin-top:6px;color:var(--warn);font-weight:600">${esc(msg)}</div>`:''}
+    <div class="tiny" style="margin-top:4px">Level ${S.voc.lv}　·　${S.voc.xp} / 100</div>`;
+  if(!e2c||!ok) speak(cur.en);
+  $('#cControls').innerHTML=`<button class="btn pri full" id="vNext">下一題 →</button>`;
+  const go=()=>{ clearTimeout(vocTimer); qi++; step(); window.scrollTo(0,0); };
+  $('#vNext').onclick=go;
+  // 答對就自動跳下一題；答錯或升降級時停下來讓你看清楚
+  if(ok&&!msg){ const at=qi; vocTimer=setTimeout(()=>{ if(qi===at&&F.mode==='vocab'&&$('#vNext')) go(); },1100); }
 }
 
 /* ======================================================================
@@ -1821,7 +2094,7 @@ async function aiFeedback(item,said,acc){
 
   openSheet(`<h2 style="margin-top:0">AI 導師點評 <span class="spin"></span></h2><p class="muted" id="fbBody">分析中…</p>`);
   try{
-    const txt=await claude([{role:'user',content:
+    const txt=await ai([{role:'user',content:
 `目標句：「${item.en}」（中文意思：${item.zh}）
 我實際說出來、經語音辨識轉成的文字是：「${said}」
 系統比對出的相似度：${acc}%
@@ -1921,7 +2194,7 @@ async function rpTurn(userText){
   else RP.msgs.push({role:'user',content:'(Start the conversation. Greet me first.)'});
   const ph=addMsg('ai','<span class="spin"></span>');
   try{
-    const raw=await claude(RP.msgs,{system:RP.sys,max:500,temperature:0.8});
+    const raw=await ai(RP.msgs,{system:RP.sys,max:500,temperature:0.8});
     RP.msgs.push({role:'assistant',content:raw});
     if(RP.msgs.length>26) RP.msgs.splice(0,4);
     const say=(raw.match(/SAY:\s*([\s\S]*?)(?=\nZH:|\nTIP:|$)/)||[,raw])[1].trim();
@@ -1944,7 +2217,7 @@ async function chatReport(){
     <p class="muted">正在把整段對話看過一遍…</p>`);
   const transcript=RP.said.map((s,i)=>`${i+1}. ${s}`).join('\n');
   try{
-    const txt=await claude([{role:'user',content:
+    const txt=await ai([{role:'user',content:
 `以下是一位台灣英文學習者在英文對話練習中「說出來的每一句」（經語音辨識轉文字，標點可能缺漏，請不要把標點或大小寫當成錯誤）：
 
 ${transcript}
@@ -2056,28 +2329,28 @@ $('#rpMic').onclick=()=>{
    ====================================================================== */
 let libFilter='all', libN=40;
 function renderLib(){
-  const chips=[['all','全部'],['daily','日常會話'],['travel','旅遊英文'],['custom','我的／AI 生成'],['weak','需要加強'],['mastered','已掌握']];
+  const chips=[['all','全部'],['daily','日常會話'],['travel','旅遊英文'],['vocab','單字強化'],['custom','我的／AI 生成'],['weak','需要加強'],['done','已畢業']];
   $('#libChips').innerHTML=chips.map(([k,n])=>`<button class="chip ${libFilter===k?'on':''}" data-k="${k}">${n}</button>`).join('');
   $$('#libChips .chip').forEach(c=>c.onclick=()=>{libFilter=c.dataset.k;libN=40;renderLib();});
 
   const q=norm($('#libSearch').value);
   const customIds=new Set((S.custom||[]).map(i=>i.id));
   let list=allItems().filter(i=>{
-    if(libFilter==='daily'&&i.cat!=='daily') return false;
-    if(libFilter==='travel'&&i.cat!=='travel') return false;
+    if(['daily','travel','vocab'].includes(libFilter)&&i.cat!==libFilter) return false;
     if(libFilter==='custom'&&!customIds.has(i.id)) return false;
-    if(libFilter==='mastered'&&!isMastered(i.id)) return false;
+    if(libFilter==='done'&&!isDone(i.id)) return false;
     if(libFilter==='weak'){ const p=S.prog[i.id]; if(!p||!p.seen||p.best>=85) return false; }
     if(q && !(norm(i.en).includes(q)||i.zh.includes($('#libSearch').value.trim()))) return false;
     return true;
   });
   $('#libCount').textContent=list.length;
+  $('#trashN').textContent=Object.keys(S.trash||{}).length;
   const show=list.slice(0,libN);
   $('#libList').innerHTML= show.length? show.map(i=>`
     <div class="item" data-id="${i.id}">
       <button class="btn sm gho" style="padding:6px 8px" data-play="${i.id}">🔊</button>
-      <div class="txt"><b>${esc(i.en)}</b><small>${esc(i.zh)}　·　${esc(i.sc)}</small></div>
-      <div class="mast" title="掌握度"><i style="width:${mastery(i.id)}%"></i></div>
+      <div class="txt"><b>${inTrash(i.id)?'🗑 ':''}${esc(i.en)}</b><small>${esc(i.zh)}　·　${esc(i.sc)}</small></div>
+      <div class="mast" title="四種練習過了幾種"><i style="width:${passCount(i.id)*25}%"></i></div>
     </div>`).join('') : '<p class="muted">找不到符合的句子</p>';
   $('#libMore').style.display = list.length>libN ? '' : 'none';
   $$('#libList [data-play]').forEach(b=>b.onclick=e=>{
@@ -2099,16 +2372,22 @@ function renderLib(){
           <div class="txt"><b style="font-size:14px">${esc(a)}</b></div>
           <button class="btn sm gho" style="padding:6px 8px;color:var(--tx3)" data-ad="${k}">✕</button>
         </div>`).join('')}</div>`:''}
-      <div class="tiny" style="margin-top:14px">掌握度 ${mastery(it.id)}%　·　練過 ${p?p.seen:0} 次　·　最佳 ${p?p.best:0} 分</div>
+      <div class="tiny" style="margin-top:14px">${passBadges(it.id)}</div>
+      <div class="tiny" style="margin-top:6px">${isDone(it.id)?'🎓 已畢業　·　':''}練過 ${p?p.seen:0} 次　·　最佳 ${p?p.best:0} 分</div>
       <div class="row" style="margin-top:16px">
         <button class="btn grow" id="shPlay">🔊 播放</button>
         <button class="btn grow" id="shSlow">🐢 慢速</button>
       </div>
       <button class="btn full sm" id="shMore" style="margin-top:10px">📚 讓 AI 教我其他說法</button>
+      <button class="btn full sm" id="shTrash" style="margin-top:10px;color:var(--tx2)">${inTrash(it.id)?'↩︎ 從垃圾桶放回':'🗑 這句怪怪的，丟進垃圾桶'}</button>
       ${customIds.has(it.id)?`<button class="btn full sm" id="shDel" style="margin-top:10px;color:var(--bad)">刪除這句</button>`:''}`);
     $('#shPlay').onclick=()=>speak(it.en);
     $('#shSlow').onclick=()=>speak(it.en,{rate:0.62});
     $('#shMore').onclick=()=>otherWays(it);
+    $('#shTrash').onclick=()=>{
+      if(inTrash(it.id)){ trashDel(it.id); closeSheet(); renderLib(); toast('已放回練習'); }
+      else openTrashSheet(it,()=>renderLib());
+    };
     $$('#altBox [data-ap]').forEach(b=>b.onclick=()=>speak(b.dataset.ap));
     $$('#altBox [data-ad]').forEach(b=>b.onclick=()=>{
       S.alts[it.id].splice(+b.dataset.ad,1);
@@ -2116,7 +2395,7 @@ function renderLib(){
       save(); closeSheet(); toast('已移除');
     });
     const del=$('#shDel'); if(del) del.onclick=()=>{
-      S.custom=S.custom.filter(x=>x.id!==it.id); delete S.prog[it.id]; save(); closeSheet(); renderLib(); toast('已刪除');
+      S.custom=S.custom.filter(x=>x.id!==it.id); delete S.prog[it.id]; delete S.pass[it.id]; save(); closeSheet(); renderLib(); toast('已刪除');
     };
   });
 }
@@ -2168,7 +2447,7 @@ $('#btnGen').onclick=()=>{
         .concat(shuffle(have.slice()).slice(0,60).map(i=>i.en))
         .filter((v,k,a)=>a.indexOf(v)===k).slice(0,120);
 
-      const txt=await claude([{role:'user',content:
+      const txt=await ai([{role:'user',content:
 `請為一位台灣的英文學習者，針對主題「${topic}」生成 ${n} 個實用的英文口說練習句。
 難度：${lv===1?'入門（短句、基礎字彙）':lv===2?'中等（日常自然表達）':'進階（較長、道地、含常見片語與句型）'}
 
@@ -2534,7 +2813,7 @@ async function rdGenQuiz(a,btn){
   btn.disabled=true; btn.innerHTML='<span class="spin"></span> 出題中…';
   try{
     const text=a.paras.map(p=>p.map(s=>s[0]).join(' ')).join('\n\n');
-    const J=jsonFrom(await claude([{role:'user',content:
+    const J=jsonFrom(await ai([{role:'user',content:
 `以下是一篇英文文章。請出 4 題英文閱讀理解選擇題，給母語繁體中文的學習者練習。
 每題 4 個選項，只有一個正確；考主旨、細節、字義、推論都要有。只輸出 JSON 陣列：
 [{"q":"英文題目","zh":"題目的繁體中文翻譯","o":["選項A","選項B","選項C","選項D"],"a":正確選項索引(0-3)}]
@@ -2587,7 +2866,7 @@ function rdSummary(a){
     $('#smOut').innerHTML='';
     try{
       const text=a.paras.map(p=>p.map(s=>s[0]).join(' ')).join('\n\n');
-      const txt=await claude([{role:'user',content:
+      const txt=await ai([{role:'user',content:
 `文章標題：${a.title}
 文章內容：
 ${text}
@@ -2670,7 +2949,7 @@ $('#btnArtGen').onclick=()=>{
     const btn=$('#agGo'); btn.disabled=true; btn.innerHTML='<span class="spin"></span> 寫文章中…（約 20～40 秒）';
     const have=allArticles().map(a=>a.title).slice(0,40);
     try{
-      const txt=await claude([{role:'user',content:
+      const txt=await ai([{role:'user',content:
 `請為母語繁體中文（台灣）的英文學習者寫一篇英文閱讀文章。
 類型：${genre}${genre==='新聞'?'（新聞報導的寫法：導言、背景、引述、後續發展；人物地名用虛構的，不要寫成真實事件）':''}
 主題：${topic||'你自己挑一個有趣、生活化、不重複的主題'}
@@ -2727,7 +3006,7 @@ $('#btnArtPaste').onclick=()=>{
       const btn=$('#apGo'); btn.disabled=true; btn.innerHTML='<span class="spin"></span> AI 翻譯中…（長文章要等一下）';
       const flat=artSents(o).map(s=>s[0]);
       try{
-        const J=jsonFrom(await claude([{role:'user',content:
+        const J=jsonFrom(await ai([{role:'user',content:
 `下面是一篇英文文章，已經切成編號的句子。請幫母語繁體中文（台灣）的學習者：
 1. 把每一句翻成自然的繁體中文（台灣用語），順序和數量要跟原文完全一樣，共 ${flat.length} 句
 2. 挑 6～10 個值得學的單字或片語
@@ -2760,7 +3039,7 @@ function renderMe(){
   const items=allItems();
   $('#mTotal').textContent=Object.values(S.log).reduce((a,b)=>a+b,0);
   $('#mSeen').textContent=Object.keys(S.prog).length;
-  $('#mMast').textContent=items.filter(i=>isMastered(i.id)).length;
+  $('#mMast').textContent=items.filter(i=>isDone(i.id)).length;
   $('#mWrong').textContent=wrongIds().length;
 
   const reps=S.reports||[];
@@ -3107,6 +3386,8 @@ $('#sheet').addEventListener('click',e=>{ if(e.target.id==='sheet') closeSheet()
 /* ======================================================================
    啟動
    ====================================================================== */
+trashAutoRestore();
+if(didReset){ save(); setTimeout(()=>toast('句子進度已全部重置，從頭開始練習 💪',4000),600); }
 renderHome();
 bootRestore();
 
@@ -3123,7 +3404,7 @@ window.addEventListener('pagehide',()=>{ if(syncOn()&&S.sync.auto) syncNow(true)
 if(navigator.storage&&navigator.storage.persist) navigator.storage.persist().catch(()=>{});
 
 /* ---------- 程式自動更新 ---------- */
-let swReg=null, waitingSW=null;
+let waitingSW=null;
 function showUpdateBar(){
   if($('#updBar')) return;
   document.body.insertAdjacentHTML('beforeend',
@@ -3136,7 +3417,6 @@ function showUpdateBar(){
 }
 if('serviceWorker' in navigator && location.protocol==='https:'){
   navigator.serviceWorker.register('sw.js').then(reg=>{
-    swReg=reg;
     if(reg.waiting && navigator.serviceWorker.controller){ waitingSW=reg.waiting; showUpdateBar(); }
     reg.addEventListener('updatefound',()=>{
       const nw=reg.installing;
