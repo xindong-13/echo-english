@@ -172,6 +172,100 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
 .qopt.pick{border-color:var(--blue);background:rgba(96,165,250,.12)}
 .qopt.right{border-color:var(--ac);background:rgba(74,222,128,.14)}
 .qopt.wrong{border-color:var(--bad);background:rgba(248,113,113,.12)}
+
+/* ===================== 視覺樣式（2026-11 改版） ===================== */
+:root{
+  --bg:#0b0e13; --bg2:#141922; --card:#161c25; --line:#232b37;
+  --tx:#eef2f7; --tx2:#9aa6b8; --tx3:#5f6b80;
+  --ac:#34d399; --ac2:#10b981; --blue:#60a5fa; --purple:#a78bfa;
+  --r:18px;
+}
+body{
+  background:
+    radial-gradient(900px 420px at 50% -160px, rgba(52,211,153,.13), transparent 70%),
+    radial-gradient(700px 400px at 110% 10%, rgba(96,165,250,.07), transparent 70%),
+    var(--bg);
+  background-attachment:fixed;
+  font-size:16px; letter-spacing:.1px;
+}
+.hd{padding:10px 2px 16px}
+.hd h1{font-size:23px;font-weight:800;letter-spacing:.3px}
+.hd h1 span{background:linear-gradient(120deg,#6ee7b7,#34d399 45%,#60a5fa);-webkit-background-clip:text;background-clip:text;color:transparent}
+.pill{background:rgba(251,191,36,.1);border-color:rgba(251,191,36,.25);color:#fcd34d;font-weight:600;padding:5px 12px}
+
+.card{
+  background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.01)),var(--card);
+  border:1px solid rgba(255,255,255,.06); border-radius:var(--r);
+  padding:18px; margin-bottom:14px;
+  box-shadow:0 10px 30px -12px rgba(0,0,0,.6);
+}
+.card h2{font-size:13px;font-weight:700;color:var(--tx3);letter-spacing:1.2px;margin:0 0 14px}
+
+.btn{border-radius:14px;border-color:rgba(255,255,255,.07);background:rgba(255,255,255,.04);transition:transform .08s,filter .15s}
+.btn.pri{background:linear-gradient(135deg,#6ee7b7,#34d399 40%,#10b981);color:#04210f;box-shadow:0 10px 26px -10px rgba(16,185,129,.75)}
+.btn.purple{background:linear-gradient(135deg,#c4b5fd,#a78bfa);box-shadow:0 10px 26px -12px rgba(167,139,250,.7)}
+.btn.blue{background:linear-gradient(135deg,#93c5fd,#60a5fa)}
+#btnStart{padding:17px!important;font-size:18px!important;border-radius:16px;letter-spacing:1px}
+#btnStart[disabled]{box-shadow:none}
+
+/* 一般小標籤 */
+.chip{border-color:rgba(255,255,255,.07);background:rgba(255,255,255,.04);padding:7px 14px}
+.chip.on{background:var(--ac);color:#04210f}
+.chips.scroll{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;margin-left:-2px;padding:2px}
+.chips.scroll::-webkit-scrollbar{display:none}
+.chips.scroll .chip{flex-shrink:0}
+
+/* 分段選擇器 */
+.seg{display:flex;gap:3px;padding:4px;background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.05);border-radius:13px}
+.seg .chip{flex:1;min-width:0;border:0;background:none;border-radius:10px;padding:8px 4px;font-size:13px;text-align:center;white-space:nowrap;color:var(--tx2);transition:background .15s,color .15s}
+.seg .chip.on{background:rgba(255,255,255,.1);color:var(--tx);font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,.35)}
+
+/* 練習模式方塊 */
+.modes{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.mode{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 2px 10px;border-radius:14px;
+  background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);color:var(--tx2);font-size:12.5px;transition:all .15s}
+.mode i{font-style:normal;font-size:22px;line-height:1;filter:grayscale(.5);opacity:.75;transition:all .15s}
+.mode.on{background:linear-gradient(160deg,rgba(52,211,153,.22),rgba(52,211,153,.06));border-color:rgba(52,211,153,.55);color:var(--tx);font-weight:700}
+.mode.on i{filter:none;opacity:1;transform:scale(1.08)}
+#modeDesc{margin-top:12px!important;color:var(--tx2)}
+
+select{background-color:rgba(0,0,0,.28);border-color:rgba(255,255,255,.07);border-radius:12px;padding:11px 36px 11px 14px;font-size:15px}
+
+/* 統計數字 */
+.stats{gap:6px;margin-top:4px}
+.stats div{background:rgba(0,0,0,.22);border-radius:12px;padding:10px 2px 8px}
+.stats div b{font-size:22px;font-variant-numeric:tabular-nums;font-weight:800}
+.stats div span{font-size:11px}
+
+/* 今日目標 */
+.goalrow{padding:6px 8px}
+.goalrow .gbar{height:7px;background:rgba(0,0,0,.35)}
+.goalrow.now{background:rgba(255,255,255,.04)}
+.goalrow .gbar i{background-image:linear-gradient(90deg,rgba(255,255,255,.0),rgba(255,255,255,.25))}
+
+.prog{height:5px;background:rgba(255,255,255,.06)}
+.prog i{background:linear-gradient(90deg,#34d399,#60a5fa)}
+
+/* 練習畫面 */
+.stage{min-height:230px}
+.en{font-size:23px}
+.qopt{border-radius:13px;padding:13px 14px;background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.07);transition:background .15s,border-color .15s}
+.mic{width:84px;height:84px;background:linear-gradient(150deg,#6ee7b7,#10b981);box-shadow:0 12px 32px -8px rgba(16,185,129,.7)}
+
+/* 清單 */
+.item{border-bottom-color:rgba(255,255,255,.06)}
+.aitem{border-bottom-color:rgba(255,255,255,.06);padding:14px 0}
+.aitem b{font-size:16px}
+
+/* 底部導覽 */
+nav{background:rgba(11,14,19,.82);border-top-color:rgba(255,255,255,.06)}
+nav button{position:relative;padding:10px 0 9px;font-weight:600}
+nav button.on::before{content:'';position:absolute;top:0;left:30%;right:30%;height:2px;border-radius:2px;background:var(--ac);box-shadow:0 0 12px var(--ac)}
+
+.sheet{background:rgba(0,0,0,.6);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.sheet .box{border-radius:24px 24px 0 0;background:#141a23;border-top-color:rgba(255,255,255,.08)}
+#provChips .chip{white-space:normal;line-height:1.35}
+.toast{border-radius:14px;background:rgba(20,26,35,.95);border-color:rgba(255,255,255,.1);box-shadow:0 10px 30px rgba(0,0,0,.5)}
 </style>
 </head>
 <body>
@@ -207,24 +301,26 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
 
       <div class="card">
         <h2>練習模式</h2>
-        <div class="chips" id="modeChips"></div>
+        <div class="modes" id="modeChips"></div>
         <p class="tiny" id="modeDesc" style="margin:11px 0 0"></p>
         <div id="buildOpt" style="display:none;margin-top:11px"></div>
       </div>
 
       <div class="card" id="vocCard" style="display:none">
         <h2>單字等級 <span id="vocTag" style="float:right;font-weight:400"></span></h2>
-        <div class="chips" id="vocLvChips"></div>
+        <div class="seg" id="vocLvChips"></div>
         <div class="prog" style="margin:14px 0 6px;height:8px"><i id="vocXp" style="width:0%"></i></div>
         <p class="tiny" id="vocInfo" style="margin:0 0 12px"></p>
-        <div class="chips" id="vocDirChips"></div>
+        <div class="seg" id="vocDirChips"></div>
       </div>
 
       <div class="card" id="scopeCard">
         <h2>範圍</h2>
-        <div class="chips" id="catChips" style="margin-bottom:9px"></div>
-        <div class="chips" id="sceneChips" style="margin-bottom:9px"></div>
-        <div class="chips" id="lvChips"></div>
+        <div class="seg" id="catChips"></div>
+        <div class="row" style="margin-top:10px;gap:10px">
+          <select id="sceneSel" class="grow"></select>
+        </div>
+        <div class="seg" id="lvChips" style="margin-top:10px"></div>
       </div>
 
       <button class="btn pri full" id="btnStart" style="padding:15px;font-size:17px">開始練習</button>
@@ -260,8 +356,8 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
         <p class="tiny" style="margin:12px 0 0">每篇都能：逐句點聽、朗讀全文、看中文對照、整篇跟讀評分、閱讀測驗，有設 AI 金鑰還能寫摘要讓 AI 批改。</p>
       </div>
       <div class="card">
-        <div class="chips" id="rdGenre" style="margin-bottom:9px"></div>
-        <div class="chips" id="rdLv"></div>
+        <div class="chips scroll" id="rdGenre" style="margin-bottom:10px"></div>
+        <div class="seg" id="rdLv"></div>
       </div>
       <div class="card">
         <h2><span id="rdCount">0</span> 篇</h2>
@@ -282,7 +378,7 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
         <div class="scene-tag" id="rdTag" style="margin-bottom:6px"></div>
         <div style="font-size:21px;font-weight:700;line-height:1.35" id="rdTitle"></div>
         <div class="muted" id="rdTitleZh" style="margin-top:4px"></div>
-        <div class="chips" id="rdTabs" style="margin-top:12px"></div>
+        <div class="seg" id="rdTabs" style="margin-top:14px"></div>
       </div>
       <div id="rdBody"></div>
     </div>
@@ -292,7 +388,7 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
   <section class="view" id="v-library">
     <div class="card">
       <input id="libSearch" placeholder="搜尋中英文…" autocomplete="off">
-      <div class="chips" id="libChips" style="margin-top:11px"></div>
+      <div class="chips scroll" id="libChips" style="margin-top:12px"></div>
     </div>
     <div class="card">
       <h2><span id="libCount">0</span> 句</h2>
@@ -307,7 +403,7 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
   <!-- ============ AI 導師 ============ -->
   <section class="view" id="v-tutor">
     <div class="card" id="tutorPick">
-      <div class="chips" id="tutorChips"></div>
+      <div class="seg" id="tutorChips"></div>
     </div>
 
     <div class="card" id="freeSetup" style="display:none">
@@ -394,7 +490,7 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
     <div class="card">
       <h2>AI 設定</h2>
       <label class="f">用哪一家的 AI</label>
-      <div class="chips" id="provChips" style="margin-bottom:4px"></div>
+      <div class="seg" id="provChips" style="margin-bottom:4px"></div>
 
       <div id="provHelp" class="tiny" style="margin-top:12px"></div>
 
@@ -485,7 +581,7 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
    ====================================================================== */
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const KEY='echo.v1';
-const APPVER='echo-v19';   // 更新腳本會自動同步這個數字，用來確認手機跑的是哪一版
+const APPVER='echo-v20';   // 更新腳本會自動同步這個數字，用來確認手機跑的是哪一版
 
 /* ---------- 儲存 ---------- */
 /* 句子進度重置：把 EPOCH 加 1 就會在下次開 App 時清掉所有句子進度（保留金鑰、設定、自訂句、文章、連續天數） */
@@ -1227,11 +1323,11 @@ $$('nav button').forEach(b=>b.onclick=()=>{
    練習
    ====================================================================== */
 const MODES=[
-  {k:'translate',n:'中翻英',  d:'只看中文，直接用英文說出來。最接近真實開口的情境。'},
-  {k:'listen',   n:'聽力',    d:'只聽不看，把聽到的句子說出來。練耳朵。'},
-  {k:'cloze',    n:'填空',    d:'看中文，把英文句子挖掉的關鍵字打出來。專攻單字拼寫與用法。'},
-  {k:'build',    n:'重組句型',d:'把打散的單字排回正確語序，專攻句型結構，不用開口。'},
-  {k:'vocab',    n:'單字',    d:'看英文選中文、看中文選英文，四選一。答對升級、答錯降級，自動找到適合你的程度。'}
+  {k:'translate',n:'中翻英',  i:'💬',d:'只看中文，直接用英文說出來。最接近真實開口的情境。'},
+  {k:'listen',   n:'聽力',    i:'🎧',d:'只聽不看，把聽到的句子說出來。練耳朵。'},
+  {k:'cloze',    n:'填空',    i:'✏️',d:'看中文，把英文句子挖掉的關鍵字打出來。專攻單字拼寫與用法。'},
+  {k:'build',    n:'重組',    i:'🧩',d:'把打散的單字排回正確語序，專攻句型結構，不用開口。'},
+  {k:'vocab',    n:'單字',    i:'🔤',d:'看英文選中文、看中文選英文，四選一。答對升級、答錯降級，自動找到適合你的程度。'}
 ];
 const isSentMode=k=>SENT_MODES.includes(k);
 let F={mode:'translate',cat:'all',scene:'all',lv:'all'};
@@ -1286,8 +1382,8 @@ function pickRound(items,len){
 }
 function renderHome(){
   // 模式
-  $('#modeChips').innerHTML=MODES.map(m=>`<button class="chip ${F.mode===m.k?'on':''}" data-m="${m.k}">${m.n}</button>`).join('');
-  $$('#modeChips .chip').forEach(c=>c.onclick=()=>{F.mode=c.dataset.m;renderHome();});
+  $('#modeChips').innerHTML=MODES.map(m=>`<button class="mode ${F.mode===m.k?'on':''}" data-m="${m.k}"><i>${m.i}</i><span>${m.n}</span></button>`).join('');
+  $$('#modeChips .mode').forEach(c=>c.onclick=()=>{F.mode=c.dataset.m;renderHome();});
   $('#modeDesc').textContent=MODES.find(m=>m.k===F.mode).d;
 
   const bo=$('#buildOpt');
@@ -1310,17 +1406,19 @@ function renderHome(){
   if(voc){ renderVocHome(); return; }
 
   // 分類
-  const cats=[['all','全部'],['daily','日常會話'],['travel','旅遊英文'],['vocab','單字強化']];
+  const cats=[['all','全部'],['daily','日常'],['travel','旅遊'],['vocab','單字強化']];
   $('#catChips').innerHTML=cats.map(([k,n])=>`<button class="chip ${F.cat===k?'on':''}" data-c="${k}">${n}</button>`).join('');
   $$('#catChips .chip').forEach(c=>c.onclick=()=>{F.cat=c.dataset.c;F.scene='all';renderHome();});
 
   const scs=scenesFor(F.cat);
   if(!scs.includes(F.scene)) F.scene='all';
-  $('#sceneChips').innerHTML=`<button class="chip ${F.scene==='all'?'on':''}" data-s="all">所有情境</button>`+
-    scs.map(s=>`<button class="chip ${F.scene===s?'on':''}" data-s="${esc(s)}">${esc(s)}</button>`).join('');
-  $$('#sceneChips .chip').forEach(c=>c.onclick=()=>{F.scene=c.dataset.s;renderHome();});
+  const sel=$('#sceneSel');
+  sel.innerHTML=`<option value="all">所有情境（${scs.length} 種）</option>`+
+    scs.slice().sort((a,b)=>a.localeCompare(b,'zh-Hant')).map(s=>`<option value="${esc(s)}">${esc(s)}</option>`).join('');
+  sel.value=F.scene;
+  sel.onchange=()=>{F.scene=sel.value;renderHome();};
 
-  const lvs=[['all','不限'],['1','入門'],['2','中等'],['3','進階']];
+  const lvs=[['all','不限難度'],['1','入門'],['2','中等'],['3','進階']];
   $('#lvChips').innerHTML=lvs.map(([k,n])=>`<button class="chip ${F.lv===k?'on':''}" data-l="${k}">${n}</button>`).join('');
   $$('#lvChips .chip').forEach(c=>c.onclick=()=>{F.lv=c.dataset.l;renderHome();});
 
@@ -1337,7 +1435,7 @@ function renderHome(){
   const sc=S.scores.slice(-20);
   $('#sAvg').textContent=sc.length?Math.round(sc.reduce((a,b)=>a+b,0)/sc.length):'–';
   $('#poolInfo').textContent= todo
-    ? `目前範圍 ${p.length} 句還沒畢業，其中 ${todo} 句「${mn}」還沒過（一次拿 ${PASS_AT} 分以上就算過）`
+    ? `「${mn}」還有 ${todo} 句待過　·　一次 ${PASS_AT} 分以上就算過`
     : (p.length ? `這個範圍的句子「${mn}」全部過了 🎉 換個模式或範圍吧` : '這個範圍的句子全部畢業了 🎓');
   $('#btnStart').disabled=todo===0;
 }
