@@ -586,7 +586,7 @@ nav button.on::before{content:'';position:absolute;top:0;left:30%;right:30%;heig
    ====================================================================== */
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const KEY='echo.v1';
-const APPVER='echo-v24';   // 更新腳本會自動同步這個數字，用來確認手機跑的是哪一版
+const APPVER='echo-v25';   // 更新腳本會自動同步這個數字，用來確認手機跑的是哪一版
 
 /* ---------- 儲存 ---------- */
 /* 句子進度重置：把 EPOCH 加 1 就會在下次開 App 時清掉所有句子進度（保留金鑰、設定、自訂句、文章、連續天數） */
@@ -1023,6 +1023,7 @@ function pget(id){ return S.prog[id] || (S.prog[id]={seen:0,best:0,lapses:0}); }
 function grade(id,acc){
   const p=pget(id);
   p.seen=(p.seen||0)+1; p.best=Math.max(p.best||0,acc);
+  if(SENT_MODES.includes(F.mode)){ p.lm=p.lm||{}; p.lm[F.mode]=Date.now(); }   // 這個模式最後一次作答的時間（冷卻用）
   if(acc<70) p.lapses=(p.lapses||0)+1;
   return p;
 }
@@ -1374,8 +1375,19 @@ function weightedPick(list,weightFn,n){
   }
   return out;
 }
+/* 冷卻：答錯（進錯題本）或在這個模式作答過但沒過關的句子，隔 COOL_DAYS 天（以日曆日計）才會再出。
+   例如週一答錯 → 週三起才可能再出現。「只練錯題」不受限制。 */
+const COOL_DAYS=2;
+const calDaysSince=ts=>ts?Math.round((new Date(today())-new Date(new Date(ts).toLocaleDateString('sv')))/864e5):Infinity;
+function cooling(id,mode){
+  const w=S.wrong[id], p=S.prog[id];
+  if(w && calDaysSince(w.t)<COOL_DAYS) return true;
+  return !!(p&&p.lm&&calDaysSince(p.lm[mode])<COOL_DAYS);
+}
 function pickRound(items,len){
-  const todo=todoIn(items,F.mode);
+  const all=todoIn(items,F.mode);
+  const todo=all.filter(i=>!cooling(i.id,F.mode));
+  const cool=all.filter(i=>cooling(i.id,F.mode));
   const wrongSet=new Set(wrongIds());
   const wrong=todo.filter(i=>wrongSet.has(i.id));
   const rest =todo.filter(i=>!wrongSet.has(i.id));
@@ -1383,6 +1395,11 @@ function pickRound(items,len){
   const wantWrong=Math.min(wrong.length, Math.round(len*0.3));
   let pick=shuffle(fresh).concat(shuffle(tried)).slice(0,len-wantWrong);
   pick=pick.concat(weightedPick(wrong,i=>105-wrongScore(i.id),len-pick.length));
+  // 範圍內能出的句子不夠時，才拿冷卻中的來補（最久以前作答的先補）
+  if(pick.length<len){
+    const lastT=i=>Math.max((S.wrong[i.id]||{}).t||0,((S.prog[i.id]||{}).lm||{})[F.mode]||0);
+    pick=pick.concat(cool.sort((a,b)=>lastT(a)-lastT(b)).slice(0,len-pick.length));
+  }
   return shuffle(pick).slice(0,len);
 }
 function renderHome(){
