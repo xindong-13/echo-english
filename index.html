@@ -248,6 +248,8 @@ select{background-color:rgba(0,0,0,.28);border-color:rgba(255,255,255,.07);borde
 
 /* 練習畫面 */
 .stage{min-height:230px}
+.stage.typing{min-height:0!important}
+.tyBox{margin-top:14px}
 .en{font-size:23px}
 .qopt{border-radius:13px;padding:13px 14px;background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.07);transition:background .15s,border-color .15s}
 .mic{width:84px;height:84px;background:linear-gradient(150deg,#6ee7b7,#10b981);box-shadow:0 12px 32px -8px rgba(16,185,129,.7)}
@@ -581,7 +583,7 @@ nav button.on::before{content:'';position:absolute;top:0;left:30%;right:30%;heig
    ====================================================================== */
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const KEY='echo.v1';
-const APPVER='echo-v22';   // 更新腳本會自動同步這個數字，用來確認手機跑的是哪一版
+const APPVER='echo-v23';   // 更新腳本會自動同步這個數字，用來確認手機跑的是哪一版
 
 /* ---------- 儲存 ---------- */
 /* 句子進度重置：把 EPOCH 加 1 就會在下次開 App 時清掉所有句子進度（保留金鑰、設定、自訂句、文章、連續天數） */
@@ -1549,6 +1551,7 @@ function step(){
   if(qi>=Q.length) return finishRound();
   if(F.mode==='vocab' && !Q[qi]) Q[qi]=vocNext();
   cur=Q[qi];
+  $('#cStage').classList.remove('typing');
   $('#progBar').style.width=(qi/Q.length*100)+'%';
   $('#btnPrev').disabled = qi===0;
   if(F.mode==='vocab') return stepVocab();
@@ -1699,18 +1702,37 @@ function toggleMic(){
   });
 }
 
+/* 用打的：直接在練習卡片裡打字，不開彈出面板，題目和播放鍵一直看得到 */
+function typeInline(o){            // o = {stage, card, mic, hint, btn, onSubmit}
+  if(recActive) stopListen();
+  let box=o.card.querySelector('.tyBox');
+  if(box){                          // 再按一次「用打的」→ 收起，回到麥克風
+    box.remove(); o.mic.style.display=''; o.hint.style.display='';
+    o.stage.classList.remove('typing'); o.btn.textContent='⌨️ 用打的';
+    return;
+  }
+  o.mic.style.display='none'; o.hint.style.display='none';
+  o.stage.classList.add('typing'); o.btn.textContent='🎤 改用說的';
+  box=document.createElement('div'); box.className='tyBox';
+  box.innerHTML=`<textarea rows="2" placeholder="Type the sentence…（Enter 送出）" autocapitalize="off" autocorrect="off" spellcheck="false"></textarea>
+    <button class="btn pri full" style="margin-top:10px">送出比對</button>`;
+  o.card.appendChild(box);
+  const ta=box.querySelector('textarea');
+  const go=()=>{ const v=ta.value.trim(); if(!v) return; ta.blur(); o.stage.classList.remove('typing'); o.onSubmit(v); };
+  box.querySelector('button').onclick=go;
+  ta.addEventListener('keydown',e=>{ if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){ e.preventDefault(); go(); } });
+  // 鍵盤跳出來時，把題目卡片捲回畫面最上面，維持一開始看到的樣子
+  const keep=()=>{ if(document.activeElement!==ta) return;
+    const top=o.stage.closest('.card').getBoundingClientRect().top+window.scrollY-8;
+    window.scrollTo(0,Math.max(0,top)); };
+  ta.addEventListener('focus',()=>{ keep(); setTimeout(keep,350); setTimeout(keep,700); });
+  if(window.visualViewport){ visualViewport.addEventListener('resize',keep);
+    ta.addEventListener('blur',()=>visualViewport.removeEventListener('resize',keep),{once:true}); }
+  ta.focus({preventScroll:true}); keep();
+}
 function typeAnswer(){
-  openSheet(`
-    <h2 style="margin-top:0">用打的</h2>
-    <p class="muted" style="margin-top:0">把這句英文打出來，一樣會比對評分。</p>
-    <textarea id="tyIn" rows="3" placeholder="Type the sentence…"></textarea>
-    <button class="btn pri full" id="tyGo" style="margin-top:14px">送出比對</button>`);
-  setTimeout(()=>$('#tyIn').focus(),120);
-  $('#tyGo').onclick=()=>{
-    const v=$('#tyIn').value.trim();
-    if(!v) return;
-    closeSheet(); showResult(v);
-  };
+  const card=$('#micBtn').closest('.card');
+  typeInline({stage:$('#cStage'),card,mic:$('#micBtn'),hint:$('#micHint'),btn:$('#btnType'),onSubmit:v=>showResult(v)});
 }
 
 function showResult(said,forced){
@@ -2777,13 +2799,8 @@ function rdShadow(a){
   $('#shPlay').onclick=()=>speak(s[0]);
   $('#shSlow').onclick=()=>speak(s[0],{rate:0.62});
   $('#shHide').onclick=()=>{ sh.hide=!sh.hide; rdShadow(a); };
-  $('#shType').onclick=()=>{
-    openSheet(`<h2 style="margin-top:0">用打的</h2>
-      <textarea id="shIn" rows="3" placeholder="Type the sentence…"></textarea>
-      <button class="btn pri full" id="shGo" style="margin-top:14px">送出比對</button>`);
-    setTimeout(()=>$('#shIn').focus(),120);
-    $('#shGo').onclick=()=>{ const v=$('#shIn').value.trim(); if(!v) return; closeSheet(); rdShadowResult(a,v); };
-  };
+  $('#shType').onclick=()=>typeInline({stage:$('#shStage'),card:$('#shMic').closest('.card'),
+    mic:$('#shMic'),hint:$('#shHint'),btn:$('#shType'),onSubmit:v=>rdShadowResult(a,v)});
   $('#shPrev').onclick=()=>{ stopListen(); sh.i=Math.max(0,sh.i-1); rdShadow(a); };
   $('#shSkip').onclick=()=>{ stopListen(); sh.i++; rdShadow(a); window.scrollTo(0,0); };
   $('#shMic').onclick=()=>{
