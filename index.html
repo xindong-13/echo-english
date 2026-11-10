@@ -293,6 +293,7 @@ nav button.on::before{content:'';position:absolute;top:0;left:30%;right:30%;heig
           <div><b id="sMastered">0</b><span id="sMastL">已畢業</span></div>
           <div><b id="sAvg">–</b><span id="sAvgL">平均分</span></div>
         </div>
+        <div id="sModePass" style="margin-top:12px"></div>
       </div>
 
       <div class="card" id="wrongCard" style="display:none">
@@ -484,6 +485,7 @@ nav button.on::before{content:'';position:absolute;top:0;left:30%;right:30%;heig
         <div><b id="mMast">0</b><span>已畢業</span></div>
         <div><b id="mWrong" style="color:var(--bad)">0</b><span>錯題本</span></div>
       </div>
+      <div id="mModePass" style="margin-top:12px"></div>
       <div id="heat" style="margin-top:16px"></div>
     </div>
 
@@ -586,7 +588,7 @@ nav button.on::before{content:'';position:absolute;top:0;left:30%;right:30%;heig
    ====================================================================== */
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const KEY='echo.v1';
-const APPVER='echo-v25';   // 更新腳本會自動同步這個數字，用來確認手機跑的是哪一版
+const APPVER='echo-v26';   // 更新腳本會自動同步這個數字，用來確認手機跑的是哪一版
 
 /* ---------- 儲存 ---------- */
 /* 句子進度重置：把 EPOCH 加 1 就會在下次開 App 時清掉所有句子進度（保留金鑰、設定、自訂句、文章、連續天數） */
@@ -1354,6 +1356,16 @@ function pool(){
 }
 /* 這個模式還沒過的句子 */
 const todoIn=(items,mode)=>items.filter(i=>!passOf(i.id)[mode]);
+/* 各模式分別已過幾句（四個模式都過＝畢業） */
+function modePassHtml(items,cur){
+  return `<div class="tiny" style="margin:2px 0 6px">各模式已過（共 ${items.length} 句，四個都過＝畢業）</div>
+  <div style="display:grid;grid-template-columns:repeat(${SENT_MODES.length},1fr);gap:6px;text-align:center">`+
+  SENT_MODES.map(k=>{
+    const m=MODES.find(x=>x.k===k), n=items.filter(i=>passOf(i.id)[k]).length;
+    return `<div style="padding:6px 2px;border-radius:10px;border:1px solid ${k===cur?'var(--ac)':'transparent'};background:var(--bg2)">
+      <b style="display:block;font-size:17px">${n}</b><span class="tiny">${m.i} ${m.n}</span></div>`;
+  }).join('')+`</div>`;
+}
 
 /* 出題組成：只從「這個模式還沒過」的句子出。
    約 3 成給錯題本裡的句子（分數越低越容易被抽到），其餘優先出這個模式還沒作答過的，
@@ -1453,6 +1465,7 @@ function renderHome(){
   $('#sDue').textContent=todo;
   $('#sMastL').textContent='已畢業';
   $('#sMastered').textContent=done;
+  $('#sModePass').innerHTML=modePassHtml(all,F.mode);
   $('#sAvgL').textContent='平均分';
   const sc=S.scores.slice(-20);
   $('#sAvg').textContent=sc.length?Math.round(sc.reduce((a,b)=>a+b,0)/sc.length):'–';
@@ -1503,7 +1516,10 @@ $('#btnWrongRun').onclick=()=>{
   const ids=wrongIds();
   if(!ids.length) return toast('錯題本是空的');
   if(!isSentMode(F.mode)) F.mode='translate';
-  Q=shuffle(allItems().filter(i=>ids.includes(i.id))).slice(0,+S.set.len);
+  // 只出「這個模式還沒過」的錯題：這模式已經過的句子不再出，其他模式照常出
+  const left=todoIn(allItems().filter(i=>ids.includes(i.id)),F.mode);
+  if(!left.length) return toast(`錯題本裡的句子「${MODES.find(m=>m.k===F.mode).n}」都過了，換個模式複習吧`);
+  Q=shuffle(left).slice(0,+S.set.len);
   qi=0; ROUND.wrongOnly=true; roundLogged.clear();
   $('#pHome').style.display='none'; $('#pRun').style.display='';
   step();
@@ -3221,6 +3237,7 @@ function renderMe(){
   $('#mTotal').textContent=Object.values(S.log).reduce((a,b)=>a+b,0);
   $('#mSeen').textContent=Object.keys(S.prog).length;
   $('#mMast').textContent=items.filter(i=>isDone(i.id)).length;
+  $('#mModePass').innerHTML=modePassHtml(items.filter(i=>!inTrash(i.id)));
   $('#mWrong').textContent=wrongIds().length;
 
   const reps=S.reports||[];

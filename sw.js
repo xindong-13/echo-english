@@ -1,5 +1,5 @@
 /* Echo 英語 — Service Worker（離線快取 ＋ 自動更新） */
-const CACHE = 'echo-v25';
+const CACHE = 'echo-v26';
 const ASSETS = [
   './',
   './index.html',
