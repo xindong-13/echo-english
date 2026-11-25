@@ -1,11 +1,12 @@
 /* Echo 英語 — Service Worker（離線快取 ＋ 自動更新） */
-const CACHE = 'echo-v26';
+const CACHE = 'echo-v27';
 const ASSETS = [
   './',
   './index.html',
   './bank.js',
   './words.js',
   './articles.js',
+  './gsat.js',
   './manifest.webmanifest',
   './icon-192.png',
   './icon-512.png'

@@ -125,7 +125,7 @@ input.blk.no{color:var(--bad);border-color:var(--bad);background:rgba(248,113,11
 
 /* 底部導覽 */
 nav{position:fixed;left:0;right:0;bottom:0;background:rgba(14,17,22,.93);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-top:1px solid var(--line);padding-bottom:var(--safe-b);z-index:50}
-nav .in{max-width:640px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr)}
+nav .in{max-width:640px;margin:0 auto;display:grid;grid-template-columns:repeat(6,1fr)}
 nav button{padding:9px 0 8px;font-size:11px;color:var(--tx3);display:flex;flex-direction:column;align-items:center;gap:3px}
 nav button svg{width:22px;height:22px;fill:currentColor}
 nav button.on{color:var(--ac)}
@@ -172,6 +172,31 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
 .qopt.pick{border-color:var(--blue);background:rgba(96,165,250,.12)}
 .qopt.right{border-color:var(--ac);background:rgba(74,222,128,.14)}
 .qopt.wrong{border-color:var(--bad);background:rgba(248,113,113,.12)}
+/* 學測模擬題 */
+.gxp{font-size:16px;line-height:1.9;text-align:left}
+.gxp p{margin:0 0 12px}
+.gxb{padding:1px 6px;border-radius:6px;background:var(--bg2);border:1px dashed var(--tx3);font-weight:600;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.gxb u{text-decoration:none;color:var(--tx3);font-size:12px}
+.gxb.f{border:1px solid var(--blue);background:rgba(96,165,250,.12)}
+.gxb.right{border:1px solid var(--ac);background:rgba(74,222,128,.14)}
+.gxb.wrong{border:1px solid var(--bad);background:rgba(248,113,113,.12)}
+.gxb s{color:var(--bad);font-weight:400}
+.gxblank{display:inline-block;width:56px;border-bottom:2px solid var(--tx3);margin:0 3px;vertical-align:-2px}
+.gxq{margin-top:16px}
+.gxqt{font-weight:600;line-height:1.6;font-size:15.5px}
+.gxog{display:grid;grid-template-columns:1fr 1fr;column-gap:8px}
+.gxbank{display:grid;gap:7px;margin:4px 0 4px;padding:10px 12px;background:var(--bg2);border-radius:10px;font-size:14px;line-height:1.5}
+.gxbank.w{grid-template-columns:1fr 1fr}
+.gxbank .used{opacity:.35}
+.gxlet{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.gxlet .qopt{width:auto;min-width:42px;margin-top:0;text-align:center;padding:7px 10px}
+.gxex{margin-top:8px;padding:9px 11px;border-radius:9px;background:var(--bg2);font-size:13.5px;line-height:1.65;color:var(--tx2)}
+.gxin,.gxta{margin-top:8px}
+.gxin.right{border-color:var(--ac)}
+.gxin.wrong{border-color:var(--bad)}
+.gxdt{margin-top:12px;font-size:14px;line-height:1.7}
+.gxdt summary{cursor:pointer;color:var(--blue);font-weight:600}
+.gxdt ul{margin:8px 0 0;padding-left:20px}
 
 /* ===================== 視覺樣式（2026-11 改版） ===================== */
 :root{
@@ -390,6 +415,9 @@ nav button.on::before{content:'';position:absolute;top:0;left:30%;right:30%;heig
     </div>
   </section>
 
+  <!-- ============ 學測 ============ -->
+  <section class="view" id="v-gsat"><div id="gxRoot"></div></section>
+
   <!-- ============ 題庫 ============ -->
   <section class="view" id="v-library">
     <div class="card">
@@ -570,6 +598,7 @@ nav button.on::before{content:'';position:absolute;top:0;left:30%;right:30%;heig
 <nav><div class="in">
   <button data-v="practice" class="on"><svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3z"/><path d="M19 11a1 1 0 1 0-2 0 5 5 0 0 1-10 0 1 1 0 1 0-2 0 7 7 0 0 0 6 6.92V21H8a1 1 0 1 0 0 2h8a1 1 0 1 0 0-2h-3v-3.08A7 7 0 0 0 19 11z"/></svg>練習</button>
   <button data-v="read"><svg viewBox="0 0 24 24"><path d="M3 5.5A1.5 1.5 0 0 1 4.5 4H9a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4.5A1.5 1.5 0 0 1 3 16z"/><path d="M21 5.5A1.5 1.5 0 0 0 19.5 4H15a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5h5a1.5 1.5 0 0 0 1.5-1.5z" opacity=".55"/></svg>閱讀</button>
+  <button data-v="gsat"><svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v14a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z" opacity=".45"/><path d="M10.4 16.6 7.2 13.4l1.4-1.4 1.8 1.8 4.9-4.9 1.4 1.4z"/></svg>學測</button>
   <button data-v="library"><svg viewBox="0 0 24 24"><path d="M4 4h7v16H4zM13 4h7v16h-7z" opacity=".45"/><path d="M4 3h7a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm9 0h7a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1h-7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/></svg>題庫</button>
   <button data-v="tutor"><svg viewBox="0 0 24 24"><path d="M12 3c5 0 9 3.4 9 7.5S17 18 12 18a10 10 0 0 1-2.4-.3L5 20l1.2-3.3A8 8 0 0 1 3 10.5C3 6.4 7 3 12 3z"/></svg>導師</button>
   <button data-v="me"><svg viewBox="0 0 24 24"><path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9zm0 2c-4.4 0-8 2.4-8 5.3V21h16v-1.7c0-2.9-3.6-5.3-8-5.3z"/></svg>我的</button>
@@ -581,6 +610,7 @@ nav button.on::before{content:'';position:absolute;top:0;left:30%;right:30%;heig
 <script src="bank.js"></script>
 <script src="words.js"></script>
 <script src="articles.js"></script>
+<script src="gsat.js"></script>
 <script>
 'use strict';
 /* ======================================================================
@@ -588,7 +618,7 @@ nav button.on::before{content:'';position:absolute;top:0;left:30%;right:30%;heig
    ====================================================================== */
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const KEY='echo.v1';
-const APPVER='echo-v26';   // 更新腳本會自動同步這個數字，用來確認手機跑的是哪一版
+const APPVER='echo-v27';   // 更新腳本會自動同步這個數字，用來確認手機跑的是哪一版
 
 /* ---------- 儲存 ---------- */
 /* 句子進度重置：把 EPOCH 加 1 就會在下次開 App 時清掉所有句子進度（保留金鑰、設定、自訂句、文章、連續天數） */
@@ -611,6 +641,7 @@ const DEFAULT={
   pass:{},          // 句子 id -> {模式: 通過時間}；四個句子模式都過了就「畢業」不再出題
   trash:{},         // 垃圾桶 id -> {t,en,zh,why}；內容被修正（版本更新後 en/zh 變了）就自動放回
   trashGone:{},     // 從垃圾桶放回的 id -> 時間（同步用）
+  gsat:{r:{},mock:[],tr:{},es:{}},      // 學測模擬題：各題組成績、模擬考紀錄、翻譯與作文的最後作答（不屬於句子進度，EPOCH 不會清）
   voc:{lv:1,xp:0,dir:'mix',w:{},t:0},   // 單字練習：目前等級、經驗值、出題方向、每個字的對錯紀錄
   epoch:EPOCH,      // 句子進度的「重置代號」，比對面新就忽略對面的舊進度
   streak:0, lastDay:'',
@@ -651,6 +682,7 @@ function migrate(o){
   delete s.key; delete s.model;
   S2.set=s;
   S2.voc=Object.assign({lv:1,xp:0,dir:'mix',w:{},t:0},o.voc||{});
+  S2.gsat=Object.assign({r:{},mock:[],tr:{},es:{}},o.gsat||{});
   if((o.epoch||0)<EPOCH) resetProgress(S2);
   return S2;
 }
@@ -757,6 +789,11 @@ function mergeState(local,remote){
   const LV=L.voc||{}, RV=R.voc||{};
   m.voc = Object.assign({}, (RV.t||0)>(LV.t||0)?RV:LV);
   m.voc.w = maxObj(LV.w,RV.w,(a,b)=>((b.t||0)>(a.t||0)?b:a));
+  // 學測模擬題：每個題組各取較新的紀錄，模擬考成績依時間聯集
+  const LG=L.gsat||{}, RG=R.gsat||{}, newer=(a,b)=>((b.t||0)>(a.t||0)?b:a), mk={};
+  [...(LG.mock||[]),...(RG.mock||[])].forEach(x=>{ if(x&&x.t) mk[x.t]=x; });
+  m.gsat = {r:maxObj(LG.r,RG.r,newer), tr:maxObj(LG.tr,RG.tr,newer), es:maxObj(LG.es,RG.es,newer),
+            mock:Object.values(mk).sort((a,b)=>a.t-b.t).slice(-30)};
 
   m.prog = maxObj(L.prog,R.prog,(a,b)=>{
     if((b.seen||0)!==(a.seen||0)) return (b.seen||0)>(a.seen||0)?b:a;
@@ -1322,6 +1359,7 @@ $$('nav button').forEach(b=>b.onclick=()=>{
   window.scrollTo(0,0);
   if(b.dataset.v!=='read') rdStop();
   if(b.dataset.v==='read') renderRead();
+  if(b.dataset.v==='gsat') renderGsat();
   if(b.dataset.v==='library') renderLib();
   if(b.dataset.v==='me') renderMe();
   if(b.dataset.v==='practice') renderHome();
@@ -1688,6 +1726,7 @@ function passNote(res,id,mode){
 const tryPass=(id,acc,ok=true)=> ok && acc>=PASS_AT ? markPass(id,F.mode) : '';
 
 /* ---- 口說類：中翻英、聽力 ---- */
+let typeSticky=false;                // 按過「用打的」就一直用打的，直到按「改用說的」
 let peeked=false;                    // 先偷看答案再說的話，這次不算過關
 function stepSpeak(){
   peeked=false;
@@ -1718,6 +1757,7 @@ function stepSpeak(){
 
   if(F.mode!=='translate') setTimeout(()=>speak(cur.en),260);
   if(!srSupported) $('#micHint').innerHTML='<span style="color:var(--warn)">這個瀏覽器不支援語音辨識，請用「⌨️ 用打的」，或改用 Safari 開啟</span>';
+  if(typeSticky) typeAnswer();       // 上一題用打的，這題直接接著打（要在點擊當下呼叫，iPhone 才會跳鍵盤）
 }
 
 function toggleMic(){
@@ -1749,6 +1789,7 @@ function typeInline(o){            // o = {stage, card, mic, hint, btn, onSubmit
   if(box){                          // 再按一次「用打的」→ 收起，回到麥克風
     box.remove(); o.mic.style.display=''; o.hint.style.display='';
     o.stage.classList.remove('typing'); o.btn.textContent='⌨️ 用打的';
+    o.card.onmousedown=o.card.onclick=null;
     return;
   }
   o.mic.style.display='none'; o.hint.style.display='none';
@@ -1762,17 +1803,24 @@ function typeInline(o){            // o = {stage, card, mic, hint, btn, onSubmit
   box.querySelector('button').onclick=go;
   ta.addEventListener('keydown',e=>{ if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){ e.preventDefault(); go(); } });
   // 鍵盤跳出來時，把題目卡片捲回畫面最上面，維持一開始看到的樣子
-  const keep=()=>{ if(document.activeElement!==ta) return;
+  const vv=window.visualViewport;
+  const keep=()=>{
+    if(vv && !ta.isConnected) vv.removeEventListener('resize',keep);
+    if(document.activeElement!==ta) return;
     const top=o.stage.closest('.card').getBoundingClientRect().top+window.scrollY-8;
     window.scrollTo(0,Math.max(0,top)); };
-  ta.addEventListener('focus',()=>{ keep(); setTimeout(keep,350); setTimeout(keep,700); });
-  if(window.visualViewport){ visualViewport.addEventListener('resize',keep);
-    ta.addEventListener('blur',()=>visualViewport.removeEventListener('resize',keep),{once:true}); }
+  ta.addEventListener('focus',()=>{ if(vv) vv.addEventListener('resize',keep); keep(); setTimeout(keep,350); setTimeout(keep,700); });
+  if(vv) ta.addEventListener('blur',()=>vv.removeEventListener('resize',keep));
+  // 打字途中按播放／慢速／看答案：游標留在輸入框，按完直接繼續打
+  const aux=e=>{ const b=e.target.closest('button'); return b && b!==o.btn && !box.contains(b) && o.stage.classList.contains('typing'); };
+  o.card.onmousedown=e=>{ if(aux(e)) e.preventDefault(); };
+  o.card.onclick=e=>{ if(aux(e) && ta.isConnected && document.activeElement!==ta) ta.focus({preventScroll:true}); };
   ta.focus({preventScroll:true}); keep();
 }
 function typeAnswer(){
   const card=$('#micBtn').closest('.card');
   typeInline({stage:$('#cStage'),card,mic:$('#micBtn'),hint:$('#micHint'),btn:$('#btnType'),onSubmit:v=>showResult(v)});
+  typeSticky=!!card.querySelector('.tyBox');
 }
 
 function showResult(said,forced){
@@ -3228,6 +3276,404 @@ ${flat.map((s,i)=>(i+1)+'. '+s).join('\n')}`}],{max:8000,temperature:0.3}));
     closeSheet(); saveArticle(o); toast('已存起來 ✅');
   };
 };
+
+/* ======================================================================
+   學測模擬題（題目在 gsat.js，全部原創，仿 108 課綱學測題型）
+   ---------------------------------------------------------------------
+   選擇類題組（詞彙／綜合測驗／文意選填／篇章結構／閱讀／混合題）共用一個作答頁：
+   可以單組練習，也可以每種題型各抽幾組，拼成一回「模擬考」，照大考配分計分。
+   中譯英、作文各有自己的作答頁，有 AI 金鑰就能照大考標準批改。
+   紀錄放在 S.gsat：
+     r[題組id] = {t,n,c,best,cnt,wrong:[題號]}   選擇類題組最近一次的成績
+     mock      = [{t,score,max,secs}]            模擬考成績（最多留 30 筆）
+     tr[題組id]= {t,a:[答案],fb}                 中譯英最後一次作答與 AI 批改
+     es[題組id]= {t,txt,fb}                      作文最後一次作答與 AI 批改
+   不屬於句子進度，EPOCH 重置不會清掉。
+   ====================================================================== */
+const GX_TYPES={
+  vocab :{n:'詞彙題',  ic:'🔤',pt:1, d:'單句選出最適合的字，考字義辨析'},
+  cloze :{n:'綜合測驗',ic:'🧩',pt:1, d:'短文克漏字，考文法、轉折語、搭配詞'},
+  fill  :{n:'文意選填',ic:'🗂',pt:1, d:'十個空格配十個選項，每個只能用一次'},
+  struct:{n:'篇章結構',ic:'🧱',pt:2, d:'把句子放回文章中正確的位置'},
+  read  :{n:'閱讀測驗',ic:'📰',pt:2, d:'主旨、細節、字義、推論'},
+  mixed :{n:'混合題',  ic:'🧪',pt:2, d:'單選、多選、簡答混在一起'},
+  trans :{n:'中譯英',  ic:'🔁',pt:4, d:'每組兩句，每句 4 分，AI 照大考標準批改'},
+  essay :{n:'英文作文',ic:'✍️',pt:20,d:'兩段式作文，AI 依五項評分標準給分'}
+};
+const GX_CHOICE=['vocab','cloze','fill','struct','read','mixed'];
+const GX_MOCK={vocab:1,cloze:2,fill:1,struct:1,read:3,mixed:1};    // 一回模擬考每種題型抽幾組
+const GX_L='ABCDEFGHIJ';
+const gxSets=()=>window.GSAT||[];
+const gxById=id=>gxSets().find(s=>s.id===id);
+const gxOfType=t=>gxSets().filter(s=>s.type===t);
+const gxNorm=s=>String(s||'').toLowerCase().replace(/[^a-z0-9']+/g,' ').trim();
+const gxIsDone=s=>s.type==='trans'?!!S.gsat.tr[s.id]:s.type==='essay'?!!(S.gsat.es[s.id]&&S.gsat.es[s.id].txt):!!S.gsat.r[s.id];
+let GX={v:'home'};
+
+function gxGo(v,patch){ GX=Object.assign({v},patch||{}); renderGsat(); window.scrollTo(0,0); }
+function renderGsat(){
+  S.gsat=Object.assign({r:{},mock:[],tr:{},es:{}},S.gsat||{});
+  const R=$('#gxRoot');
+  if(GX.v==='run' && GX.ids) return gxRun(R);
+  if(GX.v==='list') return gxList(R);
+  if(GX.v==='trans' && gxById(GX.id)) return gxTrans(R);
+  if(GX.v==='essay' && gxById(GX.id)) return gxEssay(R);
+  GX={v:'home'}; gxHome(R);
+}
+const gxBackBtn=(txt)=>`<div class="row" style="margin-bottom:10px"><button class="btn sm gho" id="gxBack" style="color:var(--tx2)">← ${txt}</button><div class="grow"></div><span class="tiny" id="gxProg"></span></div>`;
+
+/* 挑一組：優先沒做過的，其次最久沒做的 */
+function gxPick(type,n,exclude){
+  const ex=new Set(exclude||[]);
+  const all=gxOfType(type).filter(s=>!ex.has(s.id));
+  const fresh=shuffle(all.filter(s=>!gxIsDone(s)));
+  const old=all.filter(s=>gxIsDone(s)).sort((a,b)=>((S.gsat.r[a.id]||S.gsat.tr[a.id]||S.gsat.es[a.id]||{}).t||0)-((S.gsat.r[b.id]||S.gsat.tr[b.id]||S.gsat.es[b.id]||{}).t||0));
+  return fresh.concat(old).slice(0,n);
+}
+function gxOpen(id,from){
+  const s=gxById(id); if(!s) return;
+  if(s.type==='trans') return gxGo('trans',{id,from});
+  if(s.type==='essay') return gxGo('essay',{id,from});
+  gxGo('run',{ids:[id],mock:false,pick:{},done:false,t0:Date.now(),from});
+}
+function gxStartMock(){
+  const ids=[];
+  Object.entries(GX_MOCK).forEach(([t,n])=>gxPick(t,n).forEach(s=>ids.push(s.id)));
+  if(!ids.length) return toast('題庫還沒有題目');
+  gxGo('run',{ids,mock:true,pick:{},done:false,t0:Date.now()});
+}
+
+/* ---------- 首頁 ---------- */
+function gxHome(R){
+  const r=S.gsat.r, ch=gxSets().filter(s=>GX_CHOICE.includes(s.type));
+  const done=ch.filter(s=>r[s.id]);
+  const c=done.reduce((a,s)=>a+r[s.id].c,0), n=done.reduce((a,s)=>a+r[s.id].n,0);
+  const mk=S.gsat.mock||[], last=mk[mk.length-1];
+  const wrongN=ch.filter(s=>r[s.id]&&(r[s.id].wrong||[]).length).length;
+  R.innerHTML=`
+  <div class="card">
+    <h2>學測英文模擬區</h2>
+    <div class="stats" style="grid-template-columns:repeat(3,1fr)">
+      <div><b>${done.length}/${ch.length}</b><span>做過的選擇題組</span></div>
+      <div><b>${n?Math.round(c/n*100)+'%':'–'}</b><span>選擇題答對率</span></div>
+      <div><b>${last?last.score+'<small style="font-size:13px;color:var(--tx3)">/'+last.max+'</small>':'–'}</b><span>上次模擬考</span></div>
+    </div>
+    <p class="tiny" style="margin:12px 0 0">題型照 108 課綱學測：詞彙、綜合測驗、文意選填、篇章結構、閱讀測驗、混合題，加上中譯英和英文作文。全部是原創模擬題（不是歷屆試題），每題交卷後都有中文解析。</p>
+  </div>
+  <div class="card">
+    <h2>🎯 整回模擬考</h2>
+    <p class="tiny" style="margin:0 0 12px">每回隨機抽：詞彙 10 題、綜合測驗 2 篇、文意選填 1 篇、篇章結構 1 篇、閱讀測驗 3 篇、混合題 1 組，共約 55 題，會優先抽沒做過的。照大考配分：詞彙／綜合／文意選填每題 1 分，篇章結構、閱讀、混合題每題 2 分。建議一次寫完，抓 70 分鐘左右。翻譯和作文到下面另外練。</p>
+    <button class="btn pri full" id="gxMock">開始一回模擬考</button>
+    ${mk.length?`<div class="tiny" style="margin-top:12px;line-height:1.8">最近幾回：${mk.slice(-5).reverse().map(m=>`<span style="white-space:nowrap">${new Date(m.t).getMonth()+1}/${new Date(m.t).getDate()}　<b style="color:var(--tx)">${m.score}</b>/${m.max}（${Math.round(m.score/m.max*100)}%）</span>`).join('　')}</div>`:''}
+  </div>
+  <div class="card"><h2>題型練習</h2>
+    ${Object.entries(GX_TYPES).map(([k,t])=>{
+      const all=gxOfType(k), dn=all.filter(gxIsDone).length;
+      return `<button class="aitem" data-gt="${k}"><b>${t.ic} ${t.n}</b><small>${t.d}</small><br><small style="color:var(--tx3)">${all.length} 組　·　做過 ${dn} 組</small></button>`;
+    }).join('')}
+  </div>
+  ${wrongN?`<button class="btn full" id="gxWrong">📕 錯題回顧（${wrongN} 組有答錯的題目）</button>`:''}`;
+  $('#gxMock').onclick=gxStartMock;
+  $('#gxRoot [data-gt]').forEach(b=>b.onclick=()=>gxGo('list',{type:b.dataset.gt}));
+  const w=$('#gxWrong'); if(w) w.onclick=()=>gxGo('list',{type:'wrong'});
+}
+
+/* ---------- 某題型的題組列表／錯題回顧 ---------- */
+function gxStatus(s){
+  if(s.type==='trans'){ const t=S.gsat.tr[s.id]; return t?(t.fb?`AI 批改 ${t.fb.reduce((a,x)=>a+(+x.score||0),0)}/8 分`:'寫過了'):'還沒寫過'; }
+  if(s.type==='essay'){ const e=S.gsat.es[s.id]; return e&&e.txt?(e.fb?`AI 批改 ${e.fb.total}/20 分`:'寫過了，還沒批改'):'還沒寫過'; }
+  const r=S.gsat.r[s.id];
+  if(!r) return `${s.qs.length} 題　·　還沒做過`;
+  return `上次 ${r.c}/${r.n}　·　做過 ${r.cnt} 次${(r.wrong||[]).length?`　·　<span style="color:var(--bad)">錯 ${r.wrong.length} 題</span>`:'　·　<span style="color:var(--ac)">全對</span>'}`;
+}
+function gxList(R){
+  const t=GX.type, wrong=t==='wrong', T=GX_TYPES[t];
+  if(!wrong&&!T) return gxGo('home');
+  const sets= wrong ? gxSets().filter(s=>S.gsat.r[s.id]&&(S.gsat.r[s.id].wrong||[]).length) : gxOfType(t);
+  R.innerHTML=`${gxBackBtn('學測模擬區')}
+  <div class="card"><h2>${wrong?'📕 錯題回顧':T.ic+' '+T.n}</h2>
+    <p class="tiny" style="margin:0">${wrong?'上次有答錯的題組。重做一次全對，就會從這裡消失。':T.d}</p>
+    ${!wrong&&sets.length>1?`<button class="btn pri full" id="gxRand" style="margin-top:12px">🎲 隨機來一組（優先沒做過的）</button>`:''}
+  </div>
+  <div class="card">${sets.map(s=>`<button class="aitem" data-s="${s.id}"><b>${wrong?GX_TYPES[s.type].ic+' ':''}${esc(s.title||s.id)}</b><small>${gxStatus(s)}</small></button>`).join('')||'<p class="muted" style="margin:0">沒有錯題 🎉</p>'}</div>`;
+  const from={v:'list',type:t};
+  $('#gxBack').onclick=()=>gxGo('home');
+  $('#gxRoot [data-s]').forEach(b=>b.onclick=()=>gxOpen(b.dataset.s,from));
+  const rb=$('#gxRand'); if(rb) rb.onclick=()=>{ const s=gxPick(t,1)[0]; if(s) gxOpen(s.id,from); };
+}
+
+/* ---------- 選擇類作答頁（單組練習／整回模擬考共用） ---------- */
+function gxRight(s,k,v){
+  const q=s.qs[k];
+  if(v==null) return false;
+  if(q.ans) return q.ans.some(a=>gxNorm(a)===gxNorm(v));
+  if(Array.isArray(q.a)) return Array.isArray(v)&&v.length===q.a.length&&q.a.every(x=>v.includes(x));
+  return v===q.a;
+}
+const gxKey=(s,k)=>s.id+':'+k;
+const gxRunSets=()=>GX.ids.map(gxById).filter(Boolean);
+function gxAnswered(){ return Object.values(GX.pick).filter(v=>v!=null&&v!==''&&!(Array.isArray(v)&&!v.length)).length; }
+function gxProgTxt(){
+  const el=$('#gxProg'); if(!el||GX.done) return;
+  el.textContent=`已作答 ${gxAnswered()} / ${gxRunSets().reduce((a,s)=>a+s.qs.length,0)}`;
+}
+function gxChoiceText(s,k,v){
+  const q=s.qs[k];
+  if(v==null) return null;
+  if(s.bank) return s.bank[v];
+  if(q.o&&!Array.isArray(q.a)) return q.o[v];
+  return null;
+}
+/* 文章裡的 __n__ 換成空格；選了答案就直接填進去，方便讀起來順不順 */
+function gxPassage(s,off){
+  return `<div class="gxp">${s.p.map(par=>`<p>${esc(par).replace(/__(\d+)__/g,(m,d)=>{
+    const k=+d-1, v=GX.pick[gxKey(s,k)], txt=gxChoiceText(s,k,v);
+    let cls=txt!=null?'f':'';
+    if(GX.done) cls=gxRight(s,k,v)?'right':'wrong';
+    const show = GX.done&&!gxRight(s,k,v) ? `${txt!=null?`<s>${esc(txt)}</s> `:''}${esc(gxChoiceText(s,k,s.qs[k].a))}` : (txt!=null?esc(txt):'');
+    return `<span class="gxb ${cls}"><u>${off+k+1}</u>${show?' '+show:''}</span>`;
+  })}</p>`).join('')}</div>`;
+}
+function gxQuestion(s,k,no){
+  const q=s.qs[k], key=gxKey(s,k), v=GX.pick[key], D=GX.done, ok=D&&gxRight(s,k,v);
+  let h=`<div class="gxq"><div class="gxqt">${no}.${q.q?' '+esc(q.q).replace(/_{4,}/g,'<span class="gxblank"></span>'):''}${Array.isArray(q.a)?' <span class="tiny" style="color:var(--blue)">（多選）</span>':''}</div>`;
+  if(q.ans){
+    h+=`<input class="gxin ${D?(ok?'right':'wrong'):''}" data-key="${key}" value="${esc(v||'')}" ${D?'disabled':''} placeholder="作答…" autocomplete="off" autocapitalize="off" spellcheck="false">`;
+  } else if(s.bank){
+    h+=`<div class="gxlet">${s.bank.map((_,i)=>{
+      let c=''; if(D){ if(i===q.a) c='right'; else if(v===i) c='wrong'; } else if(v===i) c='pick';
+      return `<button class="qopt ${c}" data-key="${key}" data-o="${i}">${GX_L[i]}</button>`;
+    }).join('')}</div>`;
+  } else {
+    const multi=Array.isArray(q.a), grid=q.o.every(o=>o.length<=20);
+    h+=`<div class="${grid?'gxog':''}">${q.o.map((o,i)=>{
+      const picked=multi?(v||[]).includes(i):v===i, isA=multi?q.a.includes(i):q.a===i;
+      let c=''; if(D){ if(isA) c='right'; else if(picked) c='wrong'; } else if(picked) c='pick';
+      return `<button class="qopt ${c}" data-key="${key}" data-o="${i}">(${GX_L[i]}) ${esc(o)}</button>`;
+    }).join('')}</div>`;
+  }
+  if(D){
+    const ansTxt = q.ans ? q.ans[0] : s.bank ? `(${GX_L[q.a]}) ${s.bank[q.a]}` : Array.isArray(q.a) ? q.a.map(i=>`(${GX_L[i]})`).join('') : `(${GX_L[q.a]})`;
+    h+=`<div class="gxex">${ok?'✅ 答對':`❌ 正解 <b style="color:var(--ac)">${esc(ansTxt)}</b>`}${q.ex?'<br>'+esc(q.ex):''}</div>`;
+  }
+  return h+'</div>';
+}
+function gxSetHTML(s,off){
+  const T=GX_TYPES[s.type];
+  let h=`<div class="card"><div class="scene-tag" style="margin-bottom:8px">${T.ic} ${T.n}${s.title?'　·　'+esc(s.title):''}　·　第 ${off+1}～${off+s.qs.length} 題</div>`;
+  if(s.p) h+=gxPassage(s,off);
+  if(s.bank){
+    const used=new Set(s.qs.map((_,k)=>GX.pick[gxKey(s,k)]).filter(v=>v!=null));
+    h+=`<div class="gxbank ${s.type==='fill'?'w':''}">${s.bank.map((w,i)=>`<div class="${!GX.done&&used.has(i)?'used':''}"><b>(${GX_L[i]})</b> ${esc(w)}</div>`).join('')}</div>`;
+  }
+  h+=s.qs.map((q,k)=>gxQuestion(s,k,off+k+1)).join('');
+  return h+'</div>';
+}
+function gxSummary(sets){
+  const by={};
+  sets.forEach(s=>{ const b=by[s.type]||(by[s.type]={c:0,n:0}); s.qs.forEach((_,k)=>{ b.n++; if(gxRight(s,k,GX.pick[gxKey(s,k)])) b.c++; }); });
+  const c=Object.values(by).reduce((a,b)=>a+b.c,0), n=Object.values(by).reduce((a,b)=>a+b.n,0);
+  const [sc,mx]=GX.score||[c,n], pct=mx?sc/mx:0;
+  const col=pct>=.8?'var(--ac)':pct>=.5?'var(--warn)':'var(--bad)';
+  const m=Math.floor((GX.secs||0)/60), sx=(GX.secs||0)%60;
+  return `<div class="card" style="text-align:center">
+    <div class="score" style="margin:0"><b style="color:${col}">${GX.mock?sc+' / '+mx:c+' / '+n}</b><span>${GX.mock?'分':'題答對'}</span></div>
+    ${GX.mock?`<div class="tiny">答對 ${c} / ${n} 題，換算約 ${Math.round(pct*100)}%</div>`:''}
+    ${Object.keys(by).length>1?`<div style="text-align:left;margin-top:12px">${Object.entries(by).map(([t,b])=>`<div class="goalrow"><span class="gn">${GX_TYPES[t].n}</span><span class="gbar"><i style="width:${b.c/b.n*100}%;background:${b.c/b.n>=.8?'var(--ac)':b.c/b.n>=.5?'var(--warn)':'var(--bad)'}"></i></span><span class="gv">${b.c}/${b.n}</span></div>`).join('')}</div>`:''}
+    <p class="tiny" style="margin:10px 0 0">用時 ${m} 分 ${sx} 秒　·　每題下方都有解析，答錯的會記進「錯題回顧」</p>
+  </div>`;
+}
+function gxRun(R){
+  const sets=gxRunSets();
+  let off=0;
+  const body=sets.map(s=>{ const h=gxSetHTML(s,off); off+=s.qs.length; return h; }).join('');
+  R.innerHTML=`${gxBackBtn(GX.mock?'學測模擬區':GX.from&&GX.from.type==='wrong'?'錯題回顧':'題組列表')}
+    ${GX.done?gxSummary(sets):''}${body}
+    ${GX.done
+      ? `<div class="row"><button class="btn grow" id="gxRe">🔁 重做</button><button class="btn pri grow" id="gxNext">${GX.mock?'回學測模擬區':GX.from&&GX.from.type==='wrong'?'回錯題回顧':'下一組 →'}</button></div>`
+      : `<button class="btn pri full" id="gxSubmit">交卷</button>`}`;
+  gxProgTxt();
+  $('#gxBack').onclick=()=>{
+    if(!GX.done && gxAnswered()){
+      openSheet(`<h2 style="margin-top:0">離開這${GX.mock?'回模擬考':'組題目'}？</h2><p class="muted">已經作答的部分不會保存。</p>
+        <div class="row" style="margin-top:14px"><button class="btn grow" id="gxStay">繼續作答</button><button class="btn grow" id="gxLeave" style="color:var(--bad)">離開</button></div>`);
+      $('#gxStay').onclick=closeSheet;
+      $('#gxLeave').onclick=()=>{ closeSheet(); gxLeave(); };
+      return;
+    }
+    gxLeave();
+  };
+  if(!GX.done){
+    $('#gxRoot .qopt[data-key]').forEach(b=>b.onclick=()=>{
+      const key=b.dataset.key, o=+b.dataset.o, [sid,k]=key.split(':'), q=gxById(sid).qs[+k];
+      if(Array.isArray(q.a)){
+        const a=new Set(GX.pick[key]||[]); a.has(o)?a.delete(o):a.add(o);
+        GX.pick[key]=[...a].sort((x,y)=>x-y);
+      } else GX.pick[key] = GX.pick[key]===o ? null : o;
+      const y=window.scrollY; gxRun(R); window.scrollTo(0,y);
+    });
+    $('#gxRoot .gxin').forEach(i=>i.oninput=()=>{ GX.pick[i.dataset.key]=i.value.trim()?i.value:null; gxProgTxt(); });
+    $('#gxSubmit').onclick=gxSubmit;
+  } else {
+    $('#gxRe').onclick=()=>{ Object.assign(GX,{pick:{},done:false,warn:false,score:null,t0:Date.now()}); renderGsat(); window.scrollTo(0,0); };
+    $('#gxNext').onclick=()=>{
+      if(GX.mock || (GX.from&&GX.from.type==='wrong')) return gxLeave();
+      const s=gxById(GX.ids[0]), nx=gxPick(s.type,1,[s.id])[0];
+      if(nx) gxOpen(nx.id,GX.from); else gxLeave();
+    };
+  }
+}
+function gxLeave(){ if(GX.from&&GX.from.v==='list') gxGo('list',{type:GX.from.type}); else gxGo('home'); }
+function gxSubmit(){
+  const sets=gxRunSets(), total=sets.reduce((a,s)=>a+s.qs.length,0), left=total-gxAnswered();
+  if(left>0 && !GX.warn){ GX.warn=true; return toast(`還有 ${left} 題沒作答，再按一次「交卷」就直接算分`,3000); }
+  GX.done=true; GX.secs=Math.round((Date.now()-GX.t0)/1000);
+  let sc=0, mx=0;
+  const now=Date.now();
+  sets.forEach(s=>{
+    const wrong=[]; let c=0;
+    s.qs.forEach((_,k)=>{ if(gxRight(s,k,GX.pick[gxKey(s,k)])) c++; else wrong.push(k); });
+    const pt=GX_TYPES[s.type].pt; sc+=c*pt; mx+=s.qs.length*pt;
+    const o=S.gsat.r[s.id]||{};
+    S.gsat.r[s.id]={t:now,n:s.qs.length,c,best:Math.max(o.best||0,c),cnt:(o.cnt||0)+1,wrong};
+  });
+  GX.score=[sc,mx];
+  if(GX.mock){ S.gsat.mock.push({t:now,score:sc,max:mx,secs:GX.secs}); S.gsat.mock=S.gsat.mock.slice(-30); }
+  touchStreak(); save();
+  renderGsat(); window.scrollTo(0,0);
+}
+
+/* ---------- 中譯英 ---------- */
+function gxTrans(R){
+  const s=gxById(GX.id), last=S.gsat.tr[s.id]||{};
+  if(!GX.ans) GX.ans=(last.a||[]).slice();
+  if(GX.fb===undefined) GX.fb=last.fb||null;
+  const fbTotal=GX.fb?GX.fb.reduce((a,x)=>a+(+x.score||0),0):null;
+  R.innerHTML=`${gxBackBtn(GX.from?'題組列表':'學測模擬區')}
+  <div class="card">
+    <div class="scene-tag" style="margin-bottom:6px">🔁 中譯英　·　${esc(s.title||'')}</div>
+    <p class="tiny" style="margin:0">把下面兩句翻成英文，每句 4 分。大考的扣分方式：以「詞彙、文法、句構」為單位，每錯一處扣 0.5～1 分，整句意思不對就 0 分。寫完可以先自己對參考譯文，有設 AI 金鑰就能請 AI 照這個標準評分、改錯。</p>
+    ${fbTotal!=null?`<div class="score" style="margin:12px 0 0"><b style="color:${fbTotal>=6?'var(--ac)':fbTotal>=4?'var(--warn)':'var(--bad)'}">${fbTotal}</b><span>/ 8 分（AI 批改）</span></div>`:''}
+  </div>
+  ${s.qs.map((q,k)=>{
+    const f=GX.fb&&GX.fb[k];
+    let local='';
+    if(GX.show&&(GX.ans[k]||'').trim()){ local=Math.max(...q.ref.map(r=>compare(r,GX.ans[k]).acc)); }
+    return `<div class="card">
+      <div style="font-weight:600;line-height:1.7;font-size:16px">${k+1}. ${esc(q.zh)}</div>
+      <textarea class="gxta" data-k="${k}" rows="3" placeholder="English…" autocapitalize="sentences" spellcheck="false">${esc(GX.ans[k]||'')}</textarea>
+      ${f?`<div class="gxex"><b style="color:${f.score>=3?'var(--ac)':f.score>=2?'var(--warn)':'var(--bad)'}">${esc(f.score)} / 4 分</b>${f.fix?`<br>修正：<span style="color:var(--tx)">${esc(f.fix)}</span>`:''}${f.notes?`<br>${esc(f.notes).replace(/\n/g,'<br>')}`:''}</div>`:''}
+      ${GX.show?`<div class="gxex"><b>參考譯文</b>${q.ref.map(r=>`<br>• ${esc(r)}`).join('')}${q.tip?`<br>💡 ${esc(q.tip)}`:''}${local!==''?`<br><span class="tiny">你的句子和參考譯文的字詞重疊度約 ${local}%（只是粗略參考，換句話說也可能是對的）</span>`:''}</div>`:''}
+    </div>`;
+  }).join('')}
+  <div class="row"><button class="btn grow" id="gxShow">${GX.show?'收起參考譯文':'👀 看參考譯文'}</button>
+    ${hasKey()?`<button class="btn purple grow" id="gxAI">✨ AI 批改</button>`:''}</div>
+  ${hasKey()?'':`<p class="tiny" style="margin-top:10px">到「我的 → AI 設定」設好金鑰，就能讓 AI 照大考標準給分、改錯。</p>`}
+  ${gxOfType('trans').length>1?`<button class="btn full" id="gxNextT" style="margin-top:10px">下一組 →</button>`:''}`;
+  $('#gxBack').onclick=()=>GX.from?gxGo('list',{type:'trans'}):gxGo('home');
+  $('#gxRoot .gxta').forEach(t=>t.oninput=()=>{
+    GX.ans[+t.dataset.k]=t.value;
+    S.gsat.tr[s.id]=Object.assign({},S.gsat.tr[s.id]||{},{t:Date.now(),a:GX.ans.slice()}); save();
+  });
+  $('#gxShow').onclick=()=>{ GX.show=!GX.show; const y=window.scrollY; gxTrans(R); window.scrollTo(0,y); };
+  const ab=$('#gxAI'); if(ab) ab.onclick=()=>gxTransAI(s,ab);
+  const nb=$('#gxNextT'); if(nb) nb.onclick=()=>{ const nx=gxPick('trans',1,[s.id])[0]; if(nx) gxOpen(nx.id,GX.from); };
+}
+async function gxTransAI(s,btn){
+  if(!s.qs.every((_,k)=>(GX.ans[k]||'').trim())) return toast('兩句都寫完再批改');
+  btn.disabled=true; btn.innerHTML='<span class="spin"></span> 批改中…';
+  try{
+    const J=jsonFrom(await ai([{role:'user',content:
+`你是台灣大學入學考試中心「學測英文」中譯英的閱卷老師。每題滿分 4 分，評分方式：
+- 以「詞彙、文法、句構」為單位扣分，每一處錯誤扣 0.5 或 1 分（拼字、單複數、時態、冠詞等小錯扣 0.5；用字錯誤影響語意、句構錯誤扣 1）
+- 同一個錯誤只扣一次；整句意思錯誤或嚴重偏離原意給 0 分
+- 只要正確表達原意，不一定要和參考譯文一樣
+請逐題評分，只輸出 JSON 陣列（不要其他文字）：
+[{"score":分數(0～4，可以是 .5),"fix":"在學生原句上修正後的英文（盡量保留學生原本的寫法；全對就照抄）","notes":"用繁體中文條列每個扣分點與原因，全對就寫一句鼓勵"}]
+
+${s.qs.map((q,k)=>`第 ${k+1} 題
+中文：${q.zh}
+參考譯文：${q.ref.join(' ／ ')}
+學生答案：${GX.ans[k]}`).join('\n\n')}`}],{max:1500,temperature:0.2}));
+    if(!Array.isArray(J)||J.length<s.qs.length) throw new Error('AI 回傳格式不對，請再試一次');
+    GX.fb=J.slice(0,s.qs.length).map(x=>({score:Math.max(0,Math.min(4,Math.round((+x.score||0)*2)/2)),fix:String(x.fix||''),notes:String(x.notes||'')}));
+    S.gsat.tr[s.id]={t:Date.now(),a:GX.ans.slice(),fb:GX.fb}; touchStreak(); save();
+    gxTrans($('#gxRoot'));
+  }catch(e){ btn.disabled=false; btn.textContent='✨ AI 批改'; toast(e.message==='NOKEY'?'請先設定 AI 金鑰':'失敗：'+e.message,3200); }
+}
+
+/* ---------- 英文作文 ---------- */
+const GX_RUB=[['content','內容',5],['organization','組織',5],['grammar','文法句構',4],['vocab','字彙拼字',4],['format','體例',2]];
+function gxWords(t){ return (String(t).match(/[A-Za-z]+(?:['’-][A-Za-z]+)*/g)||[]).length; }
+function gxEssay(R){
+  const s=gxById(GX.id), last=S.gsat.es[s.id]||{};
+  if(GX.txt==null) GX.txt=last.txt||'';
+  if(GX.fb===undefined) GX.fb=last.fb||null;
+  const F=GX.fb;
+  R.innerHTML=`${gxBackBtn(GX.from?'題組列表':'學測模擬區')}
+  <div class="card">
+    <div class="scene-tag" style="margin-bottom:6px">✍️ 英文作文　·　滿分 20 分</div>
+    <div style="font-size:19px;font-weight:700;line-height:1.4">${esc(s.title)}</div>
+    <p style="line-height:1.75;margin:10px 0 0">${esc(s.prompt)}</p>
+    <p class="tiny" style="margin:8px 0 0">學測規定至少 120 個單詞，建議寫 150～200 字。</p>
+    ${s.tips?`<details class="gxdt"><summary>💡 寫作提示與好用句型</summary><ul>${s.tips.map(t=>`<li>${esc(t)}</li>`).join('')}</ul></details>`:''}
+  </div>
+  <div class="card">
+    <textarea id="gxEs" rows="14" placeholder="第一段……&#10;&#10;第二段……" spellcheck="false">${esc(GX.txt)}</textarea>
+    <div class="tiny" id="gxWc" style="margin-top:6px"></div>
+    ${hasKey()?`<button class="btn purple full" id="gxEsGo" style="margin-top:10px">✨ 請 AI 照學測標準批改</button>`
+      :`<p class="tiny" style="margin:10px 0 0">到「我的 → AI 設定」設好金鑰，就能讓 AI 依大考五項標準（內容、組織、文法句構、字彙拼字、體例）給分，並附上修改建議和範文。</p>`}
+  </div>
+  ${F?`<div class="card">
+    <div class="score" style="margin:0 0 6px"><b style="color:${F.total>=15?'var(--ac)':F.total>=10?'var(--warn)':'var(--bad)'}">${F.total}</b><span>/ 20 分</span></div>
+    ${GX_RUB.map(([k,n,mx])=>`<div class="goalrow"><span class="gn">${n}</span><span class="gbar"><i style="width:${(F[k]||0)/mx*100}%;background:var(--blue)"></i></span><span class="gv">${F[k]||0}/${mx}</span></div>`).join('')}
+    ${F.comment?`<p style="line-height:1.7;margin:12px 0 0">${esc(F.comment).replace(/\n/g,'<br>')}</p>`:''}
+    ${(F.fixes||[]).length?`<h2 style="margin-top:16px">修改建議</h2>${F.fixes.map(x=>`<div class="gxex"><s style="color:var(--bad)">${esc(x.orig||'')}</s><br><span style="color:var(--ac)">${esc(x.fix||'')}</span>${x.why?`<br>${esc(x.why)}`:''}</div>`).join('')}`:''}
+    ${F.model?`<details class="gxdt"><summary>📄 範文</summary><div style="line-height:1.75;white-space:pre-wrap;margin-top:8px">${esc(F.model)}</div></details>`:''}
+  </div>`:''}
+  ${gxOfType('essay').length>1?`<button class="btn full" id="gxNextE">下一個題目 →</button>`:''}`;
+  const ta=$('#gxEs'), wc=$('#gxWc');
+  const upd=()=>{ const n=gxWords(ta.value); wc.innerHTML=`${n} 字${n<120?`　<span style="color:var(--warn)">（還差 ${120-n} 字到 120）</span>`:'　<span style="color:var(--ac)">✓ 達到 120 字</span>'}`; };
+  upd();
+  ta.oninput=()=>{ GX.txt=ta.value; upd(); S.gsat.es[s.id]=Object.assign({},S.gsat.es[s.id]||{},{t:Date.now(),txt:ta.value}); save(); };
+  $('#gxBack').onclick=()=>GX.from?gxGo('list',{type:'essay'}):gxGo('home');
+  const go=$('#gxEsGo'); if(go) go.onclick=()=>gxEssayAI(s,go);
+  const nb=$('#gxNextE'); if(nb) nb.onclick=()=>{ const nx=gxPick('essay',1,[s.id])[0]; if(nx) gxOpen(nx.id,GX.from); };
+}
+async function gxEssayAI(s,btn){
+  const txt=GX.txt.trim();
+  if(gxWords(txt)<40) return toast('至少寫個 40 字再批改吧');
+  btn.disabled=true; btn.innerHTML='<span class="spin"></span> 批改中…（約 20 秒）';
+  try{
+    const J=jsonFrom(await ai([{role:'user',content:
+`你是台灣大學入學考試中心「學測英文」作文的閱卷老師，請依大考的評分標準批改以下作文：
+- 內容 content（0～5）：切題、論點清楚、有具體細節支持
+- 組織 organization（0～5）：兩段結構完整、段落主題句、轉折連貫
+- 文法句構 grammar（0～4）：文法正確、句型有變化
+- 字彙拼字 vocab（0～4）：用字精確恰當、拼字正確
+- 體例 format（0～2）：分段、標點、大小寫等格式
+未達 120 字、離題或沒有依題目要求分兩段，要在相關項目中反映扣分。請照真實閱卷的嚴格程度給分，不要灌水。
+只輸出 JSON（不要其他文字）：
+{"content":n,"organization":n,"grammar":n,"vocab":n,"format":n,"total":總分,
+ "comment":"用繁體中文寫的總評：優點、最需要加強的地方、下次怎麼拿更高分（150 字內）",
+ "fixes":[{"orig":"學生原文中有問題的句子或片語","fix":"修改後的英文","why":"繁體中文說明"}],
+ "model":"依同一題目寫一篇約 160 字、程度適合高中生的兩段式範文（段落之間空一行）"}
+fixes 挑最重要的 3～6 處。
+
+題目：${s.prompt}
+
+學生作文（${gxWords(txt)} 字）：
+${txt}`}],{max:3000,temperature:0.3}));
+    if(!J||typeof J!=='object') throw new Error('AI 回傳格式不對，請再試一次');
+    const F={};
+    GX_RUB.forEach(([k,,mx])=>F[k]=Math.max(0,Math.min(mx,Math.round((+J[k]||0)*2)/2)));
+    F.total=GX_RUB.reduce((a,[k])=>a+F[k],0);
+    F.comment=String(J.comment||''); F.model=String(J.model||'');
+    F.fixes=(Array.isArray(J.fixes)?J.fixes:[]).slice(0,8).map(x=>({orig:String(x.orig||''),fix:String(x.fix||''),why:String(x.why||'')}));
+    GX.fb=F; S.gsat.es[s.id]={t:Date.now(),txt:GX.txt,fb:F}; touchStreak(); save();
+    gxEssay($('#gxRoot')); window.scrollTo(0,document.body.scrollHeight);
+  }catch(e){ btn.disabled=false; btn.textContent='✨ 請 AI 照學測標準批改'; toast(e.message==='NOKEY'?'請先設定 AI 金鑰':'失敗：'+e.message,3200); }
+}
 
 /* ======================================================================
    我的
